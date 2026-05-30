@@ -359,8 +359,8 @@ modify EmptyNounError
 /*  First, trap attempts to refer to body parts */
 
 bodyParts: MultiLoc, Unthing 'kropp; (min) (din) (hans) (hennes) (denna) (vänster)
-    (höger); huvud hand öra knytnäve finger tumme arm ben fot öga ansikte näsa mun
-    tand tunga läpp knä armbåge; det dem' 
+    (höger); huvud+et hand+en händer+na[pl] öra+t knyt|näve+n fing:er+ret tumme+n arm+en ben+et fot+en öga+t ansikte+t näsa+n mun+nen
+    tand+en tunga+n läpp+en knä+et armbåge+n; det dem' 
     
     notHereMsg = 'Generellt sett finns det inget behov av att referera till dina
         kroppsdelar individuellt i interaktiv fiktion. BÄR SKOR PÅ FÖTTER kommer

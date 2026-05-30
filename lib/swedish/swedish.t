@@ -125,13 +125,11 @@ class LMentionable: object
      */
     possNoun = (ifPronoun(&possNoun, '<<theName>><<possEnding>>'))
     
-    /*  
-     *   Den korrekta ändelsen för vår possessiva form. Detta är vanligtvis s för ett svenskt
-     *   substantiv, förutom där substantivet är plural och slutar med ett 's', i vilket fall vi bara vill ha en
-     *   apostrof; till exempel "kontorens lunch" men "kvinnornas middag".
-     */     
-    //possEnding = (theName.endsWith('s') && plural ? '&rsquo;' : '&rsquo;s')
-    possEnding = (theName.endsWith('s') && plural ? 's' : '')
+    /*
+     *   Den korrekta ändelsen för vår possessiva form. Vanligtvis 's', förutom när
+     *   substantivet redan slutar på 's', i vilket fall vi inte lägger till något.
+     */
+    possEnding = (theName.endsWith('s') ? '' : 's')
 
     /* Det subjektiva fallets pronomen för detta objekt. Vi försöker härleda pronomenet från
      *   köns- och antalflaggorna: om plural, 'de'; om isHim, 'han'; om isHer 'hon'; annars 'det'.
@@ -143,7 +141,6 @@ class LMentionable: object
      *   pronomenet från köns- och antalflaggorna: om plural, 'dem';
      *   om isHim, 'honom'; om isHer 'henne'; annars 'det'.  
      */
-
     himName = (pronoun().objName)
 
     /*
@@ -2829,9 +2826,10 @@ swedishCustomVocab: CustomVocab
         'blöda/blöder/blödde',
         'blåsa/blåser/blåste/blåst',                
         'bryta/bryter/bröt/bruten',
-        'avla/avlar/avlade',
-        
-        'bygga/bygger/byggde',
+        'avla/avlar/avlade/avlat',
+        'hälsa/hälsar/hälsade/hälsat',
+        'prata/pratar/pratade/pratat',
+        'bygga/bygger/byggde/byggt',
         'bränna/bränner/brände',
         'bryta/bryter/bröt',
         'köpa/köper/köpte',
@@ -2840,6 +2838,7 @@ swedishCustomVocab: CustomVocab
         'välja/väljer/valde/valt',
         'klappa/klappar/klappade',        
         'klänga/klänger/klängde',        
+        'låsa/låser/låste/låst',                
         'komma/kommer/kom',        
         'krypa/kryper/krypte',
         'skära/skär/skärde',

@@ -1,1 +1,4 @@
 .DS_Store
+exempel/snabbstart/obj
+*.t3
+GameInfo.txt

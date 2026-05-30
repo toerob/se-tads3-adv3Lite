@@ -115,7 +115,7 @@ CustomMessages
         Msg(cannot move while attached, '{Ref subj cobj} {kan} inte flyttas medan {he cobj} {är} fäst vid {ref other}. '), 
         Msg(okay plug in, '{Jag} pluggar in {1}. '),
         Msg(debugger not present, 'Debugger inte närvarande. '),
-        Msg(fiat lux, '{Jag} {blev} plötsligt {1} lysande. '),
+        Msg(fiat lux, '{Jag} {blev} plötsligt {1} lysande. '), // TODO: fixa
         Msg(no test scripts, 'Det f{i|a}nns inga testskript definierade i detta spel. '),
         Msg(test sequence not found, 'Testsekvensen hittades inte. '),
         Msg(debug test now holding, '{Jag} {håller} nu {1}.\n'),
@@ -199,8 +199,8 @@ CustomMessages
         Msg(not understood, 'Jag förstår inte det kommandot.'), 
         Msg(unknown word, 'Jag kän{ner|de} inte till ordet ""{1}"".'),
         Msg(no oops now, 'Tyvärr, jag är inte säker på vad du rättar.'),
-        Msg(unmatched actor, '{Jag} {ser} ingen {1} här.'),
-        Msg(unmatched noun, '{Jag} {ser} ingen {2} här.'),
+        Msg(unmatched actor, '{Jag} {ser} inte {1} här.'),
+        Msg(unmatched noun, '{Jag} {ser} inte {2} här.'),
         
         // TODO:
         Msg(undo tip, 'If this didn\'t turn out quite as intended, note that you can
@@ -310,8 +310,8 @@ CustomMessages
         Msg(push travel somewhere, '{Jag} <<if matchPullOnly>> drar {ref dobj} {1}. '),
         Msg(purloin, '{Jag} plötsligt {hittar} {mig själv} hållande {1}. '),
         Msg(gonear, '{Jag} {är} översatt i ett ögonblick...<.p>'),
-        Msg(okay unlock with, okayUnlockWithMsg),
-        Msg(okay lock with, okayLockWithMsg),
+        Msg(okay unlock with, '{Jag} {låser} upp {ref dobj} med {ref iobj}. '),
+        Msg(okay lock with, '{Jag} {låser} {ref dobj} med {ref iobj}. '),
 
         Msg(npc opens door, '{Ref subj traveler} öppnar {ref obj}. '),
         Msg(door opens, '{Ref subj obj} öppnas. '),
