@@ -1,0 +1,24 @@
+## Makefile for an adv3Lite library game template
+
+-I liblite
+-D LANGUAGE=swedish
+-D DEBUG__
+-Fy obj
+-Fo obj
+-FI /usr/local/share/frobtads/tads3/include
+-FL /usr/local/share/frobtads/tads3/lib
+#-we
+-v
+-d
+-o tester.t3
+
+##sources
+-lib system
+-lib adv3Lite/adv3Lite
+
+#-source adv3Lite/extensions/postures
+#-source ../lib/swedish/swe_mods
+
+-source testunit
+
+-source past-tense
