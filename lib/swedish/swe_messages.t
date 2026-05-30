@@ -108,7 +108,9 @@ CustomMessages
 
 
         Msg(suggestion list intro, '{Jag} skulle kunna '),
+        Msg(open suggestion list intro, 'Bland annat skulle {jag} kunna '),
         Msg(nothing in mind, '{Jag} {har} inget i åtanke att diskutera med {1} just nu. '),
+        Msg(nothing specfic in mind, '{Jag} {har} vid det här laget inte bestämt {mig} för vad {jag} ska diskutera med {1}. '),
         Msg(or, ' eller '),
         Msg(cannot move while attached, '{Ref subj cobj} {kan} inte flyttas medan {he cobj} {är} fäst vid {ref other}. '), 
         Msg(okay plug in, '{Jag} pluggar in {1}. '),
@@ -250,7 +252,8 @@ CustomMessages
         Msg(implicit go, '(först g{ick|år} till {1})\n'),
 
         Msg(corrected spelling, '(<i>{1}</i>)<br>'),
-        Msg(dark desc, 'Det {är} kolsvart; {jag} {kan} inte se något alls. '), 
+        Msg(dark desc, 'Det {är} kolsvart; {jag} {kan} inte se något alls. '),
+        Msg(proxy room desc, '{Jag} {kan} inte se mycket av {ref dobj} härifrån. '),
         Msg(list immediate container, '{Jag} {befinner|befann} {mig} {i loc}. <.p>'),
         Msg(too big, '{Ref subj obj} {är} för stor{t/a} för att passa {1} {2}. '),
         Msg(no room, 'Det f{i|a}nns inte tillräckligt med utrymme {1} {2} för {ref obj}. '), 
@@ -494,6 +497,9 @@ CustomMessages
         Msg(cannot feel, 'Det {är} knappast en bra idé att försöka känna på {ref dobj}. '),
         Msg(cannot take, '{Ref subj dobj} {sitter} fast på plats. '),
         Msg(already holding, '{Jag} {håller} i {ref dobj} redan. '),
+        Msg(already holding objects, '{Jag} {håller} redan i {1}.\n'),
+        Msg(too big for me to hold, '{1} för {mig} att hålla i. '),
+        Msg(hands too full to hold, 'Mina händer är för fulla för att hålla i {1}.\n '),
         Msg(cannot take my container, '{Jag} {kan} inte ta {ref dobj} medan {jag} {befinner} {mig} {1} {honom dobj}. '),
         Msg(cannot take self, '{Jag} {kan} knappast ta {mig} själv. '),
         Msg(reveal move under,'Flyttar {1} {dummy} avslöjar {2} tidigare gömd under {3}. '),
@@ -501,6 +507,7 @@ CustomMessages
         //Msg(report left behind, '<<if moveReport == ''>>Flyttar {1} <<else>>Det också <<end>> {dummy} lämnar {2} bakom. '),
         Msg(cannot drop, '{Jag} {kan} inte släppa {ref subj dobj}. '),
         Msg(not holding, '{Jag} {håller} inte i {ref dobj}. '),
+        Msg(not holding any, '{Jag} {håller} inte i något av dem. '),
 
         Msg(part of me, '{Ref subj dobj} {är} en del av {mig}. '),
 
