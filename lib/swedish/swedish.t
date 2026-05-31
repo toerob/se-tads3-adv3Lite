@@ -264,6 +264,9 @@ class LMentionable: object
         if(definiteForm) {
             return definiteForm;
         }
+        if(self.ofKind(Room)) {
+            return name;
+        }
         return 'den <<str>>';
     }
 
@@ -2098,7 +2101,9 @@ LitUnlit: State
     stateProp = &isLit
     adjectives = [[nil, ['släckt']], [true, ['tänd']]]
     appliesTo(obj) { return obj.isLightable || obj.isLit; }
-    additionalInfo = [[true, ' (ger ljus)']]
+    //additionalInfo = [[true, ' ({ger} ljus)']]
+    additionalInfo = [[true, ' (som {avger} ljus)']]
+    //additionalInfo = [[true, ' (avgivandes ljus)']]
 ;
 
 /*
@@ -2814,6 +2819,7 @@ swedishCustomVocab: CustomVocab
         'uppstå/uppstår/uppstod/uppstått',        
         'vakna/vaknar/vaknade/vaknat',        
         'bära/bär/bar/buren',
+        'bäras/bärs/bars/buren',
         'slå/slår/slog/slagen',
         'bli/blir/blev/blivit',
         'börja/börjar/började/börjat',
@@ -2864,6 +2870,7 @@ swedishCustomVocab: CustomVocab
         'frysa/fryser/frös/frusen',
         'få/får/fick/fått',
         'ge/ger/gav/given',
+        'avge/avger/avgav/avgett',
         'gå/går/gick/gått',
         'mala/malar/malade',
         'växa/växer/växte/vuxit',
@@ -3183,10 +3190,10 @@ modify ItemLister
 
         /* 
          *   Om detta objekt bärs och vi vill visa information om
-         *   objekt som bärs, lägg till ' (bärs)' till namnet
+         *   objekt som bärs, lägg till ' (buren)' till namnet
          */
         if(o.wornBy != nil && showWornInfo)
-            lName += BMsg(being worn, ' (bärs)');
+            lName += BMsg(being worn, ' (buren)');
         
                
         /* 
@@ -3197,7 +3204,7 @@ modify ItemLister
         {
             local obj = o.movedTo;
             gMessageParams(obj);
-            lName += BMsg(moved to, ' (vid {the obj})');
+            lName += BMsg(moved to, ' (vid {ref obj})');
         }
         
         /* 
@@ -3308,7 +3315,7 @@ modify lookLister
 modify inventoryLister
     showListPrefix(lst, pl, paraCnt)
     {
-        "<<if paraCnt == 0>>{Jag} <<else>>, och<<end>> bär på ";
+        "<<if paraCnt == 0>>{Jag}<<else>>, och<<end>> bär på ";
     }
     
     showListSuffix(lst, pl, paraCnt)
@@ -3349,6 +3356,13 @@ modify wornLister
     showWornInfo = nil
 ;
 
+// conjAdjObj - kör adjustAdjectiveAgreement på valfritt objekt 
+// Användning:  conjAdjObj(obj, 'vilk','en/et/a')
+// Exempel: " (<<container.objInPrep>> <<conjAdjObj(container, 'vilk', 'en/et/a')>> {är} ";
+function conjAdjObj(obj, stam, expansion) {
+    return adjustAdjectiveAgreement(object {curObj = obj},  ['conjadj', stam, expansion]);
+}
+
 /* 
  *   SubLister används av andra lister som inventoryLister och
  *   wornLister för att visa innehållet i listade objekt i parenteser (t.ex. '(i
@@ -3358,8 +3372,9 @@ modify wornLister
 subLister: ItemLister
     showListPrefix(lst, pl, paraCnt)
     {
-        " (<<lst[1].location.objInPrep>> vilket <<pl ? '{plural} {är}' :
-          '{dummy} {är}'>> ";
+        local container = lst[1].location;
+        gMessageParams(container);
+        " (<<container.objInPrep>> {curobj container}{conjadj vilk en/et/a} {är} ";
     }
     
     showListSuffix(lst, pl, paraCnt) { ")"; }
@@ -3508,7 +3523,7 @@ modify openingContentsLister
     showListPrefix(lst, pl, parent)
     {
         gMessageParams(parent);
-        "Öppnar {the parent} {dummy} avslöjar{r/de} ";        
+        "Öppnar <<parent.theName>> {dummy} avslöjar{r/de} ";        
     }
 
     showListSuffix(lst, pl, paraCnt)
@@ -3533,7 +3548,7 @@ modify lookInLister
     showListPrefix(lst, pl, parent)
     {
         gMessageParams(parent);
-        "{Jag parent} {Jag} {se} ";        
+        "{Jag parent} {se} ";        
     }
 
     showListSuffix(lst, pl, paraCnt)
@@ -4569,6 +4584,24 @@ swedishMessageParams: MessageParams
      */
     params = [
 
+        /*
+         *   {curobj namngivetobj} — sätt ctx.curObj utan att skriva ut något.
+         *   Används när adjektivkongruens ({conjadj}) ska ske mot ett objekt som
+         *   varken är cmd.dobj eller actor. Kräver gMessageParams(obj) först.
+         *
+         *   ctx är lokalt per strängexpansion och firgörs när expansionen är klar.
+         *
+         *   Exempel på användning (subLister.showListPrefix):
+         *      ...
+         *      gMessageParams(container);
+         *      " (<<container.objInPrep>> {curobj container}{conjadj vilk en/et/a} {är} ";
+         *      ...
+         */
+        ['curobj', function(ctx, params) {
+            ctx.curObj = findStrParam(params[2], vObject);
+            return '';
+        }],
+
         /* {lb} är en bokstavlig vänsterparentes */
         [ 'lb', { ctx, params: '{' } ],
 
@@ -5156,7 +5189,7 @@ conjugate(ctx, params)
  *   t/a      → neutrum +t,      plural +a         (t.ex. tung/tungt/tunga)
  *   d/t/a    → utrum +d, neutrum +t, plural +a
  *   d/t/da   → utrum +d, neutrum +t, plural +da   (t.ex. tänd/tänt/tända)
- *   en/et/na → utrum +en, neutrum +et, plural +na (t.ex. öppen/öppet/öppna)
+ *   en/et/a|en/et/na → utrum +en, neutrum +et, plural +na (t.ex. öppen/öppet/öppna)
  *   n/t/na   → utrum +n, neutrum +t,  plural +na (t.ex. sann/sant/sanna)
  *   ad/at/ade → utrum +ad, neutrum +at, plural +ade (t.ex. laddad/laddat/laddade)
  *
@@ -5178,7 +5211,7 @@ langAdjust(txt)
     if(txt == nil)
         return '';
 
-    local adjPat = R'([^ {}]+)<lbrace>(a|t/a|n/t/na|ad/at/ade|d/t/a|d/t/da|en/et/na)<rbrace>';
+    local adjPat = R'([^ {}]+)<lbrace>(a|t/a|n/t/na|ad/at/ade|d/t/a|d/t/da|en/et/a|en/et/na)<rbrace>';
     for(;;)
     {
         local rf = rexSearch(adjPat, txt);
@@ -5235,6 +5268,11 @@ adjustAdjectiveAgreement(ctx, params)
         uterEnding = 'ad';
         neuterEnding = 'at';
         pluralEnding = 'ade';
+        break;
+    case 'en/et/a':
+        uterEnding = 'en';
+        neuterEnding = 'et';
+        pluralEnding = 'a';
         break;
     case 'en/et/na':
         uterEnding = 'en';
@@ -7130,4 +7168,121 @@ function displayWordPart(wordPart, cur, obj) {
 
 
 
+// We need to modify this because the original uses openTextFile with 'us-ascii' hardcoded
+modify Test
+    run()
+    {
+        "====================================\n";
+        "Test: \"<<testName>>\"\n";
+
+        if(restartBeforeTest) {
+            local hld = allNewTests.savedState();
+            if(allNewTests.restoregame(&restartSaveFile) == nil) {
+                allNewTests.isTesting = nil;    // failed so quit the test
+                return;
+            }
+            allNewTests.restoreState(hld);
+        }
+
+        /* we save the entire game at this point by default to restore it */
+        if(restoreStartStateAfterTest)
+            allNewTests.savegame(&revertSaveFile); // save the current state
+
+        /* 
+         *   If a location is specified, first move the actor into that
+         *   location.
+         */
+        if (location && gPlayerChar.location != location)
+        {
+            gPlayerChar.moveInto(location);	
+            
+            /* If we want to report the move, show the new room description */
+            if(reportMove)
+                gPlayerChar.getOutermostRoom.lookAroundWithin();
+        }
+        
+        /*   Move any required objects into the actor's inventory */
+        getHolding();
+
+        /* Export a file to use */
+        local txt;
+        local temp = new TemporaryFile();
+        local f = File.openTextFile(temp, FileAccessWrite, 'utf-8'); // NOTE: why we need to modify this class
+
+        local testVec = new Vector(testList);
+
+        /*   Preparse and execute each command in the list */
+        local linecnt = 0;
+        testVec.forEach(new function(x)  {
+            local c = x.trim();
+            f.writeFile('><<c>>\n');
+            ++linecnt;
+        });
+        f.closeFile();
+        allNewTests.isTesting = true;
+        setScriptFile(temp,ScriptFileNonstop);
+        do
+        {
+            /* Display score notifications if the score module is included. */
+            if(defined(scoreNotifier) && scoreNotifier.checkNotification())
+                ;
+            
+            /* run any PromptDaemons if the events module is included */
+            if(defined(eventManager) && eventManager.executePrompt())
+                ;
+        
+            try
+            {
+                /* Output a paragraph break */
+                "<.p>";
+                
+                /* Read a new command from the keyboard. */
+                "<.inputline>";
+                DMsg(command prompt, '>');
+                txt = inputManager.getInputLine();
+                "<./inputline>\n";   
+                
+                if(clearAssertBufferBeforeCmd && !txt.startsWith('assert'))
+                    allNewTests.lastMsg = '';
+                
+                
+                /* Pass the command through all our StringPreParsers */
+                txt = StringPreParser.runAll(txt, Parser.rmcType());
+                
+                /* 
+                 *   If the txt is now nil, a StringPreParser has fully dealt with
+                 *   the command, so go back and prompt for another one.
+                 */        
+                if(txt == nil)
+                    continue;
+                
+                /* Parse and execute the command. */
+                Parser.parse(txt);
+            }
+            catch(TerminateCommandException tce)
+            {
+                
+            }
+            
+            /* Update the status line. */
+            statusLine.showStatusLine();
+ 
+        } while (--linecnt > 0 && allNewTests.isTesting);
+
+        if(restoreStartStateAfterTest) {
+
+            local hld = allNewTests.savedState();
+            allNewTests.restoregame(&revertSaveFile); // restore the saved state
+            allNewTests.restoreState(hld);
+        }
+        // this means an error happened so this script needs to go away
+        if(!allNewTests.isTesting)
+            setScriptFile(nil);
+        temp.deleteFile();        
+    }
+;
+
 #endif
+
+
+

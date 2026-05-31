@@ -4,5 +4,5 @@ if [ ! -d "obj" ]; then
   mkdir obj
 fi
 
-t3make -f vocab-tests.t3m && rlwrap frob -k utf8 -i plain vocab-tests.t3
+t3make -f additional-tests.t3m && rlwrap frob -k utf8 -i plain additional-tests.t3
 

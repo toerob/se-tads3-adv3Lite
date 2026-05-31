@@ -145,6 +145,33 @@ Msg(too heavy,      '{Ref subj dobj} {är} för tung{t/a} för {mig} att bära.'
 Msg(not important,  '{Ref subj dobj} {är} inte viktig{t/a}.')
 ```
 
+### Adjektivkongruens mot godtyckligt objekt
+
+Standardmönstret `rot{mönster}` kongruerar alltid med `dobj`. När adjektivet
+ska kongruera med ett annat objekt finns två alternativ:
+
+**`conjAdjObj(obj, stam, mönster)`** — funktionsanrop, används i vanlig TADS-kod:
+
+```tads
+// I en dubbelciterad sträng, t.ex. i showListPrefix:
+" (<<container.objInPrep>> <<conjAdjObj(container, 'vilk', 'en/et/a')>> {är} ";
+// container = lådan (utrum):    "(i lådan, vilken är"
+// container = skåpet (neutrum): "(i skåpet, vilket är"
+// container = skorna (plural):  "(i skorna, vilka är"
+```
+
+**`{curobj obj}`** — parameterform, används i meddelandesträngar när man vill
+hålla sig inom `{...}`-syntaxen. Kräver `gMessageParams(obj)` innan strängen
+och att kongruenstokenet skrivs ut explicit som `{conjadj stam mönster}`:
+
+```tads
+gMessageParams(container);
+" (<<container.objInPrep>> {curobj container}{conjadj vilk en/et/a} {är} ";
+```
+
+`{curobj}` sätter kongruensobjektet tyst (skriver inte ut något) och påverkar
+bara den pågående strängexpansionen.
+
 ---
 
 ## Verbkonjugering

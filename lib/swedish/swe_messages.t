@@ -244,11 +244,12 @@ CustomMessages
         Msg(show score rank, 'Detta gör dig {1}. '), 
         Msg(short notify status, 'NOTIFY <<isOn ? 'PÅ' : 'AV'>>'),
         
-        Msg(remote contents prefix, '<.p>\^{1} {jag} {ser|såg} '), 
+        Msg(remote contents prefix, '<.p>\^{1} {ser} {jag} '), 
         Msg(remote contents suffix, '. '), 
-        //Msg(remote subcontents prefix, '<.p>\^{1} <<pl ? '{plural} {är}' : '{dummy} {är}'>> '),
+        Msg(remote subcontents prefix, '<.p>\^{1} {är} '),
         Msg(remote subcontents suffix, '. '),
-        
+    
+
         Msg(implicit go, '(först g{ick|år} till {1})\n'),
 
         Msg(corrected spelling, '(<i>{1}</i>)<br>'),
@@ -392,7 +393,9 @@ CustomMessages
         Msg(not plugged in, '{Ref subj dobj} {är} inte inkopplad i något. '),
         Msg(not plugged into that, '{Ref subj dobj} {är} inte inkopplad i {ref iobj}. '),
 
-        Msg(being worn, ' (bärs)'),
+        //Msg(being worn, ' (påklädd)'),
+        Msg(being worn, ' (buren)'),
+        
         Msg(implicit action report start, '('),
         Msg(implicit action report separator, ' sedan '),
         Msg(implicit action report terminator, ' först)\n'),

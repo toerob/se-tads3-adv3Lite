@@ -51,7 +51,7 @@ class Assertions: object
         if(!self.receivedValue.startsWith(expectedValue)) {
             reportFailure(expectedValue, self.receivedValue,
                 assertionIndex,
-                ['START-WITH ASSERTION FAILED', 'RECEIVED STRING', '   SHOULD START']);
+                ['START-WITH ASSERTION FAILED', 'RECEIVED STRING', '   \ EXPECTED START']);
         }
         return self;
     }
@@ -159,7 +159,8 @@ class Assertions: object
     }
 ;
 
-function reportFailure(expected, received, assertionIdx,
+/* Gammal variant utan diff-hjälp, bevarad för referens */
+function reportFailureSimple(expected, received, assertionIdx,
         assertionMsgs=['ASSERTION FAILED', 'RECEIVED', 'EXPECTED']) {
     divider('-');
     local idxTag = assertionIdx != nil ? ' [assertion #<<assertionIdx>>]' : '';
@@ -170,6 +171,55 @@ function reportFailure(expected, received, assertionIdx,
     local msg = '\n<font color=red><<assertionMsgs[1]>><<idxTag>></font>'
         + '\n<<assertionMsgs[2]>>: <font color=red>[<<received>>]</font>'
         + '\n<<assertionMsgs[3]>>: <font color=green>[<<expected>>]<<lenInfo>></font>\b';
+    tadsSay(msg);
+    throw new RuntimeError(msg);
+}
+
+/* Returnerar 1-baserad position för första teckenolikhet, nil om strängarna är lika */
+function _strDiffPos(a, b) {
+    local len = min(a.length(), b.length());
+    for(local i = 1; i <= len; i++)
+        if(a.substr(i, 1) != b.substr(i, 1)) return i;
+    return a.length() == b.length() ? nil : len + 1;
+}
+
+/*
+ * Returnerar ett utsnitt av str centrerat kring pos.
+ * >>> markerar var skillnaden börjar; ... markerar trunkering.
+ */
+function _diffSnippet(str, pos, ctxBefore, ctxAfter) {
+    local snipStart = max(1, pos - ctxBefore);
+    local preStr = snipStart < pos ? str.substr(snipStart, pos - snipStart) : '';
+    local atAndAfter = pos <= str.length()
+        ? str.substr(pos, min(ctxAfter, str.length() - pos + 1))
+        : '(slut)';
+    local trailingPos = pos + ctxAfter - 1;
+    return (snipStart > 1 ? '...' : '')
+        + preStr + '>>>' + atAndAfter
+        + (trailingPos < str.length() ? '...' : '');
+}
+
+function reportFailure(expected, received, assertionIdx,
+        assertionMsgs=['ASSERTION FAILED', 'RECEIVED', 'EXPECTED']) {
+    divider('-');
+    local idxTag = assertionIdx != nil ? ' [assertion #<<assertionIdx>>]' : '';
+    local bothStrings = dataTypeXlat(received) == TypeSString
+        && dataTypeXlat(expected) == TypeSString;
+    local lenInfo = bothStrings
+        ? ' (lengths: <<expected.length>>/<<received.length>>)' : '';
+    local msg = '\n<font color=red><<assertionMsgs[1]>><<idxTag>></font>'
+        + '\n<<assertionMsgs[2]>>: <font color=red>[<<received>>]</font>'
+        + '\n<<assertionMsgs[3]>>: <font color=green>[<<expected>>]<<lenInfo>></font>';
+
+    if(bothStrings) {
+        local pos = _strDiffPos(expected, received);
+        if(pos != nil)
+            msg += '\n  Difference with pos <<pos>>:'
+                + '\n    Expected: "<<_diffSnippet(expected, pos, 15, 20)>>"'
+                + '\n    Received:  "<<_diffSnippet(received, pos, 15, 20)>>"';
+    }
+
+    msg += '\b';
     tadsSay(msg);
     throw new RuntimeError(msg);
 }

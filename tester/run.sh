@@ -6,18 +6,25 @@ fi
 
 echo
 echo -e "\033[0;32mgrammar-tests\033[0m"
-t3make -nobanner -f grammar-tests.t3m && rlwrap frob -k utf8 -i plain tester.t3
-ECHO
+bash run-grammar-tests.sh
+echo
 
+echo
 echo -e "\033[0;32mpresent-tense-tests\033[0m"
-t3make -nobanner -f present-tense.t3m && rlwrap frob -k utf8 -i plain tester.t3
-ECHO
+bash run-present-tense-tests.sh
+echo
 
+echo
 echo -e "\033[0;32mpast-tense-tests\033[0m"
-t3make -nobanner -f past-tense.t3m && rlwrap frob -k utf8 -i plain tester.t3
-ECHO
+bash run-past-tense-tests.sh
+echo
 
+echo
 echo -e "\033[0;32mvocab-tests\033[0m"
-t3make -nobanner -f vocab-tests.t3m && rlwrap frob -k utf8 -i plain tester.t3
-ECHO
+bash run-vocab-tests.sh
+echo
 
+echo
+echo -e "\033[0;32madditional-tests\033[0m"
+bash run-additional-tests.sh
+echo

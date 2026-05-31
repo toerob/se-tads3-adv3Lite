@@ -10,7 +10,7 @@
 #-we
 -v
 -d
--o tester.t3
+-o past-tense-tests.t3
 
 ##sources
 -lib system
