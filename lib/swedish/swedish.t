@@ -613,29 +613,6 @@ class LMentionable: object
         /* ärva eventuellt vocab från våra superklasser */
         inheritVocab();
 
-
-        // Specialhantering för att kunna använda '+'-tecken för ändelser i svenska
-        // Syfte: det är smidigt att kunna använda '+' då det är ett tecken som 
-        // inte kräver någon tangentbordskombination. 
-
-        // Kruxet:
-        // + används även för ange ärvda vocab(s) från objektets superklass. 
-        // Men + används då i isolation innan eller efter orden. 
-        // 
-        // Enklaste lösning är ersätta dessa tecken globalt med ett annat ($) 
-        // innan detta arv sker.
-
-        // Vi vill bara ersätta de tecken som sätter ihop ett ord med ett annat 
-        // utan mellanslag.
-
-        // T ex: 'hund+en', 'kaffe+t' med 'hund$en' 'kaffe$t'
-        // I övriga fall, får de betydelsen 'arv', t ex:
-        // 'knapp+en +'
-        // Vi matchar ord+ändelse och lämnar enskilda ' + '-tecken kvar
-        local str = vocab.findReplace(R'<Space>?<Plus>)', {s: s.length == 2 ? s : '$' });
-        // tadsSay('\n"<<vocab>>" = "<<str>>"\b');
-
-                
         /* rensa vår vokabulärordlista */
         vocabWords = new Vector(10);
         /* 
@@ -644,7 +621,7 @@ class LMentionable: object
          *   (tok) till tok[weak], så att de effektivt behandlas
          *   som prepositioner (dvs de kommer inte att matcha ensamma)
          */
-        str = str.findReplace(R'<lparen>.*?<rparen>', 
+        local str = vocab.findReplace(R'<lparen>.*?<rparen>', 
                                       {s: s.substr(2, s.length - 2) +
                                       (s == '()' ? '()' : '[weak]')});
 
@@ -682,7 +659,7 @@ class LMentionable: object
 
         /* kontrollera om det finns en artikel i början av frasen */
         local i = 1;
-        if (wlen > 0 && wlst[1] is in('en', 'ett', 'några', 'den', 'det', '()'))
+        if (wlen > 0 && wlst[1] is in('en', 'ett', 'några', 'lite', 'den', 'det', '()'))
         {
             /* kontrollera vilket ord vi har */
             switch (wlst[1])
@@ -1026,9 +1003,6 @@ class LMentionable: object
         
         /* Vår lista över vocab, uppdelad i delar. */
         local vlist = vocab
-            // Special för svenskan, ersätt alla ändelsebindande + med $, DVS: de + utan mellanslag mellan.
-            .findReplace(R'<Space>?<Plus>)', {s: s.length == 2 ? s : '$' })
-            // Fortsätt som tidigare
             .split(';').mapAll({x: x.trim()});
         
         /* för bekvämlighet, se till att vi slutar med fyra delar */
@@ -1046,17 +1020,14 @@ class LMentionable: object
             
             /* Den ärvda vocab, uppdelad i delar */               
             local ilist = cls.vocab
-                // Special för svenskan, ersätt alla ändelsebindande + med $, DVS: de + utan mellanslag mellan.
-                .findReplace(R'<Space>?<Plus>)', {s: s.length == 2 ? s : '$' })
-                // Fortsätt som tidigare
                 .split(';').mapAll({x: x.trim()});
             
             /* För bekvämlighet, se till att vi har fyra delar. */
             for(local i = ilist.length; i < 4; i++)
                 ilist += '';
         
-            /* Ersätt eventuellt + tecken i den första delen med det ärvda namnet */
-            vlist[1] = vlist[1].findReplace('+', ilist[1]);
+            /* Ersätt eventuellt * tecken i den första delen med det ärvda namnet */
+            vlist[1] = vlist[1].findReplace('*', ilist[1]);
             
             /* 
              *   För den andra och tredje delen, om de inte börjar med -, lägg till
@@ -1074,7 +1045,7 @@ class LMentionable: object
              *   vi inte har några egna eller det finns ett + i pronomen delen
              */
             
-            if((vlist[4] == '' || vlist[4].find('+') != nil) && ilist[4] != '')
+            if((vlist[4] == '' || vlist[4].find('*') != nil) && ilist[4] != '')
                 vlist[4] = vlist[4] + ' ' + ilist[4];
             
         }
@@ -1087,7 +1058,7 @@ class LMentionable: object
         }
         
         /* Ta bort eventuella + i del 4 */
-        vlist[4] = vlist[4].findReplace('+', '');
+        vlist[4] = vlist[4].findReplace('*', '');
             
         /* Sätt ihop listan tillbaka till en vocab sträng */
         vocab = vlist.join(';');
@@ -1133,8 +1104,8 @@ class LMentionable: object
     enableShortenRepeatingCharacters = true 
 
     tripleLetterPat = static new RexPattern('.*?((<Alpha>)%2{2,}).*')
-    wordPartDelPat = static new RexPattern('(.*?)(<vbar|dollar>)')
-    plusNotationPat = static new RexPattern('.+(<vbar|dollar>.+)+')
+    wordPartDelPat = static new RexPattern('(.*?)(<vbar|plus>)')
+    plusNotationPat = static new RexPattern('.+(<vbar|plus>.+)+')
 
     //-------------------------------
     definiteForm = nil // Det definitiva ordet

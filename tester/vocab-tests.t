@@ -865,9 +865,14 @@ TestUnit 'djur+park:en+gång:en+vakt:en+bås+et (5 komponenter)' run {
 
 class Frukt: Thing 'frukt+en;mog:en+na;frukter+na[pl]';
 kiwi: Frukt 'kiwi+n';
+rodFrukt: Frukt 'röd+a *';
+mango: Frukt 'mango+n;-';
+ananas: Frukt 'ananas+en;;-';
 
 
-TestUnit 'kiwi (ärvd vocab)' run {
+// Arv utan * — subklassen definierar eget substantivnamn. Adjektiv och plural
+// ärvs automatiskt, men superklassens substantiv ärvs inte (kiwi heter inte "frukt").
+TestUnit 'kiwi (ärvd vocab utan *)' run {
     //inspectVocabWords(kiwi);
 
     assertThat(kiwi.name).isEqualTo('kiwi');
@@ -881,5 +886,45 @@ TestUnit 'kiwi (ärvd vocab)' run {
     assertThat(kiwi.vocabWords[4]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mogna', MatchAdj]);
     assertThat(kiwi.vocabWords[5]).extractingProps([&wordStr, &posFlags]).isEqualTo(['frukter', MatchPlural]);
     assertThat(kiwi.vocabWords[6]).extractingProps([&wordStr, &posFlags]).isEqualTo(['frukterna', MatchPlural]);
-}
-;
+};
+
+// Arv med * — subklassen har inget eget substantivnamn utan lånar superklassens.
+// * expanderas till superklassens substantiv; egna adjektiv läggs till i sektion 1.
+TestUnit 'rodFrukt (arv med *)' run {
+    //inspectVocabWords(rodFrukt);
+
+    assertThat(rodFrukt.vocabWords).hasLengt(8);
+
+    assertThat(rodFrukt.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['röd', MatchAdj]);
+    assertThat(rodFrukt.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['röda', MatchAdj]);
+    assertThat(rodFrukt.vocabWords[3]).extractingProps([&wordStr, &posFlags]).isEqualTo(['frukt', MatchNoun]);
+    assertThat(rodFrukt.vocabWords[4]).extractingProps([&wordStr, &posFlags]).isEqualTo(['frukten', MatchNoun]);
+    assertThat(rodFrukt.vocabWords[5]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mogen', MatchAdj]);
+    assertThat(rodFrukt.vocabWords[6]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mogna', MatchAdj]);
+    assertThat(rodFrukt.vocabWords[7]).extractingProps([&wordStr, &posFlags]).isEqualTo(['frukter', MatchPlural]);
+    assertThat(rodFrukt.vocabWords[8]).extractingProps([&wordStr, &posFlags]).isEqualTo(['frukterna', MatchPlural]);
+};
+
+// - i sektion 2 blockerar arv av adjektiv
+TestUnit 'mango (blockerat adjektivarv med -)' run {
+    //inspectVocabWords(mango);
+
+    assertThat(mango.vocabWords).hasLengt(4);
+
+    assertThat(mango.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mango', MatchNoun]);
+    assertThat(mango.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mangon', MatchNoun]);
+    assertThat(mango.vocabWords[3]).extractingProps([&wordStr, &posFlags]).isEqualTo(['frukter', MatchPlural]);
+    assertThat(mango.vocabWords[4]).extractingProps([&wordStr, &posFlags]).isEqualTo(['frukterna', MatchPlural]);
+};
+
+// - i sektion 3 blockerar arv av plural
+TestUnit 'ananas (blockerat pluralarv med -)' run {
+    //inspectVocabWords(ananas);
+
+    assertThat(ananas.vocabWords).hasLengt(4);
+
+    assertThat(ananas.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['ananas', MatchNoun]);
+    assertThat(ananas.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['ananasen', MatchNoun]);
+    assertThat(ananas.vocabWords[3]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mogen', MatchAdj]);
+    assertThat(ananas.vocabWords[4]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mogna', MatchAdj]);
+};
