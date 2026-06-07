@@ -129,10 +129,13 @@ koket: Room 'Köket'
 ;
 
 // Stövlarna - plural (stövlarna), bärbara
-+ stovlar: Wearable 'stövlar+na[pl];;stövel+n stövel|par+et;dem'
++ stovlar: Wearable 'stövlar+na[pl];;stövel:n+par+et;det dem'
 	"Ett par grönbruna gummistövlar, perfekta för trädgården."
 	plural = true
+	name = 'par stövlar'
+	definiteForm = 'stövelparet'
 ;
+
 
 // Trädgårdsdörren - utrum, låst, länkad till sin motstycke
 + tradgardsDorren: Door 'trädgårds|dörr+en'
@@ -154,6 +157,13 @@ vardagsrummet: Room 'Vardagsrummet'
 	Längs ena sidan reser sig en fullpackad bokhylla. Ett fönster
 	vetter mot trädgården. Köket ligger österut. "
 	east = koket
+	down = golvlucka
+;
+
++matta: Surface  'matta+n';
+
++golvlucka: DSDoor  'golv|lucka+n' @vardagsrummet @kallaren
+//	lookListed = true
 ;
 
 // Soffan - utrum (en soffa), kan sitta och ligga i
@@ -186,6 +196,9 @@ vardagsrummet: Room 'Vardagsrummet'
 	isNeuter = true
 ;
 
+kallaren: Room  'Källaren' "..."
+	up = golvlucka
+;
 
 // -----------------------------------------------------------------------
 // TRÄDGÅRDEN

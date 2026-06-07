@@ -2423,7 +2423,7 @@ VerbRule(Wait)
 ;
 
 VerbRule(Look)
-    'titta' | 'titta' 'runt' | 't' | 't' 'runt'
+    ('titta' | 'titta' | 't' | 'l') ('runt'|)
     : VerbProduction
     action = Look
     verbPhrase = 'titta/tittar runt'    

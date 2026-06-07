@@ -214,7 +214,8 @@ CustomMessages
         Msg(antecedent out of scope, '{Jag} {ser} inte längre det här.'),
         Msg(nothing suitable for all, 'Det f{i|a}nns inget lämpligt för ALLA att hänvisa till. '),
         Msg(not enough nouns, '{Jag} {ser|såg} inte så många {2} här.'), 
-        Msg(none in owners, 'Ingen {2} {dummy}verkar ha någon {3}.'),
+        //Msg(none in owners, 'Ingen {2} {dummy}verkar ha någon {3}.'),
+        Msg(none in owners, 'Jag förstår inte vem "{2}" syftar på.'),
 
         // TODO: Dendet subj obj - fungerar inte., subj ställer till det för dendet
         Msg(none in owner, '{Ref subj obj} verkar inte ha någon {2}.'),
@@ -416,9 +417,9 @@ CustomMessages
         Msg(wont light, '\^{1} {dummy} vill inte tändas. '),
         
         //TODO:
-        Msg(standing, 'står'),
+        Msg(standing, 'stående'),
         Msg(i stand, '{Jag} står'),
-        Msg(sitting, 'sitter'),
+        Msg(sitting, 'sittande'),
         Msg(i sit, '{Jag} sitter'),
         Msg(lying, 'liggande'),
         Msg(i lie, '{Jag} ligger'),
