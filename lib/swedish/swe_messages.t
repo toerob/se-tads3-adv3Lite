@@ -417,10 +417,13 @@ CustomMessages
         Msg(wont light, '\^{1} {dummy} vill inte tändas. '),
         
         //TODO:
+        Msg(stands, 'står'),
         Msg(standing, 'stående'),
         Msg(i stand, '{Jag} står'),
+        Msg(sits, 'sitter'),
         Msg(sitting, 'sittande'),
         Msg(i sit, '{Jag} sitter'),
+        Msg(lies, 'ligger'),
         Msg(lying, 'liggande'),
         Msg(i lie, '{Jag} ligger'),
         /*

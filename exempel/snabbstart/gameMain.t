@@ -253,5 +253,10 @@ tradgarden: Room 'Trädgården'
 	"En grå randig katt som solar sig på trappstenen med slutna ögon.
 	Den rör sig inte men du är inte helt säker på att den sover för det. "
 	proper = nil
+	posture = lying
 ;
 
++kattleksak: Thing 'rått|leksak+en;;råtta+n katt|leksak+en'
+	ownerNamed = true
+	owner = [katt]
+;

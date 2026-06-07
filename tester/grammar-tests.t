@@ -99,7 +99,34 @@ bobsOgonObjNeutrumPlural: Thing 'ögon+en;;;dem'
   ownerNamed = true
   owner = [spelare3ePerspektiv]
 ;
-    
+
+// Component-test: behöver ett förälderobjekt för att Component ska ha location
+spelareKroppObj: Thing 'kropp+en' @lab;
++ spelareNasaComp: Component 'näsa+n'
+  ownerNamed = true
+  owner = [spelare2aPerspektiv]
+;
+
+// 2:a person plural
+spelareHanderObj: Thing 'händer+na[pl];;;dem'
+  ownerNamed = true
+  owner = [spelare2aPerspektiv]
+;
+
+// NPC-aktörer för possEnding-tester
+gostaActor: Actor 'Gösta;;;honom' @lab;      // konsonantslut → Göstas
+jonasActor: Actor 'Jonas;;;honom' @lab;      // s-slut → Jonas (inget extra s)
+penntecknareActor: Actor 'penntecknare+n;;;honom' @lab; // bestämd form → penntecknarens
+
+// Objekt ägda av NPC (för theName- och possessify-tester)
+gostasMossaObj: Thing 'mössa+n'
+  ownerNamed = true
+  owner = [gostaActor]
+;
+jonasMossaObj: Thing 'mössa+n'
+  ownerNamed = true
+  owner = [jonasActor]
+;
 
 
 musketorer: Actor 'musketörer+na;;;dem'
@@ -803,6 +830,96 @@ TestUnit 'theNameFrom/ownerNamed neutrum' run {
 
 TestUnit 'theNameFrom/ownerNamed plural' run {
     assertThat(bobsOgonObjNeutrumPlural.theName).isEqualTo('hans ögon');
+};
+
+TestUnit 'theNameFrom/ownerNamed Component utrum' run {
+    assertThat(spelareNasaComp.theName).isEqualTo('din näsa');
+};
+
+TestUnit 'theNameFrom/ownerNamed 2:a person plural' run {
+    assertThat(spelareHanderObj.theName).isEqualTo('dina händer');
+};
+
+/* ============================================================
+ * possEnding — namnbaserade NPC-ägare
+ * ============================================================ */
+
+TestUnit 'possEnding/konsonantslut (Gösta → Göstas)' run {
+    assertThat(gostaActor.possEnding).isEqualTo('s');
+    assertThat(gostaActor.possAdj).isEqualTo('Göstas');
+};
+
+TestUnit 'possEnding/s-slut (Jonas → Jonas, inget extra s)' run {
+    assertThat(jonasActor.possEnding).isEqualTo('');
+    assertThat(jonasActor.possAdj).isEqualTo('Jonas');
+};
+
+TestUnit 'possEnding/bestämd form (penntecknaren → penntecknarens)' run {
+    assertThat(penntecknareActor.theName).isEqualTo('penntecknaren');
+    assertThat(penntecknareActor.possEnding).isEqualTo('s');
+    assertThat(penntecknareActor.possAdj).isEqualTo('penntecknarens');
+};
+
+/* ============================================================
+ * theNameFrom/ownerNamed — NPC-ägda objekt använder pronomenform
+ * ============================================================ */
+
+// Båda ger 'hans mössa' — theNameFrom använder ägarens pronomen, inte namnformen
+TestUnit 'theNameFrom/ownerNamed NPC konsonantslut (hans mössa — Gösta)' run {
+    assertThat(gostasMossaObj.theName).isEqualTo('hans mössa');
+};
+
+TestUnit 'theNameFrom/ownerNamed NPC s-slut (hans mössa — Jonas)' run {
+    assertThat(jonasMossaObj.theName).isEqualTo('hans mössa');
+};
+
+/* ============================================================
+ * possessify — NPC-ägare med namnbaserad possessivform
+ * ============================================================ */
+
+TestUnit 'possessify/NPC konsonantslut utrum (Göstas dörr)' run {
+    assertThat(gostaActor.possessify(Definite, dorrenObjUtrumSingular, 'dörr'))
+        .isEqualTo('Göstas dörr');
+};
+
+TestUnit 'possessify/NPC konsonantslut neutrum (Göstas skåp)' run {
+    assertThat(gostaActor.possessify(Definite, skapetObjNeutrumSingular, 'skåp'))
+        .isEqualTo('Göstas skåp');
+};
+
+TestUnit 'possessify/NPC konsonantslut plural (Göstas vindruvor)' run {
+    assertThat(gostaActor.possessify(Definite, vindruvorObjNeutrumPlural, 'vindruvor'))
+        .isEqualTo('Göstas vindruvor');
+};
+
+TestUnit 'possessify/NPC s-slut utrum (Jonas dörr)' run {
+    assertThat(jonasActor.possessify(Definite, dorrenObjUtrumSingular, 'dörr'))
+        .isEqualTo('Jonas dörr');
+};
+
+TestUnit 'possessify/NPC bestämd form (penntecknarens dörr)' run {
+    assertThat(penntecknareActor.possessify(Definite, dorrenObjUtrumSingular, 'dörr'))
+        .isEqualTo('penntecknarens dörr');
+};
+
+/* ============================================================
+ * aName — ownerNamed påverkar INTE aName (returnerar obestämd form)
+ * ============================================================ */
+
+TestUnit 'aName/ownerNamed utrum (en näsa)' run {
+    assertThat(nasanObjUtrumSingular.aName).isEqualTo('en näsa');
+};
+
+TestUnit 'aName/ownerNamed neutrum (ett hår)' run {
+    assertThat(bobsHarObjNeutrumSingular.aName).isEqualTo('ett hår');
+};
+
+TestUnit 'aName/ownerNamed plural (några ögon)' run {
+    assertThat(bobsOgonObjNeutrumPlural.aName).isEqualTo('några ögon');
+};
+
+TestUnit 'aName/ownerNamed 2:a person plural (några händer)' run {
+    assertThat(spelareHanderObj.aName).isEqualTo('några händer');
 };
 
 /* ============================================================

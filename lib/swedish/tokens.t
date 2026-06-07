@@ -147,6 +147,18 @@ cmdTokenizer: Tokenizer
          tokWord, &tokCvtApostropheS, nil],
 
         /*
+         *   Potentiellt svensk genitiv: ord som slutar på 's' utan apostrof,
+         *   t ex "kattens", "Göstas". Konverteraren slår upp ordet-utan-s i
+         *   cmdDict — om det finns, delas ordet upp precis som apostrof-s-ord
+         *   så att den befintliga possessiva grammatiken kan hantera det.
+         *   Falska positiver (t ex "glass" → "glas" i dict) misslyckas
+         *   graciöst i possessivgrammatiken.
+         */
+        ['swedish genitive',
+         new RexPattern('<AlphaNum|' + wordPunct + '>+s%>'),
+         tokWord, &tokCvtSwedishGenitive, nil],
+
+        /*
          *   Ord - observera att vi konverterar allt till gemener. Ett ord
          *   måste börja med en alfabetisk tecken, ett bindestreck eller ett
          *   ampersand; efter det inledande tecknet kan ett ord innehålla
@@ -233,6 +245,30 @@ cmdTokenizer: Tokenizer
 
         /* lägg till apostrofen-s som en separat specialtoken */
         toks.append([s, tokApostropheS, s]);
+    }
+
+    /*
+     *   Hantera ett potentiellt svensk genitiv-ord (utan apostrof), t ex
+     *   "kattens" eller "Göstas". Finns hela ordet redan i cmdDict är det
+     *   ett eget ord och behålls odelat. Annars: om ordet-utan-s finns i
+     *   cmdDict delas det upp som ett apostrof-s-ord så att den befintliga
+     *   possessiva grammatiken kan hantera det. Falska positiver (ord som
+     *   inte är genitiver men råkar sluta på 's') ger bara ett vanligt
+     *   "Du ser inte X här"-svar och påverkar inte spelet negativt.
+     */
+    tokCvtSwedishGenitive(txt, typ, toks)
+    {
+        if(cmdDict.findWord(txt.toLower(), &noun).length() > 0) {
+            toks.append([txt, typ, txt]);
+            return;
+        }
+        local withoutS = txt.left(-1);
+        if(cmdDict.findWord(withoutS.toLower(), &noun).length() > 0) {
+            toks.append([withoutS, typ, withoutS]);
+            toks.append(['s', tokApostropheS, 's']);
+        } else {
+            toks.append([txt, typ, txt]);
+        }
     }
 
     /*
