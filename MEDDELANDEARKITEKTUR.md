@@ -22,7 +22,7 @@ Det är avgörande att förstå skillnaden.
 │          │                                                              │
 │          ▼                                                              │
 │  1. langAdjust()    öpp{en/et/na} → {conjadj öpp en/et/na}  [svenska]  │
-│                     öppn{ar/ade/at} → {conj öppn ar/ade/at}            │
+│                     öppna{r/de/t} → {conj öppna r/de/t}                │
 │          │                                                              │
 │          ▼                                                              │
 │  2. Tvåpassexpansion  (prescan → endPreScan → expansion)                │
@@ -46,9 +46,9 @@ Det är avgörande att förstå skillnaden.
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Konsekvens:** Kortformen `vilk{en/et/a}` och `öppn{ar/ade/at}` fungerar
+**Konsekvens:** Kortformen `vilk{en/et/a}` och `öppna{r/de/t}` fungerar
 **bara i Pipeline A**. I Pipeline B måste du skriva `{conjadj vilk en/et/a}`
-och `{conj öppn ar/ade/at}` direkt, eftersom `langAdjust` inte körs.
+och `{conj öppna r/de/t}` direkt, eftersom `langAdjust` inte körs.
 
 ---
 
@@ -138,20 +138,20 @@ Den letar efter mönstret `rot{mönster}` med regex och skriver om det:
 
 ```
 Adjektivkongruens:
-  öpp{en/et/na}     →  {conjadj öpp en/et/na}
-  tung{t/a}         →  {conjadj tung t/a}
-  laddad{ad/at/ade} →  {conjadj laddad ad/at/ade}  ← OBS: roten inkluderar ändelse
+  öpp{en/et/na}   →  {conjadj öpp en/et/na}
+  tung{t/a}       →  {conjadj tung t/a}
+  ladda{d/t/de}   →  {conjadj ladda d/t/de}
 
 Verbkonjugering:
-  öppn{ar/ade/at}   →  {conj öppn ar/ade/at}
-  tryck{er/te/t}    →  {conj tryck er/te/t}
-  bo{r/dde/tt}      →  {conj bo r/dde/tt}
+  öppna{r/de/t}   →  {conj öppna r/de/t}
+  tryck{er/te/t}  →  {conj tryck er/te/t}
+  bo{r/dde/tt}    →  {conj bo r/dde/tt}
 ```
 
 Igenkänningsregler:
-- Adjektivmönster: `a` | `t/a` | `n/t/na` | `ad/at/ade` | `d/t/a` | `d/t/da` |
+- Adjektivmönster: `a` | `t/a` | `n/t/na` | `d/t/de` | `d/t/a` | `d/t/da` |
   `en/et/a` | `en/et/na`
-- Verbmönster: `ar/ade/at` | `er/te/t` | `er/de/t` | `r/dde/tt`
+- Verbmönster: `r/de` | `r/de/t` | `er/te/t` | `er/de/t` | `r/dde/tt`
 
 Enkel presens/preteritum (`{er/te}`, `{er/e}`) hanteras **inte** av `langAdjust`
 — de är direkta parameteruppslag.
@@ -185,9 +185,9 @@ Steg 3 — adjustAdjectiveAgreement
 | `n/t/na` | rot+n | rot+t | rot+na | sann/sant/sanna |
 | `d/t/a` | rot+d | rot+t | rot+a | |
 | `d/t/da` | rot+d | rot+t | rot+da | tänd/tänt/tända |
+| `d/t/de` | rot+d | rot+t | rot+de | laddad/laddat/laddade |
 | `en/et/a` | rot+en | rot+et | rot+a | öppen/öppet/öppna |
 | `en/et/na` | rot+en | rot+et | rot+na | skriven/skrivet/skrivna |
-| `ad/at/ade` | rot+ad | rot+at | rot+ade | laddad/laddat/laddade |
 | `en/et/a` med rot `vilk` | vilken | vilket | vilka | ← specialfall |
 
 ---
@@ -196,24 +196,25 @@ Steg 3 — adjustAdjectiveAgreement
 
 ```
 Steg 1 — langAdjust  (Pipeline A)
-  öppn{ar/ade/at}  →  {conj öppn ar/ade/at}
+  öppna{r/de/t}  →  {conj öppna r/de/t}
 
 Steg 2 — parameterexpansion
-  token 'conj' → anropar conjugateSwedish(ctx, ['conj','öppn','ar/ade/at'])
+  token 'conj' → anropar conjugateSwedish(ctx, ['conj','öppna','r/de/t'])
 
 Steg 3 — conjugateSwedish
   1. Läs Narrator.tense
   2. Välj form ur mönstret:
-     ar/ade/at  →  presens: stam+ar,  pret: stam+ade, perf: stam+at
-     er/te/t    →  presens: stam+er,  pret: stam+te,  perf: stam+t
-     er/de/t    →  presens: stam+er,  pret: stam+de,  perf: stam+t
-     r/dde/tt   →  presens: stam+r,   pret: stam+dde, perf: stam+tt
+     r/de/t   →  presens: rot+r,    pret: rot+de,  perf: rot+t, inf: rot
+     r/de     →  alias för r/de/t (identisk konjugering för alla tempus)
+     er/te/t  →  presens: stam+er,  pret: stam+te, perf: stam+t, inf: stam+a
+     er/de/t  →  presens: stam+er,  pret: stam+de, perf: stam+t, inf: stam+a
+     r/dde/tt →  presens: stam+r,   pret: stam+dde, perf: stam+tt, inf: stam
   3. Futurum och perfekttider byggs upp runt vald form
 ```
 
 ### Konjugeringstabellen
 
-| Tempus | ar/ade/at | er/te/t | er/de/t | r/dde/tt |
+| Tempus | r/de/t | er/te/t | er/de/t | r/dde/tt |
 |---|---|---|---|---|
 | Presens | öppnar | trycker | lever | bor |
 | Preteritum | öppnade | tryckte | levde | bodde |
@@ -384,8 +385,8 @@ Adjektiv kongruerar med dobj      Skriv rot{mönster} — langAdjust fixar reste
 Adjektiv kongruerar med annat obj {curobj namngivetobj}{conjadj rot mönster}
                                   (kräver gMessageParams(obj) och Pipeline B:
                                    skriv {conjadj} direkt, inte rot{mönster})
-Verb konjugerar korrekt           Skriv stam{ar/ade/at} etc. i Pipeline A,
-                                  eller {conj stam ar/ade/at} i Pipeline B
+Verb konjugerar korrekt           Skriv rot{r/de/t} (grupp 1) etc. i Pipeline A,
+                                  eller {conj rot r/de/t} i Pipeline B
 Verb utan utskrivet subjekt       {dummy} (singular) / {plural} (plural)
 Specifikt objekt som subjekt      gMessageParams(obj); {ref subj obj}
                                   (skriver ut namnet och sätter ctx.subj)

@@ -933,7 +933,7 @@ TestUnit 'langAdjust/grundfall' run {
 };
 
 TestUnit 'langAdjust/verbmönster' run {
-    assertThat(langAdjust('öppn{ar/ade/at}')).isEqualTo('{conj öppn ar/ade/at}');
+    assertThat(langAdjust('öppna{r/de/t}')).isEqualTo('{conj öppna r/de/t}');
     assertThat(langAdjust('tryck{er/te/t}')).isEqualTo('{conj tryck er/te/t}');
     assertThat(langAdjust('lev{er/de/t}')).isEqualTo('{conj lev er/de/t}');
     assertThat(langAdjust('bo{r/dde/tt}')).isEqualTo('{conj bo r/dde/tt}');
@@ -941,14 +941,14 @@ TestUnit 'langAdjust/verbmönster' run {
     assertThat(langAdjust('tryck{er/te}')).isEqualTo('tryck{er/te}');
 };
 
-TestUnit 'conjugateSwedish/grupp1 — öppn{ar/ade/at}' run {
+TestUnit 'conjugateSwedish/grupp1 — öppna{r/de/t}' run {
     local saved = Narrator.tense;
-    Narrator.tense = Present;     assertThat(bmsg('öppn{ar/ade/at}')).isEqualTo('öppnar');
-    Narrator.tense = Past;        assertThat(bmsg('öppn{ar/ade/at}')).isEqualTo('öppnade');
-    Narrator.tense = Perfect;     assertThat(bmsg('öppn{ar/ade/at}')).isEqualTo('har öppnat');
-    Narrator.tense = PastPerfect; assertThat(bmsg('öppn{ar/ade/at}')).isEqualTo('hade öppnat');
-    Narrator.tense = Future;      assertThat(bmsg('öppn{ar/ade/at}')).isEqualTo('ska öppna');
-    Narrator.tense = FuturePerfect; assertThat(bmsg('öppn{ar/ade/at}')).isEqualTo('ska ha öppnat');
+    Narrator.tense = Present;     assertThat(bmsg('öppna{r/de/t}')).isEqualTo('öppnar');
+    Narrator.tense = Past;        assertThat(bmsg('öppna{r/de/t}')).isEqualTo('öppnade');
+    Narrator.tense = Perfect;     assertThat(bmsg('öppna{r/de/t}')).isEqualTo('har öppnat');
+    Narrator.tense = PastPerfect; assertThat(bmsg('öppna{r/de/t}')).isEqualTo('hade öppnat');
+    Narrator.tense = Future;      assertThat(bmsg('öppna{r/de/t}')).isEqualTo('ska öppna');
+    Narrator.tense = FuturePerfect; assertThat(bmsg('öppna{r/de/t}')).isEqualTo('ska ha öppnat');
     Narrator.tense = saved;
 };
 
@@ -987,9 +987,9 @@ TestUnit 'langAdjust/kantfall — ord i position 1' run {
     assertThat(langAdjust('tän{d/t/da}')).isEqualTo('{conjadj tän d/t/da}');
 };
 
-TestUnit 'langAdjust/nya mönster n/t/na och ad/at/ade' run {
+TestUnit 'langAdjust/nya mönster n/t/na och d/t/de' run {
     assertThat(langAdjust('skriv{n/t/na}')).isEqualTo('{conjadj skriv n/t/na}');
-    assertThat(langAdjust('ladd{ad/at/ade}')).isEqualTo('{conjadj ladd ad/at/ade}');
+    assertThat(langAdjust('ladda{d/t/de}')).isEqualTo('{conjadj ladda d/t/de}');
 };
 
 /* ============================================================
@@ -1217,7 +1217,7 @@ TestUnit 'literals/lb rb bar' run {
     assertThat(bmsg('a{bar}b')).isEqualTo('a|b');
 };
 
-/* Adjektivkongruens — saknade mönster a, n/t/na, ad/at/ade */
+/* Adjektivkongruens — saknade mönster a, n/t/na, d/t/de */
 TestUnit 'adjektiv/{a} — oförändrat utrum/neutrum, +a plural' run {
     gCommand = new Command(spelare2aPerspektiv, Examine, dorrenObjUtrumSingular);
     assertThat(bmsg('låst{a}')).isEqualTo('låst');
@@ -1237,13 +1237,13 @@ TestUnit 'adjektiv/{n/t/na} — sann/sant/sanna' run {
     assertThat(bmsg('san{n/t/na}')).isEqualTo('sanna');
 };
 
-TestUnit 'adjektiv/{ad/at/ade} — laddad/laddat/laddade' run {
+TestUnit 'adjektiv/{d/t/de} — laddad/laddat/laddade' run {
     gCommand = new Command(spelare2aPerspektiv, Examine, dorrenObjUtrumSingular);
-    assertThat(bmsg('ladd{ad/at/ade}')).isEqualTo('laddad');
+    assertThat(bmsg('ladda{d/t/de}')).isEqualTo('laddad');
     gCommand = new Command(spelare2aPerspektiv, Examine, skapetObjNeutrumSingular);
-    assertThat(bmsg('ladd{ad/at/ade}')).isEqualTo('laddat');
+    assertThat(bmsg('ladda{d/t/de}')).isEqualTo('laddat');
     gCommand = new Command(spelare2aPerspektiv, Examine, vindruvorObjNeutrumPlural);
-    assertThat(bmsg('ladd{ad/at/ade}')).isEqualTo('laddade');
+    assertThat(bmsg('ladda{d/t/de}')).isEqualTo('laddade');
 };
 
 /* {sigsjälv dobj} — emfatisk reflexiv i meddelandemallar */

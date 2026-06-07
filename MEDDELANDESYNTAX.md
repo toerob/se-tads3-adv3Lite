@@ -136,7 +136,7 @@ baserat på direktobjektets genus och antal.
 | `rot{d/t/da}` | rot+d | rot+t | rot+da | tänd/tänt/tända |
 | `rot{en/et/na}` | rot+en | rot+et | rot+na | öppen/öppet/öppna, skriven/skrivet/skrivna |
 | `rot{n/t/na}` | rot+n | rot+t | rot+na | sann/sant/sanna |
-| `rot{ad/at/ade}` | rot+ad | rot+at | rot+ade | laddad/laddat/laddade |
+| `rot{d/t/de}` | rot+d | rot+t | rot+de | laddad/laddat/laddade |
 
 ```tads
 Msg(already open,   '{Ref subj dobj} {är} redan öpp{en/et/na}.')
@@ -184,17 +184,19 @@ Skriv verbstammen följd av `{presens/preteritum/supinum}`.
 
 | Mönster | Grupp | Presens | Preteritum | Perfekt | Futurum | Exempelverb |
 |---|---|---|---|---|---|---|
-| `stam{ar/ade/at}` | 1 | +ar | +ade | har +at | ska +a | öppna, flytta, stänga |
+| `rot{r/de/t}` | 1 | +r | +de | har +t | ska rot | öppna, flytta, stänga |
 | `stam{er/te/t}` | 2a | +er | +te | har +t | ska +a | trycka, låsa, köpa |
 | `stam{er/de/t}` | 2b | +er | +de | har +t | ska +a | leva, välja |
 | `stam{r/dde/tt}` | 3 | +r | +dde | har +tt | ska stam | bo, tro, sy |
 
-> **Grupp 3-infinitiv:** stammen används direkt som infinitiv (`bo`, `tro`).
-> Övriga grupper: infinitiv = stam + `a` (`öppna`, `trycka`, `leva`).
+> **Grupp 1 och 3:** roten används direkt som infinitiv (`öppna`, `bo`, `tro`).
+> **Grupp 2:** infinitiv = stam + `a` (`trycka`, `leva`).
+>
+> `rot{r/de}` (utan `/t`) är ett alias för `rot{r/de/t}` och ger samma konjugering för alla tempus.
 
 ```tads
 // Grupp 1
-'{jag} öppn{ar/ade/at} dörren.'
+'{jag} öppna{r/de/t} dörren.'
 // presens:        "Jag öppnar dörren."
 // preteritum:     "Jag öppnade dörren."
 // perfekt:        "Jag har öppnat dörren."

@@ -273,7 +273,7 @@ CustomMessages
         Msg(cannot carry any more, '{Jag} {kan} inte bära mer än {jag} redan bär. '),
         Msg(report drop, 'Släppt. |{Jag} släpper {1}. '), 
         Msg(throw dir, '{Jag} kastar {ref obj} {1} och {he obj} landar på marken. '),
-        Msg(okay open, 'Öppnad.|{Jag} öppna{r/de} {1}. '),
+        Msg(okay open, 'Öppnad. |{Jag} öppna{r/de} {1}. '),
         Msg(report close, 'Gjort. |{Jag} stänger {1}. '),
         //Msg(find hidden, '\^{1} {ref dobj} {jag} hitta{r|de} {2}<<if findHiddenDest == gActor>>, som {jag} tar<<end>>. '),
         Msg(report put on, '{Jag} lägger {1} på {ref iobj}. '), 

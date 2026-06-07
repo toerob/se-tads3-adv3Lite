@@ -5194,7 +5194,7 @@ langAdjust(txt)
     if(txt == nil)
         return '';
 
-    local adjPat = R'([^ {}]+)<lbrace>(a|t/a|n/t/na|ad/at/ade|d/t/a|d/t/da|en/et/a|en/et/na)<rbrace>';
+    local adjPat = R'([^ {}]+)<lbrace>(a|t/a|n/t/na|d/t/de|d/t/a|d/t/da|en/et/a|en/et/na)<rbrace>';
     for(;;)
     {
         local rf = rexSearch(adjPat, txt);
@@ -5205,7 +5205,7 @@ langAdjust(txt)
                               '{conjadj ' + root + ' ' + ending + '}');
     }
 
-    local verbPat = R'([^ {}]+)<lbrace>(ar/ade/at|er/te/t|er/de/t|r/dde/tt)<rbrace>';
+    local verbPat = R'([^ {}]+)<lbrace>(r/de|r/de/t|er/te/t|er/de/t|r/dde/tt)<rbrace>';
     for(;;)
     {
         local rf = rexSearch(verbPat, txt);
@@ -5247,10 +5247,10 @@ adjustAdjectiveAgreement(ctx, params)
         neuterEnding = 't';
         pluralEnding = 'na';
         break;
-    case 'ad/at/ade':
-        uterEnding = 'ad';
-        neuterEnding = 'at';
-        pluralEnding = 'ade';
+    case 'd/t/de':
+        uterEnding = 'd';
+        neuterEnding = 't';
+        pluralEnding = 'de';
         break;
     case 'en/et/a':
         uterEnding = 'en';
@@ -5305,10 +5305,12 @@ conjugateSwedish(ctx, params)
 
     switch(params[3])
     {
-    case 'ar/ade/at':
-        presentEnding = 'ar';
-        pastEnding = 'ade';
-        supinumEnding = 'at';
+    case 'r/de':
+    case 'r/de/t':
+        presentEnding = 'r';
+        pastEnding = 'de';
+        supinumEnding = 't';
+        infinitive = root;
         break;
     case 'er/te/t':
         presentEnding = 'er';
