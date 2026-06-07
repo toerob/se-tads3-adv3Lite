@@ -1,17 +1,17 @@
-#charset "us-ascii"
+#charset "utf-8"
 #include <tads.h>
 
 class BeforeEach: object
     group = nil
     run() {
-        throw new Exception('BeforeEach saknar implementation');
+        throw new Exception('BeforeEach misses implementation');
     }
 ;
 
 class AfterEach: object
     group = nil
     run() {
-        throw new Exception('AfterEach saknar implementation');
+        throw new Exception('AfterEach misses implementation');
     }
 ;
 
@@ -20,7 +20,7 @@ class TestUnit: object
     skip = nil
     only = nil
     run() {
-        throw new Exception('Test saknar implementation');
+        throw new Exception('Test misses implementation');
     }
 ;
 
@@ -257,11 +257,11 @@ testRunner: InitObject
 
             local onlyTests = testCollection.subset({t: t.only == true});
             if(onlyTests.length() > 0) {
-                tadsSay('\nKör endast markerade tester (only = true):\n');
+                tadsSay('\nRun only marked tests (only = true):\n');
                 runCollection(beforeEachCollection, onlyTests, afterEachCollection);
             } else {
                 if(skipped > 0)
-                    tadsSay('\nHoppar över <<skipped>> test(er) (skip = true).\n');
+                    tadsSay('\nSkips <<skipped>> test(s) (skip = true).\n');
                 tadsSay('\nTotal tests to run: <<testCollection.length()>>\n');
                 divider();
                 runCollection(beforeEachCollection, testCollection, afterEachCollection);

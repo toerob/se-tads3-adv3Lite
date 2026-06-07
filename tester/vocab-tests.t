@@ -125,6 +125,8 @@ spelare2aPerspektiv: Actor 'du' @lab
 appletObjNeutrumSingular: Thing 'äpple+t;rött röd+a';
 vindruvorna: Thing 'vindruvor+na[pl];;;dem';
 
+
+
 function inspectVocabWords(obj, warnIfMissingName=true) {
   local name = obj.name ?? warnIfMissingName ? '"WARNING: unassigned"' : '';
   local defName = obj.definiteForm ?? warnIfMissingName ? '"WARNING: unassigned"' : '';
@@ -859,3 +861,25 @@ TestUnit 'djur+park:en+gång:en+vakt:en+bås+et (5 komponenter)' run {
     assertThat(obj.vocabWords[30]).extractingProps([&wordStr, &posFlags]).isEqualTo(['båset', MatchNoun]);
     cleanUp(obj);
 };
+
+
+class Frukt: Thing 'frukt+en;mog:en+na;frukter+na[pl]';
+kiwi: Frukt 'kiwi+n';
+
+
+TestUnit 'kiwi (ärvd vocab)' run {
+    //inspectVocabWords(kiwi);
+
+    assertThat(kiwi.name).isEqualTo('kiwi');
+    assertThat(kiwi.definiteForm).isEqualTo('kiwin');
+    assertThat(kiwi.isNeuter).isEqualTo(nil);
+    assertThat(kiwi.vocabWords).hasLengt(6);
+
+    assertThat(kiwi.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['kiwi', MatchNoun]);
+    assertThat(kiwi.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['kiwin', MatchNoun]);
+    assertThat(kiwi.vocabWords[3]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mogen', MatchAdj]);
+    assertThat(kiwi.vocabWords[4]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mogna', MatchAdj]);
+    assertThat(kiwi.vocabWords[5]).extractingProps([&wordStr, &posFlags]).isEqualTo(['frukter', MatchPlural]);
+    assertThat(kiwi.vocabWords[6]).extractingProps([&wordStr, &posFlags]).isEqualTo(['frukterna', MatchPlural]);
+}
+;

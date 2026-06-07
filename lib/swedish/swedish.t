@@ -609,6 +609,11 @@ class LMentionable: object
         if (vocab == nil || vocab == '') {
             return;
         }
+
+        /* ärva eventuellt vocab från våra superklasser */
+        inheritVocab();
+
+
         // Specialhantering för att kunna använda '+'-tecken för ändelser i svenska
         // Syfte: det är smidigt att kunna använda '+' då det är ett tecken som 
         // inte kräver någon tangentbordskombination. 
@@ -630,9 +635,6 @@ class LMentionable: object
         local str = vocab.findReplace(R'<Space>?<Plus>)', {s: s.length == 2 ? s : '$' });
         // tadsSay('\n"<<vocab>>" = "<<str>>"\b');
 
-
-        /* ärva eventuellt vocab från våra superklasser */
-        inheritVocab();
                 
         /* rensa vår vokabulärordlista */
         vocabWords = new Vector(10);
@@ -1003,7 +1005,7 @@ class LMentionable: object
              *   Om superklassen inte anger något vocab, behöver vi inte
              *   bearbeta det.
              */
-            if(cls.vocab not in (nil, ''))
+            if(cls.vocab is in (nil, ''))
                 continue;
             
             /* Den ärvda vocab, uppdelad i delar */               
@@ -1020,8 +1022,14 @@ class LMentionable: object
            || getSuperclassList.indexWhich({c: c.vocab not in (nil, '')}) == nil)
             return;
         
+
+        
         /* Vår lista över vocab, uppdelad i delar. */
-        local vlist = vocab.split(';').mapAll({x: x.trim()});
+        local vlist = vocab
+            // Special för svenskan, ersätt alla ändelsebindande + med $, DVS: de + utan mellanslag mellan.
+            .findReplace(R'<Space>?<Plus>)', {s: s.length == 2 ? s : '$' })
+            // Fortsätt som tidigare
+            .split(';').mapAll({x: x.trim()});
         
         /* för bekvämlighet, se till att vi slutar med fyra delar */
         for(local i = vlist.length; i < 4; i++)
@@ -1037,7 +1045,11 @@ class LMentionable: object
                 continue;
             
             /* Den ärvda vocab, uppdelad i delar */               
-            local ilist = cls.vocab.split(';').mapAll({x: x.trim()});
+            local ilist = cls.vocab
+                // Special för svenskan, ersätt alla ändelsebindande + med $, DVS: de + utan mellanslag mellan.
+                .findReplace(R'<Space>?<Plus>)', {s: s.length == 2 ? s : '$' })
+                // Fortsätt som tidigare
+                .split(';').mapAll({x: x.trim()});
             
             /* För bekvämlighet, se till att vi har fyra delar. */
             for(local i = ilist.length; i < 4; i++)
