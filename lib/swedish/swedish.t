@@ -2397,7 +2397,8 @@ modify Room
     /* 
      *   Som standard är list suffixet för föremål direkt i ett rum helt enkelt 'här'. Detta kan ändras för enskilda rum eller åsidosättas på Room klassen. eller genom att åsidosätta rummets getMiscListSuffix(pove) metod, eller genom att använda ett CustomMessages objekt.
      */
-    miscListSuffix = BMsg(misc list suffix, '{här}');
+    //miscListSuffix = BMsg(misc list suffix, '{här}');
+    miscListSuffix = bmsg('{här}')
 ;
 
 
@@ -2793,182 +2794,185 @@ swedishCustomVocab: CustomVocab
 
     // verb parametrar, för {xxx} tokens i meddelandesträngar
     verbParams = [ 
-        'se/ser/såg/sett',
-        'kunna/kan/kunde/kunnat',
-        'ha/har/hade/haft',
-        'göra/gör/gjorde',        
-        'visa/visar/visade/visat',    
-        'vilja/vill/ville/velat',
-        'uppstå/uppstår/uppstod/uppstått',        
-        'vakna/vaknar/vaknade/vaknat',        
+        'använda/använder/använde/använt',
+        'attackera/attackerar/attackerade/atackerat',
+        'avge/avger/avgav/avgett',
+        'avla/avlar/avlade/avlat',
         'bära/bär/bar/buren',
         'bäras/bärs/bars/buren',
-        'slå/slår/slog/slagen',
-        'bli/blir/blev/blivit',
-        'börja/börjar/började/börjat',
-        'öppna/öppnar/öppnade/öppnat',
-        'böja/böjer/böjde',
-        'satsa/satsar/satsade',
-        'bjuda/bjuder/bjöd/bjuden',
+        'befinna/befinner/befann/befunnit',
+        'befria/befriar/befriade',
+        'berätta/berättar/berättade',
+        'betala/betalar/betalade',        
+        'betyda/betyder/betydde',
+        'bevisa/bevisar/bevisade/bevisad',
         'binda/binder/band',
         'bita/biter/bet/bitten',
-        'blöda/blöder/blödde',
+        'bjuda/bjuder/bjöd/bjuden',
         'blåsa/blåser/blåste/blåst',                
-        'bryta/bryter/bröt/bruten',
-        'avla/avlar/avlade/avlat',
-        'hälsa/hälsar/hälsade/hälsat',
-        'prata/pratar/pratade/pratat',
-        'bygga/bygger/byggde/byggt',
+        'bli/blir/blev/blivit',
+        'blöda/blöder/blödde',
+        'bo/bor/bodde',
+        'böja/böjer/böjde',
+        'börja/börjar/började/börjat',
         'bränna/bränner/brände',
         'bryta/bryter/bröt',
-        'köpa/köper/köpte',
-        'kasta/kastar/kastade',
-        'fånga/fångar/fångade',
-        'välja/väljer/valde/valt',
-        'klappa/klappar/klappade',        
-        'klänga/klänger/klängde',        
-        'låsa/låser/låste/låst',                
-        'komma/kommer/kom',        
-        'krypa/kryper/krypte',
-        'skära/skär/skärde',
-        'hantera/hanterar/hanterade',        
-        'gräva/gräver/grävde',
-        'dyka/dyker/dök/dykt',
-        'rita/ritar/ritade/ritad',
-        'drömma/drömmer/drömde',
+        'bryta/bryter/bröt/bruten',
+        'bygga/bygger/byggde/byggt',
+        'dela/delar/delade',
+        'döda/dödar/dödade/dödad',
+        'dra/drar/drog/dragit',
         'dricka/dricker/drack/druckit',
-        'köra/kör/körde/kört',        
-        'bo/bor/bodde',
-        'äta/äter/åt/ätit',        
+        'drömma/drömmer/drömde',
+        'dyka/dyker/dök/dykt',
+        'få/får/fick/fått',
+        'fälla/fäller/fällde',
         'falla/faller/föll/fallit',        
-        'mata/matar/matade',
-        'känna/känner/kände/känt',
-        'röra/rör/rörde/rört',
-        //'attackera/attackerar/attackerade/attackerat', // TODO: regelbundet
-        'slåss/slåss/slogs',
-        'hitta/hittar/hittade',
-        'slunga/slungar/slungade',        
+        'fånga/fångar/fångade',
         'flyga/flyger/flög/flugit',        
         'förbjuda/förbjuder/förbjöd/förbjuden',
+        'förinställa/förinställer/förinställd',
+        'förlora/förlorar/förlorade',
+        'förstöra/förstör/förstörde',
         'frysa/fryser/frös/frusen',
-        'få/får/fick/fått',
-        'ge/ger/gav/given',
-        'avge/avger/avgav/avgett',
         'gå/går/gick/gått',
-        'mala/malar/malade',
-        'växa/växer/växte/vuxit',
+        'ge/ger/gav/given',
+        'glida/glider/glid',
+        'gömma/gömmer/gömde/gömd',
+        'göra/gör/gjorde',
+        'göra/gör/gjorde',        
+        'gräva/gräver/grävde',
+        'ha/har/hade',
+        'ha/har/hade/haft',
+        'hålla/håller/höll',
+        'hålla/håller/höll',
+        'hälsa/hälsar/hälsade/hälsat',
         'handskriva/handskriver/handskrev/handskriven',        
         'hänga/hänger/hängde',
-        'ha/har/hade',
-        'gömma/gömmer/gömde/gömd',
-        'slå/slår/slog',
-        'hålla/håller/höll',
-        'skada/skadar/skadade',
-        'inlägga/inlägger/inlagd',
-        'mata/matar/matade',
-        'interlägga/interlägger/interlagd',        
-        'hålla/håller/höll',
-        'knäböja/knäböjer/knäböjde',
-        'sticka/sticker/stickade',
-        'veta/vet/visste/vetat',        
-        'lägga/lägger/lagt',
-        'leda/leder/ledde',
-        'luta/lutar/lutade',
+        'hantera/hanterar/hanterade',        
+        'hitta/hittar/hittade',
         'hoppa/hoppar/hoppade',
-        'lära/lär/lärde',
-        'befinna/befinner/befann/befunnit',
+        'hyra/hyr/hyrde/hyrd',
+        'inlägga/inlägger/inlagd',
+        'interlägga/interlägger/interlagd',        
+        'känna/känner/kände/känt',
+        'kasta/kastar/kastade',
+        'kasta/kastar/kastade/kastad',
+        'klänga/klänger/klängde',        
+        'klappa/klappar/klappade',        
+        'klippa/klipper/klippte',
+        'klippa/klipper/klippte/klippt',        
+        'knäböja/knäböjer/knäböjde',
+        'komma/kommer/kom',        
+        'köpa/köper/köpte',
+        'köra/kör/körde/kört',        
+        'krympa/krymper/krympte/krympt',
+        'krypa/kryper/krypte',
+        'kunna/kan/kunde/kunnat',
+        'lägga/lägger/lagt',
         'lämna/lämnar/lämnade',
         'låna/lånar/lånade',
+        'lära/lär/lärde',
+        'lära/lärde/lärde',
+        'läsa/läser/läste',
+        'låsa/låser/låste/låst',                
         'låta/låter/lät',
+        'leda/leder/ledde',
         'ligga/ligger/liggde',
-        'tända/tänder/tände',        
-        'förlora/förlorar/förlorade',
-        'göra/gör/gjorde',
-        'betyda/betyder/betydde',
-        'möta/möter/mötte',
-        'smälta/smälter/smält/smält',
-        'vilseleda/vilseleder/vilseledde',
-        'missta/misstänker/misstog/misstagit',
+        'lukta/luktar/luktade',
+        'luta/lutar/lutade',
+        'mala/malar/malade',
+        'mata/matar/matade',
+        'mata/matar/matade',
         'missförstå/missförstår/missförstod',
         'missgifta/missgifter/missgift',        
-        'klippa/klipper/klippte/klippt',        
+        'missta/misstänker/misstog/misstagit',
+        'möta/möter/mötte',
+        'öppna/öppnar/öppnade/öppnat',
         'överdriva/överdriver/överdrev/överdriven',
         'överhöra/överhör/överhörde',
         'överta/övertar/övertog/övertagen',        
-        'betala/betalar/betalade',        
-        'förinställa/förinställer/förinställd',
-        'bevisa/bevisar/bevisade/bevisad',
-        'svara/svarar/svarade/svarat',
-        'sätta/sätter/satte',
-        'sluta/slutar/slutade',        
-        'läsa/läser/läste',
-        'befria/befriar/befriade',
+        'prata/pratar/pratade/pratat',
+        'raka/rakar/rakade/rakad',
         'rida/rider/red/ridit',
         'ringa/ringer/ringde/ringt',
-        'stiga/stiger/steg/stigit',
+        'rita/ritar/ritade/ritad',
+        'riva/river/rev/riven',
         'riva/river/rev/riven',        
-        'springa/springer/sprang/sprungit',        
+        'röra/rör/rörde/rört',
+        'så/sår/sådde/sådd',
         'såga/sågar/sågade/sågad',
-        'sy/syr/sydde/sydd',
         'säga/säger/sa',
-        'se/ser/såg/sett',        
+        'satsa/satsar/satsade',
         'sätta/sätter/satt',
-        'skaka/skakar/skakade/skakad',
-        'raka/rakar/rakade/rakad',
-        'klippa/klipper/klippte',
-        'fälla/fäller/fällde',
-        'skina/skiner/sken',
-        'sko/skor/skodde',
-        'skjuta/skjuter/sköt',        
-        'visa/visar/visade/visad',
-        'krympa/krymper/krympte/krympt',
-        'stänga/stänger/stängde',
-        'sjunga/sjunger/sjöng/sjungit',
+        'sätta/sätter/satte',
+        'se/ser/såg/sett',
+        'se/ser/såg/sett',        
+        'simma/simmar/simmade/simmat',
         'sitta/sitter/satt',
-        'döda/dödar/dödade/dödad',
-        'sova/sover/sov',
-        'glida/glider/glid',
-        'slunga/slungar/slungade',
+        'sjunga/sjunger/sjöng/sjungit',
+        'skada/skadar/skadade',
+        'skaka/skakar/skakade/skakad',
+        'skära/skär/skärde',
+        'skina/skiner/sken',
+        'skjuta/skjuter/sköt',        
+        'sko/skor/skodde',
+        'slå/slår/slog',
+        'slå/slår/slog/slagen',
+        'slå/slår/slog/slagen',
+        'slåss/slåss/slogs',
         'slinka/slinker/slink',
         'slita/sliter/slet',
-        'lukta/luktar/luktade',
+        'slunga/slungar/slungade',
+        'slunga/slungar/slungade',        
+        'sluta/slutar/slutade',        
+        'smälta/smälter/smält/smält',
         'smyga/smyger/smög',
-        'spå/spår/spådde',
-        'så/sår/sådde/sådd',
-        'tala/talar/talade/talat',
         'snabba/snabb/snabbade',
-        'stava/stavar/stavade',
+        'snurra/snurrar/snurrade',
+        'solbränna/solbränner/solbränd',
+        'sopa/sopar/sopade',
+        'sova/sover/sov',
+        'spå/spår/spådde',
         'spendera/spenderar/spenderade',
         'spilla/spiller/spillde',
-        'snurra/snurrar/snurrade',
         'spotta/spottar/spottade',
-        'dela/delar/delade',
-        'förstöra/förstör/förstörde',
         'sprida/sprider/spred',
         'springa/springer/sprang/sprungit',
+        'springa/springer/sprang/sprungit',        
         'stå/står/stod',
-        'stjäla/stjäl/stal/stulit',
+        'stänga/stänger/stängde',
+        'stava/stavar/stavade',
+        'sticka/sticker/stickade',
         'sticka/sticker/stuckit',
-        'stinka/stinker/stank/stunkit',
         'stiga/stiger/steg/stigit',
-        'slå/slår/slog/slagen',
+        'stiga/stiger/steg/stigit',
+        'stinka/stinker/stank/stunkit',
+        'stjäla/stjäl/stal/stulit',
         'sträva/strävar/strävade/strävat',
-        'hyra/hyr/hyrde/hyrd',
-        'solbränna/solbränner/solbränd',
-        'svära/svär/svor/svuren',
-        'svettas/svettas/svettades',
-        'sopa/sopar/sopade',
         'svälla/sväller/svällde/svullen',
-        'simma/simmar/simmade/simmat',
+        'svära/svär/svor/svuren',
+        'svara/svarar/svarade/svarat',
+        'svettas/svettas/svettades',
         'svinga/svingar/svingade',        
+        'sy/syr/sydde/sydd',
         'ta/tar/tog/tagen',        
-        'lära/lärde/lärde',
-        'riva/river/rev/riven',
-        'berätta/berättar/berättade',
+        'tala/talar/talade/talat',
+        'tända/tänder/tände',        
         'tänka/tänker/tänkte',
         'trivas/trivs/trivdes/trivts',
-        'kasta/kastar/kastade/kastad'
-    
+        'tro/tror/trodde/trott',
+        'trycka/trycker/tryckte/tryckt',
+        'uppstå/uppstår/uppstod/uppstått',        
+        'vakna/vaknar/vaknade/vaknat',        
+        'välja/väljer/valde/valt',
+        'växa/växer/växte/vuxit',
+        'veta/vet/visste/vetat',        
+        'vilja/vill/ville/velat',
+        'vilseleda/vilseleder/vilseledde',
+        'visa/visar/visade/visad',
+        'visa/visar/visade/visat',    
+        'äta/äter/åt/ätit'    
     ]
 ;
 
@@ -3176,7 +3180,8 @@ modify ItemLister
          *   objekt som bärs, lägg till ' (buren)' till namnet
          */
         if(o.wornBy != nil && showWornInfo)
-            lName += BMsg(being worn, ' (buren)');
+            //lName += BMsg(being worn, ' (buren)');
+            lName += ' (buren)';
         
                
         /* 
@@ -3187,7 +3192,8 @@ modify ItemLister
         {
             local obj = o.movedTo;
             gMessageParams(obj);
-            lName += BMsg(moved to, ' (vid {ref obj})');
+            //lName += BMsg(moved to, ' (vid {ref obj})');
+            lName += bmsg(' (vid {ref obj})');
         }
         
         /* 
@@ -4082,7 +4088,9 @@ askAmbiguous(cmd, role, names)
      */
     local q;
     if (role is in (DirectObject, ActorRole))
-        q = BMsg(which do you mean, 'Vilken menar du');
+        //q = BMsg(which do you mean, 'Vilken menar du');
+        //q = bmsg('vilken menar du');
+        q = 'vilken menar du';
     else
         q = nounRoleQuestion(cmd, role)
         .findReplace('vad', 'vilken', ReplaceOnce);
@@ -5205,7 +5213,7 @@ langAdjust(txt)
                               '{conjadj ' + root + ' ' + ending + '}');
     }
 
-    local verbPat = R'([^ {}]+)<lbrace>(r/de|r/de/t|er/te/t|er/de/t|r/dde/tt)<rbrace>';
+    local verbPat = R'([^ {}]+)<lbrace>(r/de|r/de/t|er/te/t|er/de|er/de/t|r/dde/tt)<rbrace>';
     for(;;)
     {
         local rf = rexSearch(verbPat, txt);
@@ -5315,6 +5323,11 @@ conjugateSwedish(ctx, params)
     case 'er/te/t':
         presentEnding = 'er';
         pastEnding = 'te';
+        supinumEnding = 't';
+        break;
+    case 'er/de':
+        presentEnding = 'er';
+        pastEnding = 'de';
         supinumEnding = 't';
         break;
     case 'er/de/t':
@@ -5885,8 +5898,8 @@ modify Action
              *   Börja vår rapport med en öppningsparentes och ordet
              *   'först'
              */
-            rep = BMsg(implicit action report start, '<.assume> ');
-            //rep = '(';
+            //rep = BMsg(implicit action report start, '<.assume> ');
+            rep = bmsg('<.assume> ');
 
             /* 
              *   Gå sedan igenom alla implicita åtgärdsrapporter på den aktuella
@@ -5901,7 +5914,9 @@ modify Action
                  *   separera en rapport från nästa
                  */
                 if(i < lst.length)
-                    rep += BMsg(implicit action report separator, ' sedan ');
+                    //rep += BMsg(implicit action report separator, ' sedan ');
+                    //rep += bmsg(' sedan ');
+                    rep += ' sedan ';
             }
             
             local prp = getPostImplicitReports();
@@ -5915,7 +5930,8 @@ modify Action
             }
             
             /* Returnera den färdiga implicita åtgärdsrapporten */
-            return rep + BMsg(implicit action report terminator, '<./assume>\n') + prp;
+            //return rep + BMsg(implicit action report terminator, '<./assume>\n') + prp;
+            return rep + bmsg('<./assume>\n') + prp;
         }
         
         /* 
@@ -5941,8 +5957,10 @@ modify Action
     implicitAnnouncement(success)
     {
         return success ? getVerbPhrase(nil, nil) : 
-              BMsg(implicit action report failure, 'försöker ') 
-            + getVerbPhrase(true, nil);
+              //BMsg(implicit action report failure, 'försöker ') 
+              //bmsg('försöker')
+              'försöker'
+               + getVerbPhrase(true, nil);
     }
     
     
@@ -7223,7 +7241,10 @@ modify Test
                 
                 /* Read a new command from the keyboard. */
                 "<.inputline>";
-                DMsg(command prompt, '>');
+                //DMsg(command prompt, '>');
+                //dmsg('>');
+                ">";
+
                 txt = inputManager.getInputLine();
                 "<./inputline>\n";   
                 

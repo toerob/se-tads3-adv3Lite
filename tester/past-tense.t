@@ -3202,6 +3202,7 @@ TestUnit 'cannotPushThroughMsg' run {
     assertThat(o.trimWS()).startsWith(expected);
   });
 };
+
 // okayPushIntoMsg = BMsg(okay push into, '{I} <<if matchPullOnly>> pull{s/ed} <<else>> push{es/ed}<<end>> {the dobj} into {the iobj}. ')
 //Msg(okay push into, '{Jag}<<if matchPullOnly>> dr{ar|og} <<else>> tryck{er|te}<<end>> in {ref dobj} i {ref iobj}.'),
 TestUnit 'okayPushIntoMsg' run {

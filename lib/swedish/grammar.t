@@ -1886,7 +1886,7 @@ VerbRule(Kiss)
 
 VerbRule(Query)
     ('f' | 'fråga') ('vad' ->qtype | 'vem' ->qtype | 'var' -> qtype | 'varför'
-                   ->qtype | 'när' -> qtype| 'hur' -> qtype | 'om' ->
+                   ->qtype | 'när' -> qtype| 'hur' -> qtype | 'huruvida' ->
                     qtype | 'ifall' -> qtype) topicDobj
     : VerbProduction
     action = Query
@@ -1908,10 +1908,17 @@ VerbRule(Query2)
 ;
 
 VerbRule(QueryAbout)
-    ('f' | 'fråga') singleDobj ('vad' ->qtype | 'vem' ->qtype | 
-                               'var' -> qtype | 'varför'
-                   ->qtype | 'när' -> qtype| 'hur' -> qtype | 'om' ->
-                    qtype | 'ifall' -> qtype)  topicIobj
+    ('f' | 'fråga') singleDobj ('vad' ->qtype | 'vem' ->qtype 
+                               | 'var' -> qtype | 'varför' ->qtype 
+                               | 'när' -> qtype | 'hur' -> qtype 
+                               
+                               // OBS: vi vill inte ha 'om' här, eftersom 
+                               // AskTopic då blir överskuggad av QueryAbout
+                                // whether
+                               | 'huruvida' -> qtype 
+                               // if 
+                               | 'ifall' -> qtype)  
+                               topicIobj
     : VerbProduction
     action = QueryAbout
     verbPhrase = 'fråga/frågar (vad)'
@@ -1923,7 +1930,7 @@ VerbRule(QueryAbout)
 
 VerbRule(QueryVague)
     ('f' | 'fråga'|) ('vad' ->qtype | 'vem' ->qtype | 'var' -> qtype | 'varför'
-                   ->qtype | 'när' -> qtype| 'hur' -> qtype | 'om' ->
+                   ->qtype | 'när' -> qtype| 'hur' -> qtype | 'huruvida' ->
                     qtype | 'ifall' -> qtype) 
     : VerbProduction
     action = QueryVague
@@ -2008,17 +2015,18 @@ VerbRule(AskAbout)
     : VerbProduction
     action = AskAbout
     verbPhrase = 'fråga/frågar (vem) (om vad)'
-    missingQ = 'vem vill du fråga;vad vill du fråga det om'
+    missingQ = 'vem vill du fråga;vad vill du fråga {det} om'
     dobjReply = singleNoun
     iobjReply = aboutTopicPhrase
 ;
+
 
 VerbRule(AskAboutImplicit)
     ('f' | ('fråga' | 'säga' 'mig') ('om')) topicIobj
     : VerbProduction
     action = AskAboutImplicit
     verbPhrase = 'fråga/frågar (vem) (om vad)'
-    missingQ = 'vem vill du fråga;vad vill du fråga det om'
+    missingQ = 'vem vill du fråga;vad vill du fråga {det} om'
     iobjReply = aboutTopicPhrase
     priority = 45
 ;
@@ -2028,7 +2036,7 @@ VerbRule(AskAboutWhat)
     : VerbProduction
     action = AskAbout
     verbPhrase = 'fråga/frågar (vem) (om vad)'
-    missingQ = 'vem vill du fråga;vad vill du fråga det om'
+    missingQ = 'vem vill du fråga;vad vill du fråga {det} om'
 
     missingRole = IndirectObject
     iobjReply = aboutTopicPhrase
@@ -2042,7 +2050,7 @@ VerbRule(TellAbout)
     : VerbProduction
     action = TellAbout
     verbPhrase = 'säga/säger (vem) (om vad)'
-    missingQ = 'vem vill du säga;vad vill du säga det om'
+    missingQ = 'vem vill du säga;vad vill du säga {det} om'
     dobjReply = singleNoun
     iobjReply = aboutTopicPhrase
 ;
@@ -2052,7 +2060,7 @@ VerbRule(TellAboutImplicit)
     : VerbProduction
     action = TellAboutImplicit
     verbPhrase = 'säga/säger (vem) (om vad)'
-    missingQ = 'vem vill du säga;vad vill du säga det om'
+    missingQ = 'vem vill du säga;vad vill du säga {det} om'
     iobjReply = aboutTopicPhrase
 ;
 
@@ -2061,7 +2069,7 @@ VerbRule(TellAboutWhat)
     : VerbProduction
     action = TellAbout
     verbPhrase = 'säga/säger (vem) (om vad)'
-    missingQ = 'vem vill du säga;vad vill du säga det om'
+    missingQ = 'vem vill du säga;vad vill du säga {det} om'
 
     missingRole = IndirectObject
     dobjReply = singleNoun
@@ -2075,7 +2083,7 @@ VerbRule(TellTo)
     : VerbProduction
     action = TellTo
     verbPhrase = 'säga/säger (vem) (att vad)'
-    missingQ = 'vem vill du säga;vad vill du säga det att göra'
+    missingQ = 'vem vill du säga;vad vill du säga {det} att göra'
     iobjReply = literalPhrase
 ;
 
@@ -2084,7 +2092,7 @@ VerbRule(TalkAbout)
     : VerbProduction
     action = TalkAbout
     verbPhrase = 'prata/pratar (med vem) (om vad)'
-    missingQ = 'med vem vill du prata;vad vill du prata med det om'
+    missingQ = 'med vem vill du prata;vad vill du prata med {det} om'
     dobjReply = toSingleNoun
     iobjReply = aboutTopicPhrase
 ;
@@ -2103,7 +2111,7 @@ VerbRule(AskVague)
     : VerbProduction
     action = AskAbout
     verbPhrase = 'fråga/frågar (vem)'
-    missingQ = 'vem vill du fråga;vad vill du fråga det om'
+    missingQ = 'vem vill du fråga;vad vill du fråga {det} om'
     dobjReply = singleNoun
     iobjReply = topicPhrase
 ;
@@ -2113,7 +2121,7 @@ VerbRule(TellVague)
     : VerbProduction
     action = TellAbout
     verbPhrase = 'säga/säger (vem)'
-    missingQ = 'vem vill du säga;vad vill du säga det om'
+    missingQ = 'vem vill du säga;vad vill du säga {det} om'
     priority = 40
     dobjReply = singleNoun
     iobjReply = topicPhrase    
@@ -2624,6 +2632,7 @@ VerbRule(ToggleDiaambigEnum)
     verbPhrase = 'växla/växlar enumeration av disambiguering alternativ'
 ;
 
+// TODO: Försvenska till denna svengelskaöversättning 
 VerbRule(GoToMode)
     ('gå till' | 'gå' 'till') (|'läge') ('kort' -> brief_| 'snabb' -> fast_|
         'utförlig'->normal_|'normal'-> normal_| 'långsam'-> normal_ | 'fortsätt' -> normal_)
@@ -2631,7 +2640,6 @@ VerbRule(GoToMode)
     action = GoToMode
     verbPhrase = 'växla/växlar gå till läge'    
 ;
-
 
 VerbRule(GoTo)
     ('gå' 'till' | 'gå' 'till' | 'gå till')
@@ -3752,14 +3760,14 @@ VerbRule(Verbose)
 
     
 VerbRule(HyperlinkSuggestions)
-    ('hyper' | 'hyperlänk') ('ämne'|) ('förslag' | 'förslag')
+    ('hyper' | 'hyperlänk') ('ämne'|'förslag')
     : VerbProduction
     action = HyperlinkSuggestions
     verbPhrase = 'växla/växlar hyperlänkning av ämnesförslag'  
 ;
     
 VerbRule(EnumerateSuggestions)
-    ('enum' | 'enumerera') ('ämne'|) ('förslag' | 'förslag')
+    ('enum' | 'enumerera') ('ämne'|'förslag')
     : VerbProduction
     action = EnumerateSuggestions
     verbPhrase = 'växla/växlar enumeration av ämnesförslag'  
@@ -3788,7 +3796,8 @@ specialActionPreparser: StringPreParser
     {
         if(str.find('sp#akt'))
         {
-            DMsg(reject spaction input, 'Jag <i>verkligen</i> vägrar att förstå {det} kommandot. ');
+            //DMsg(reject spaction input, 'Jag <i>verkligen</i> vägrar att förstå {det} kommandot. ');
+            dmsg('Jag <i>verkligen</i> vägrar att förstå {det} kommandot. ');
             return nil;                
         }
         return str;

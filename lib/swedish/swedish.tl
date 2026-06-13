@@ -1,3 +1,4 @@
+name: swedish language extension
 source: swedish
 source: grammar
 source: tokens

@@ -73,26 +73,6 @@ koket: Room 'Köket'
 	west = vardagsrummet
 ;
 
-// Spelaren - andra person, stående
-+ me: Actor 'du'
-	person = 2
-	posture = standing
-;
-
-// Kropp - visar ägande-grammatik: "din näsa", "dina händer"
-++ nasa: Component 'näsa+n'
-	"En alldeles vanlig näsa."
-	ownerNamed = true
-	owner = [me]
-;
-
-++ hander: Component 'händer+na[pl];;;dem'
-	"Dina händer ser lite dammiga ut efter resan."
-	plural = true
-	ownerNamed = true
-	owner = [me]
-;
-
 // Bordet - neutrum (ett bord)
 + matbord: Surface, Heavy 'bord+et'
 	"Ett gammalt ekbord med en söndernött yta. Någon har ristat
@@ -249,14 +229,48 @@ tradgarden: Room 'Trädgården'
 ;
 
 // Katten - utrum (en katt), NPC
-+ katt: Actor 'katt+en'
++ katt: Actor 'katt+en;;;den'
 	"En grå randig katt som solar sig på trappstenen med slutna ögon.
 	Den rör sig inte men du är inte helt säker på att den sover för det. "
 	proper = nil
 	posture = lying
 ;
 
+++HelloTopic "<q>Hej!</q> säger du. Katten gäspar till svar. ";
+
+++QueryTopic 'var' 'du är; jag'
+	"<q>Var är jag?</q> frågar du. <<one of>>Katten svarar inte.<<or>>Katten blinkar. <<at random>>"
+	name = 'var du är'
+;
+
+++AskTopic @kattleksak
+	"<q>Är det din leksak?</q> Katten sträcker fram en tass mot råttan. "
+	name = 'leksaken'
+;
+
 +kattleksak: Thing 'rått|leksak+en;;råtta+n katt|leksak+en'
 	ownerNamed = true
 	owner = [katt]
+;
+
+
+
+// Spelaren - andra person, stående
+me: Actor 'du' @tradgarden
+	person = 2
+	posture = standing
+;
+
+// Kropp - visar ägande-grammatik: "din näsa", "dina händer"
++ nasa: Component 'näsa+n'
+	"En alldeles vanlig näsa."
+	ownerNamed = true
+	owner = [me]
+;
+
++ hander: Component 'händer+na[pl];;;dem'
+	"Dina händer ser lite dammiga ut efter resan."
+	plural = true
+	ownerNamed = true
+	owner = [me]
 ;
