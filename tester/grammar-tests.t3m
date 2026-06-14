@@ -17,7 +17,7 @@
 -lib adv3Lite/adv3Lite
 
 #-source adv3Lite/extensions/postures
-#-source ../lib/swedish/swe_mods
+#-source ../lib/swedish/swe_postures
 
 -source testunit
 -source grammar-tests

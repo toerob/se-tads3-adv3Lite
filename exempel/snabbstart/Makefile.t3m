@@ -19,7 +19,7 @@
 -lib adv3Lite/adv3Lite
 
 -source adv3Lite/extensions/postures
--source adv3Lite/swedish/swe_mods
+-source adv3Lite/swedish/swe_postures
 -source gameMain
 
 -res
