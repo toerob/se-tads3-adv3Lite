@@ -700,7 +700,245 @@ TestUnit 'boll+lek+en (trippel-l i sammansättning kortas till dubbel-l)' run {
 };
 
 
-// --- H: Adjektiv i sektion 2 ---
+// --- H: Adjektiv i sektion 1 (ingår i name och theName) ---
+//
+// När ett adjektiv med +notation förekommer FÖRE substantivet i sektion 1
+// inkluderas det automatiskt i name och theName.
+// Sektion 2 används för sökord som inte ska synas i name.
+
+TestUnit 'blå+a stol+en (adj i sektion 1, utrum singular)' run {
+    local obj = new Thing();
+    obj.vocab = 'blå+a stol+en';
+    obj.initVocab();
+
+    assertThat(obj.name).isEqualTo('blå stol');
+    assertThat(obj.definiteForm).isEqualTo('stolen');
+    assertThat(obj.shortNameAdjDef).isEqualTo('blåa');
+    assertThat(obj.isNeuter).isNil();
+    // theName = artikel + adj.def.form + noun.def.form
+    assertThat(obj.theName).isEqualTo('den blåa stolen');
+    assertThat(obj.aName).isEqualTo('en blå stol');
+
+    // blå, blåa (adj), stol, stolen (subst) — 4 sökord
+    assertThat(obj.vocabWords).hasLength(4);
+    assertThat(obj.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['blå', MatchAdj]);
+    assertThat(obj.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['blåa', MatchAdj]);
+    assertThat(obj.vocabWords[3]).extractingProps([&wordStr, &posFlags]).isEqualTo(['stol', MatchNoun]);
+    assertThat(obj.vocabWords[4]).extractingProps([&wordStr, &posFlags]).isEqualTo(['stolen', MatchNoun]);
+
+    cleanUp(obj);
+};
+
+TestUnit 'blå+a bord+et (adj i sektion 1, neutrum singular)' run {
+    local obj = new Thing();
+    obj.vocab = 'blå+a bord+et';
+    obj.initVocab();
+
+    assertThat(obj.name).isEqualTo('blå bord');
+    assertThat(obj.definiteForm).isEqualTo('bordet');
+    assertThat(obj.shortNameAdjDef).isEqualTo('blåa');
+    assertThat(obj.isNeuter).isEqualTo(true);
+    // neutrum → artikel 'det'
+    assertThat(obj.theName).isEqualTo('det blåa bordet');
+    assertThat(obj.aName).isEqualTo('ett blå bord');
+
+    // blå, blåa (adj), bord, bordet (subst) — 4 sökord
+    assertThat(obj.vocabWords).hasLength(4);
+    assertThat(obj.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['blå', MatchAdj]);
+    assertThat(obj.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['blåa', MatchAdj]);
+    assertThat(obj.vocabWords[3]).extractingProps([&wordStr, &posFlags]).isEqualTo(['bord', MatchNoun]);
+    assertThat(obj.vocabWords[4]).extractingProps([&wordStr, &posFlags]).isEqualTo(['bordet', MatchNoun]);
+
+    cleanUp(obj);
+};
+
+TestUnit 'blå+a stol+en;bekväm+a (adj i sektion 1 + adj i sektion 2)' run {
+    // Adj i s1 → ingår i name. Adj i s2 → bara sökord, ingår inte i name.
+    local obj = new Thing();
+    obj.vocab = 'blå+a stol+en;bekväm+a';
+    obj.initVocab();
+
+    assertThat(obj.name).isEqualTo('blå stol');
+    assertThat(obj.definiteForm).isEqualTo('stolen');
+    assertThat(obj.shortNameAdjDef).isEqualTo('blåa');
+    assertThat(obj.isNeuter).isNil();
+    assertThat(obj.theName).isEqualTo('den blåa stolen');
+    assertThat(obj.aName).isEqualTo('en blå stol');
+
+    // blå, blåa (adj s1), stol, stolen (subst s1), bekväm, bekväma (adj s2) — 6 sökord
+    assertThat(obj.vocabWords).hasLength(6);
+    assertThat(obj.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['blå', MatchAdj]);
+    assertThat(obj.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['blåa', MatchAdj]);
+    assertThat(obj.vocabWords[3]).extractingProps([&wordStr, &posFlags]).isEqualTo(['stol', MatchNoun]);
+    assertThat(obj.vocabWords[4]).extractingProps([&wordStr, &posFlags]).isEqualTo(['stolen', MatchNoun]);
+    assertThat(obj.vocabWords[5]).extractingProps([&wordStr, &posFlags]).isEqualTo(['bekväm', MatchAdj]);
+    assertThat(obj.vocabWords[6]).extractingProps([&wordStr, &posFlags]).isEqualTo(['bekväma', MatchAdj]);
+
+    cleanUp(obj);
+};
+
+TestUnit 'blå+a stor+a stol+en (flera adj i sektion 1)' run {
+    local obj = new Thing();
+    obj.vocab = 'blå+a stor+a stol+en';
+    obj.initVocab();
+
+    // Alla föregående adjektiv samlas och läggs före substantivets grundform
+    assertThat(obj.name).isEqualTo('blå stor stol');
+    assertThat(obj.definiteForm).isEqualTo('stolen');
+    // Alla adj. definitiva former samlas med mellanslag
+    assertThat(obj.shortNameAdjDef).isEqualTo('blåa stora');
+    assertThat(obj.isNeuter).isNil();
+    assertThat(obj.theName).isEqualTo('den blåa stora stolen');
+    assertThat(obj.aName).isEqualTo('en blå stor stol');
+
+    // blå, blåa, stor, stora (adj), stol, stolen (subst) — 6 sökord
+    assertThat(obj.vocabWords).hasLength(6);
+    assertThat(obj.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['blå', MatchAdj]);
+    assertThat(obj.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['blåa', MatchAdj]);
+    assertThat(obj.vocabWords[3]).extractingProps([&wordStr, &posFlags]).isEqualTo(['stor', MatchAdj]);
+    assertThat(obj.vocabWords[4]).extractingProps([&wordStr, &posFlags]).isEqualTo(['stora', MatchAdj]);
+    assertThat(obj.vocabWords[5]).extractingProps([&wordStr, &posFlags]).isEqualTo(['stol', MatchNoun]);
+    assertThat(obj.vocabWords[6]).extractingProps([&wordStr, &posFlags]).isEqualTo(['stolen', MatchNoun]);
+
+    cleanUp(obj);
+};
+
+TestUnit 'blå stol+en (adj utan +notation i sektion 1)' run {
+    // Utan +notation på adjektivet saknas den definitiva adj-formen.
+    // name byggs ändå, men theName får ingen adj-prefix.
+    local obj = new Thing();
+    obj.vocab = 'blå stol+en';
+    obj.initVocab();
+
+    assertThat(obj.name).isEqualTo('blå stol');
+    assertThat(obj.definiteForm).isEqualTo('stolen');
+    // Ingen definitiv adj-form → shortNameAdjDef är nil
+    assertThat(obj.shortNameAdjDef).isNil();
+    assertThat(obj.isNeuter).isNil();
+    // theName faller tillbaka på definiteForm (precis som utan adj)
+    assertThat(obj.theName).isEqualTo('stolen');
+    assertThat(obj.aName).isEqualTo('en blå stol');
+
+    // blå (adj, bara grundform), stol, stolen (subst) — 3 sökord
+    assertThat(obj.vocabWords).hasLength(3);
+    assertThat(obj.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['blå', MatchAdj]);
+    assertThat(obj.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['stol', MatchNoun]);
+    assertThat(obj.vocabWords[3]).extractingProps([&wordStr, &posFlags]).isEqualTo(['stolen', MatchNoun]);
+
+    cleanUp(obj);
+};
+
+TestUnit 'explicit name åsidosätts inte av adj i sektion 1' run {
+    // Om name är satt direkt på objektet ska initVocab inte skriva över det.
+    local obj = new Thing();
+    obj.vocab = 'blå+a stol+en';
+    obj.name = 'min stol';
+    obj.initVocab();
+
+    assertThat(obj.name).isEqualTo('min stol');
+    // shortNameAdjDef sätts ändå (för theName-beräkning om definiteForm finns)
+    assertThat(obj.shortNameAdjDef).isEqualTo('blåa');
+    assertThat(obj.definiteForm).isEqualTo('stolen');
+
+    cleanUp(obj);
+};
+
+
+// --- H1: Adj i sektion 1 — plural, massNoun och sammansatt substantiv ---
+
+TestUnit 'blå+a stolar+na[pl] (adj i sektion 1, plural)' run {
+    // plural=true sätts via 'dem' i sektion 4; artikel i theName blir 'de'
+    local obj = new Thing();
+    obj.vocab = 'blå+a stolar+na[pl];;;dem';
+    obj.initVocab();
+
+    assertThat(obj.name).isEqualTo('blå stolar');
+    assertThat(obj.definiteForm).isEqualTo('stolarna');
+    assertThat(obj.shortNameAdjDef).isEqualTo('blåa');
+    assertThat(obj.isNeuter).isNil();
+    assertThat(obj.plural).isEqualTo(true);
+    assertThat(obj.theName).isEqualTo('de blåa stolarna');
+    assertThat(obj.aName).isEqualTo('några blå stolar');
+
+    // blå, blåa (adj), stolar, stolarna (plural) — 4 sökord
+    assertThat(obj.vocabWords).hasLength(4);
+    assertThat(obj.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['blå', MatchAdj]);
+    assertThat(obj.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['blåa', MatchAdj]);
+    assertThat(obj.vocabWords[3]).extractingProps([&wordStr, &posFlags]).isEqualTo(['stolar', MatchPlural]);
+    assertThat(obj.vocabWords[4]).extractingProps([&wordStr, &posFlags]).isEqualTo(['stolarna', MatchPlural]);
+
+    cleanUp(obj);
+};
+
+TestUnit 'lite blå:tt+a mjöl+et (adj i sektion 1, massNoun neutrum)' run {
+    // 'lite' → massNoun=true; massNoun → ingen artikel i theName ('blåa mjölet')
+    // blå:tt+a → standardForm='blått' (neutrum indef.), definiteForm='blåa'
+    // aName returnerar name utan artikel för massNoun
+    local obj = new Thing();
+    obj.vocab = 'lite blå:tt+a mjöl+et';
+    obj.initVocab();
+
+    assertThat(obj.name).isEqualTo('blått mjöl');
+    assertThat(obj.definiteForm).isEqualTo('mjölet');
+    assertThat(obj.shortNameAdjDef).isEqualTo('blåa');
+    assertThat(obj.massNoun).isEqualTo(true);
+    assertThat(obj.isNeuter).isEqualTo(true);
+    assertThat(obj.theName).isEqualTo('blåa mjölet');
+    assertThat(obj.aName).isEqualTo('blått mjöl');
+
+    // blått, blåa (adj), mjöl, mjölet (subst) — 4 sökord
+    assertThat(obj.vocabWords).hasLength(4);
+    assertThat(obj.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['blått', MatchAdj]);
+    assertThat(obj.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['blåa', MatchAdj]);
+    assertThat(obj.vocabWords[3]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mjöl', MatchNoun]);
+    assertThat(obj.vocabWords[4]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mjölet', MatchNoun]);
+
+    cleanUp(obj);
+};
+
+TestUnit 'vikt+a papper:et^s+flyg+plan+et (adj i sektion 1 + 3-komponents sammansatt subst)' run {
+    // Komplex: adj med +notation + sammansatt substantiv med foge-s och altEnding.
+    // 3 komponenter → n*(n+1) = 12 substantivord (6 fönster × 2 ord) + 2 adj = 14 totalt.
+    //
+    // Fönster (start=1): pappersflygplan/et, pappersflyg/et, papper/et
+    // Fönster (start=2): flygplan/et, flyg/et
+    // Fönster (start=3): plan/et
+    local obj = new Thing();
+    obj.vocab = 'vikt+a papper:et^s+flyg+plan+et';
+    obj.initVocab();
+
+    assertThat(obj.name).isEqualTo('vikt pappersflygplan');
+    assertThat(obj.definiteForm).isEqualTo('pappersflygplanet');
+    assertThat(obj.shortNameAdjDef).isEqualTo('vikta');
+    assertThat(obj.isNeuter).isEqualTo(true);
+    assertThat(obj.theName).isEqualTo('det vikta pappersflygplanet');
+    assertThat(obj.aName).isEqualTo('ett vikt pappersflygplan');
+
+    assertThat(obj.vocabWords).hasLength(14);
+    // adj
+    assertThat(obj.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['vikt', MatchAdj]);
+    assertThat(obj.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['vikta', MatchAdj]);
+    // start=1, kortaste fönstret först (len=1 → len=2 → len=3)
+    assertThat(obj.vocabWords[3]).extractingProps([&wordStr, &posFlags]).isEqualTo(['papper', MatchNoun]);
+    assertThat(obj.vocabWords[4]).extractingProps([&wordStr, &posFlags]).isEqualTo(['papperet', MatchNoun]);
+    assertThat(obj.vocabWords[5]).extractingProps([&wordStr, &posFlags]).isEqualTo(['pappersflyg', MatchNoun]);
+    assertThat(obj.vocabWords[6]).extractingProps([&wordStr, &posFlags]).isEqualTo(['pappersflyget', MatchNoun]);
+    assertThat(obj.vocabWords[7]).extractingProps([&wordStr, &posFlags]).isEqualTo(['pappersflygplan', MatchNoun]);
+    assertThat(obj.vocabWords[8]).extractingProps([&wordStr, &posFlags]).isEqualTo(['pappersflygplanet', MatchNoun]);
+    // start=2
+    assertThat(obj.vocabWords[9]).extractingProps([&wordStr, &posFlags]).isEqualTo(['flyg', MatchNoun]);
+    assertThat(obj.vocabWords[10]).extractingProps([&wordStr, &posFlags]).isEqualTo(['flyget', MatchNoun]);
+    assertThat(obj.vocabWords[11]).extractingProps([&wordStr, &posFlags]).isEqualTo(['flygplan', MatchNoun]);
+    assertThat(obj.vocabWords[12]).extractingProps([&wordStr, &posFlags]).isEqualTo(['flygplanet', MatchNoun]);
+    // start=3
+    assertThat(obj.vocabWords[13]).extractingProps([&wordStr, &posFlags]).isEqualTo(['plan', MatchNoun]);
+    assertThat(obj.vocabWords[14]).extractingProps([&wordStr, &posFlags]).isEqualTo(['planet', MatchNoun]);
+
+    cleanUp(obj);
+};
+
+
+// --- H2: Adjektiv i sektion 2 ---
 
 TestUnit 'boll+en;rund+a (adjektiv med +notation i sektion 2)' run {
     local obj = new Thing();
@@ -878,7 +1116,7 @@ TestUnit 'kiwi (ärvd vocab utan *)' run {
     assertThat(kiwi.name).isEqualTo('kiwi');
     assertThat(kiwi.definiteForm).isEqualTo('kiwin');
     assertThat(kiwi.isNeuter).isEqualTo(nil);
-    assertThat(kiwi.vocabWords).hasLengt(6);
+    assertThat(kiwi.vocabWords).hasLength(6);
 
     assertThat(kiwi.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['kiwi', MatchNoun]);
     assertThat(kiwi.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['kiwin', MatchNoun]);
@@ -893,7 +1131,7 @@ TestUnit 'kiwi (ärvd vocab utan *)' run {
 TestUnit 'rodFrukt (arv med *)' run {
     //inspectVocabWords(rodFrukt);
 
-    assertThat(rodFrukt.vocabWords).hasLengt(8);
+    assertThat(rodFrukt.vocabWords).hasLength(8);
 
     assertThat(rodFrukt.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['röd', MatchAdj]);
     assertThat(rodFrukt.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['röda', MatchAdj]);
@@ -909,7 +1147,7 @@ TestUnit 'rodFrukt (arv med *)' run {
 TestUnit 'mango (blockerat adjektivarv med -)' run {
     //inspectVocabWords(mango);
 
-    assertThat(mango.vocabWords).hasLengt(4);
+    assertThat(mango.vocabWords).hasLength(4);
 
     assertThat(mango.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mango', MatchNoun]);
     assertThat(mango.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mangon', MatchNoun]);
@@ -921,7 +1159,7 @@ TestUnit 'mango (blockerat adjektivarv med -)' run {
 TestUnit 'ananas (blockerat pluralarv med -)' run {
     //inspectVocabWords(ananas);
 
-    assertThat(ananas.vocabWords).hasLengt(4);
+    assertThat(ananas.vocabWords).hasLength(4);
 
     assertThat(ananas.vocabWords[1]).extractingProps([&wordStr, &posFlags]).isEqualTo(['ananas', MatchNoun]);
     assertThat(ananas.vocabWords[2]).extractingProps([&wordStr, &posFlags]).isEqualTo(['ananasen', MatchNoun]);

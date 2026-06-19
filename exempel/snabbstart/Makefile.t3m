@@ -2,7 +2,6 @@
 
 -I liblite
 -D LANGUAGE=swedish
--D DEBUG__
 -D __DEBUG
 -Fy obj
 -Fo obj

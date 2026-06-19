@@ -262,6 +262,23 @@ class LMentionable: object
             return str;
         }
         if(definiteForm) {
+            /* Om ett adjektiv angavs i sektion 1 (t.ex. 'blå+a stol+en') byggs
+             * hela den bestämda frasen: 'den blåa stolen'. Artikel väljs efter
+             * plural/massNoun/isNeuter. Utan adjektiv i sektion 1 returneras
+             * definiteForm direkt, precis som tidigare. */
+            if(shortNameAdjDef) {
+                /* Artikel väljs efter böjningstyp:
+                 * - massNoun → ingen artikel (substantivet bär redan bestämdheten: 'blåa mjölet')
+                 * - plural   → 'de'
+                 * - neutrum  → 'det'
+                 * - utrum    → 'den' */
+                if (massNoun)
+                    return shortNameAdjDef + ' ' + definiteForm;
+                if (plural)
+                    return 'de ' + shortNameAdjDef + ' ' + definiteForm;
+                local art = isNeuter ? 'det' : 'den';
+                return art + ' ' + shortNameAdjDef + ' ' + definiteForm;
+            }
             return definiteForm;
         }
         if(self.ofKind(Room)) {
@@ -735,7 +752,19 @@ class LMentionable: object
          *   papper" är effektivt en pappershög; en "nyckel till ytterdörren
          *   av huset" är effektivt en ytterdörrshusnyckel.  
          */
+        /* Notera om name var satt direkt på objektet redan innan initVocab kördes,
+         * så att vi inte skriver över ett explicit satt name. */
+        local nameWasPreset = propDefined(&name, PropDefDirectly);
+
+        /* Samlar standard- resp. definitiva former för adjektiv i sektion 1
+         * som förekommer FÖRE substantivet (t.ex. 'blå+a' i 'blå+a stol+en').
+         * Används efter loopen för att bygga name='blå stol' och
+         * shortNameAdjDef='blåa'. */
+        local adjStdParts = new Vector();
+        local adjDefParts = new Vector();
+
         local firstPhrase = true;
+        local pastNoun = nil;
         for ( ; i <= wlen ; ++i)
         {
             /* få detta ord och nästa */
@@ -776,7 +805,7 @@ class LMentionable: object
                 /* Det är en svag token */
                 pos = MatchWeak;
             }
-            
+
             else if (firstPhrase
                      && (wnxt == nil || rexMatch(prepWordPat, wnxt) != nil))
             {
@@ -785,6 +814,7 @@ class LMentionable: object
 
                 /* vi har precis lämnat den första frasen */
                 firstPhrase = nil;
+                pastNoun = true;
             }
             else
             {
@@ -793,8 +823,28 @@ class LMentionable: object
             }
 
             /* ange ordet under den ordklass vi bestämde oss för */
-            initVocabWord(w, pos);
+            local wordForms = initVocabWord(w, pos);
+
+            /* Samla adjektivets former — bara om adjektivet förekommer FÖRE
+             * substantivet i sektion 1. Adjektiv i prepositionsfras (post-noun,
+             * t.ex. 'nyckel till dörren') ska inte ingå i name. */
+            if(pos == MatchAdj && !pastNoun && wordForms != nil) {
+                if(wordForms.standardForm != nil) adjStdParts.append(wordForms.standardForm);
+                if(wordForms.definiteForm != nil) adjDefParts.append(wordForms.definiteForm);
+            }
         }
+
+        /* Sätt adjektivets grundform(er) framför name om adjektiv finns i
+         * sektion 1. initVocabWord har redan satt name till substantivets
+         * grundform, t.ex. 'stol'. Resultatet blir t.ex. 'blå stol'. */
+        if(!nameWasPreset && adjStdParts.length() > 0 && name != nil)
+            name = adjStdParts.join(' ') + ' ' + name;
+
+        /* Spara adjektivets definitiva form för theNameFrom, t.ex. 'blåa'.
+         * theNameFrom kombinerar denna med definiteForm och artikel:
+         * 'den blåa stolen'. */
+        if(adjDefParts.length() > 0)
+            shortNameAdjDef = adjDefParts.join(' ');
 
         
         /* den andra sektionen är listan över adjektiv */
@@ -1108,13 +1158,22 @@ class LMentionable: object
     plusNotationPat = static new RexPattern('.+(<vbar|plus>.+)+')
 
     //-------------------------------
-    definiteForm = nil // Det definitiva ordet
+    definiteForm = nil // Det definitiva ordet (t.ex. 'stolen')
+
+    /* Adjektivets definitiva form från sektion 1, om adjektiv angavs där
+     * (t.ex. 'blåa' för vocab 'blå+a stol+en'). Sätts av initVocab och
+     * används av theNameFrom för att bygga 'den blåa stolen'. Nil annars. */
+    shortNameAdjDef = nil
     //-------------------------------
     
     initVocabWord(w, matchFlags)
     {
-        // anta att detta kommer att anges i ordboken som ett substantiv 
+        // anta att detta kommer att anges i ordboken som ett substantiv
         local partOfSpeech = &noun;
+
+        /* Returneras till anroparen (initVocab-loopen) så att adj-former kan
+         * samlas utan extra anrop till createCompoundWordVariations. */
+        local resultForms = nil;
 
 
         /* 
@@ -1172,27 +1231,36 @@ class LMentionable: object
             local matchCombineVocabWordsNotation = rexMatch(plusNotationPat, w);
             
             if(!matchCombineVocabWordsNotation) {
-                // Ord utan kombination får antas komma i qualified-form, 
-                // så som "David" eller "fröken Ur"
+                // Ord utan plusnotation, t.ex. 'David' eller 'fröken Ur'.
+                // Sätt name bara för substantiv — adjektiv ska inte skriva
+                // över name (fel gjordes tidigare via partOfSpeech == &noun
+                // som alltid är sant, se nedan).
                 // qualified = true;
                 // definiteForm = w;
-                if(!propDefined(&name, PropDefDirectly)) {
+                if((matchFlags & MatchNoun) != 0 && !propDefined(&name, PropDefDirectly)) {
                     name = w;
                 }
-                addDictWord(w, partOfSpeech, matchFlags); 
+                addDictWord(w, partOfSpeech, matchFlags);
+                resultForms = object { standardForm = w  definiteForm = nil };
             } else {
                 local forms = createCompoundWordVariations(self, w, partOfSpeech, matchFlags, enableShortenRepeatingCharacters);
                 w = forms.standardForm;
 
-                // Såvida inte &name, &definiteForm tilldelats redan, använd värdena från resultatet
-                if(partOfSpeech == &noun) {
+                /* OBS: Kontrollera matchFlags, inte partOfSpeech. partOfSpeech
+                 * är alltid &noun (hårdkodat överst i funktionen) och skulle
+                 * ge fel resultat för adjektiv — de skulle råka sätta name och
+                 * definiteForm före substantivet, med adjektivets former som
+                 * resultat. MatchPlural inkluderas eftersom pluralsubstantiv
+                 * (t.ex. 'vindruvor+na[pl]') också ska sätta name/definiteForm. */
+                if((matchFlags & (MatchNoun | MatchPlural)) != 0) {
                     if(!propDefined(&name, PropDefDirectly)) {
                         name = forms.standardForm;
                     }
                     if(!propDefined(&definiteForm, PropDefDirectly)) {
-                        definiteForm = forms.definiteForm; 
+                        definiteForm = forms.definiteForm;
                     }
                 }
+                resultForms = forms;
             }
         }
 
@@ -1357,8 +1425,10 @@ class LMentionable: object
         // om combineVocabWords är aktiv:
         if(!combineVocabWords) {
             /* lägg till detta ord till ordboken och till vår interna vokabulärlista */
-            addDictWord(w, partOfSpeech, matchFlags); 
+            addDictWord(w, partOfSpeech, matchFlags);
         }
+
+        return resultForms;
     }
 
     getNeuterForm(word) {

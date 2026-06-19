@@ -111,13 +111,14 @@ cykelslang: Thing 'cykel|slang+en';
 
 ## Adjektivsektionen
 
-Adjektiv läggs i sektion 2. Varje adjektiv anges med sin grundform och
+Adjektiv läggs normalt i sektion 2. Varje adjektiv anges med sin grundform och
 böjd form separerade med `+`:
 
 ```tads3
 apple: Thing 'äpple+t;stor+a röd+a';
 // adjektiv: stor, stora, röd, röda
 // substantiv: äpple, äpplet
+// name = 'äpple',  theName = 'äpplet'
 ```
 
 Adjektiv utan `+` tas som de är och skapar bara ett ord:
@@ -126,6 +127,32 @@ Adjektiv utan `+` tas som de är och skapar bara ett ord:
 boll: Thing 'boll+en;rund';
 // adjektiv: rund
 ```
+
+### Adjektiv i sektion 1 — adjektiv som del av name
+
+Placeras ett adjektiv **i sektion 1**, före substantivet, inkluderas det
+automatiskt i `name` och `theName`:
+
+```tads3
+blåStol: Thing 'blå+a stol+en;bekväm+a';
+// name    = 'blå stol'
+// theName = 'den blåa stolen'
+// aName   = 'en blå stol'
+// adjektiv (sökord): blå, blåa, bekväm, bekväma
+// substantiv (sökord): stol, stolen
+```
+
+Artikeln i `theName` väljs automatiskt:
+
+| Objekt | Artikel |
+|---|---|
+| Singular utrum | `den` |
+| Singular neutrum | `det` |
+| Plural eller massNoun | `de` |
+
+Adjektiv i sektion 1 genererar sökord precis som adjektiv i sektion 2.
+Använd sektion 1 när adjektivet ska vara en del av objektets namn (som det
+visas i spelet), och sektion 2 när adjektivet bara ska vara ett sökord.
 
 ---
 
@@ -180,6 +207,7 @@ vindruvor: Thing 'vindruvor+na[pl];;;dem';
 | `'äpple+t'` | äpple, äpplet | neutrum |
 | `'dörr+en'` | dörr, dörren | utrum |
 | `'äpple+t;stor+a röd+a'` | äpple, äpplet, stor, stora, röd, röda | neutrum |
+| `'blå+a stol+en;bekväm+a'` | blå, blåa, stol, stolen, bekväm, bekväma — name='blå stol', theName='den blåa stolen' | utrum |
 | `'äpple+t;;frukt+en'` | äpple, äpplet, frukt, frukten | neutrum |
 | `'äpple+t;;äpplen+a[pl]'` | äpple, äpplet, äpplen, äpplena | neutrum + plural |
 | `'vindruvor+na[pl]'` | vindruvor, vindruvorna | plural |
