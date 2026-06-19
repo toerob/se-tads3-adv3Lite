@@ -1797,9 +1797,9 @@ TestUnit 'cannotGetInCarriedMsg' run {
 
 TestUnit 'okayGetOutOfMsg' run {
   [ 
-      [spelare1aPerspektiv, vagnen]     ->'Okej, jag gick ut ur vagnen.'
-    , [spelare2aPerspektiv, taltet]     ->'Okej, du gick ut ur tältet.'
-    , [spelare3ePerspektiv, poolerna]   ->'Okej, Bob gick ut ur poolerna.'
+      [spelare1aPerspektiv, vagnen]     ->'Okej, jag klev ut ur vagnen.'
+    , [spelare2aPerspektiv, taltet]     ->'Okej, du klev ut ur tältet.'
+    , [spelare3ePerspektiv, poolerna]   ->'Okej, Bob klev ut ur poolerna.'
 
   ].forEachAssoc(function(actorAndObj, expected) {
     mainOutputStream.capturedOutputBuffer = new StringBuffer();    

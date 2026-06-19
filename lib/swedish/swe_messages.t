@@ -544,7 +544,7 @@ CustomMessages
         Msg(cannot enter, '{Ref subj dobj} {är} inte något {jag} {kan} gå in i. '),
         Msg(actor already in, '{Jag} {är} redan {i dobj}. '),
         Msg(cannot enter carried, '{Jag} {kan} inte gå in i {ref dobj} medan {jag} bär på {dem dobj}. '),
-        Msg(okay get outof, 'Okej, {jag} {går} ut ur {ref dobj}. '),
+        Msg(okay get outof, 'Okej, {jag} {kliver} {utur dobj}. '),
         Msg(actor not in,'{Jag} {är} inte i {ref dobj}. '),
         Msg(actor not on,'{Jag} {är} inte på {ref dobj}. '),
         Msg(cannot remove, '{Ref subj dobj} {kan} inte tas bort. '),
