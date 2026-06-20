@@ -14,15 +14,16 @@ modify Actor
     // I svenskan använder vi aktiv form istället för participform,
     // behåller participle för andra fall, där de kan tänkas behövas.
     postureDesc = posture.active 
-    actorSpecialDesc() {
-        if(isPlayerChar) {
-            return;
-        }
-        local descName = proper ? theName : aName;
+;
 
-        if(location == getOutermostRoom)
-            "\^<<descName>> <<postureDesc>> {här|där}. ";
-        else
-            "\^<<descName>> <<postureDesc>> <<location.objInName>>. ";
+/*
+// TODO: testa av, bör inte behöva ändras så här:
+modify Thing
+    nestedLoc(actor) {
+        return //BMsg(actor nested location posture name,  
+                        bmsg(' (<<actor.posture.participle>>
+                             <<actor.location.objInPrep>> 
+                             <<actor.location.theName>>)');
     }
 ;
+*/

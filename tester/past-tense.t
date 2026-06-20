@@ -101,17 +101,21 @@ bobsOgonObjNeutrumPlural: Thing 'ögon+en;;;dem'
   owner = [spelare3ePerspektiv]
 ;
     
-
-
-/*
-
-musketorer: Actor 'musketörer+na'
-  pcReferralPerson = ThirdPerson
-  isProper = nil
-  isHim = true
-  isPlural = true
+baren: Room 'baren' 'baren'   theName = 'baren'
+  east = valvgangPathPassage
 ;
-*/
+hallen: Room 'hallen' 'hallen'
+  west = valvgangPathPassage
+;
++ valvgangPathPassage: PathPassage 'valvgång+en';
++ trappan: StairwayUp 'trappa+n';
++ kallartrappan: StairwayDown 'trappa+n';
+
+musketorer: Actor 'musketörer+na;;;dem honom' @hallen;
+vaktaren: Actor 'väktare+n;;;honom' @hallen;
+hobbit: Actor 'hobbit+en;;;honom' @hallen;
+
+
 appletObjNeutrumSingular: Thing 'äpple+t;rö:tt+da;;det';
 jordgubbeObjUtrumSingular: Thing 'jordgubbe+n;;en';
 vindruvorObjNeutrumPlural: Thing 'vindruvor+na[pl];;;dem';
@@ -120,7 +124,7 @@ vinet: Thing 'vin+et';
 lasken: Thing 'läsk+en';
 dropparna: Thing 'droppar+na[pl];;;dem';
 
-korgen: Container 'korg+en';
+korgen: Container 'korg+en' isLit = true;
 hyllan: Surface 'hylla+n'; 
 karlet: Surface 'kärl+et'; 
 garderoben: OpenableContainer 'garderob+en';
@@ -3552,3 +3556,103 @@ TestUnit 'cannotGoNearThereMsg' run {
   });
 };
 
+TestUnit 'Thing.revealOnMove' run {
+  [
+      [spelare1aPerspektiv, appletObjNeutrumSingular, nyckel]    ->'När äpplet flyttades synliggjordes en nyckel tidigare dold under det. '
+    , [spelare2aPerspektiv, hatten, vindruvorObjNeutrumPlural]   ->'När hatten flyttades synliggjordes några vindruvor tidigare dold under den. '
+    , [spelare3ePerspektiv, vindruvorObjNeutrumPlural, skarpet]   ->'När vindruvorna flyttades synliggjordes ett skärp tidigare dold under dem. '
+
+  ].forEachAssoc(function(actorAndObjs, expected) {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    mainOutputStream.hideOutput = nil;  
+    local actor = actorAndObjs[1];
+    local obj = actorAndObjs[2];
+    local obj2 = actorAndObjs[3];
+    gCommand = new Command(actor, Examine, obj);
+
+    obj.hiddenUnder = [obj2];
+    obj.dropItemsUnder = true;
+
+    obj.revealOnMove();
+    assertThat(gCommand.afterReports[1]).startsWith(expected);
+  });
+};
+
+TestUnit 'Thing.revealOnMove bakom' run {
+  [
+      [spelare1aPerspektiv, appletObjNeutrumSingular, nyckel]    ->'När äpplet flyttades synliggjordes en nyckel tidigare dold bakom det. '
+    , [spelare2aPerspektiv, hatten, vindruvorObjNeutrumPlural]   ->'När hatten flyttades synliggjordes några vindruvor tidigare dold bakom den. '
+    , [spelare3ePerspektiv, vindruvorObjNeutrumPlural, skarpet]   ->'När vindruvorna flyttades synliggjordes ett skärp tidigare dold bakom dem. '
+
+  ].forEachAssoc(function(actorAndObjs, expected) {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    mainOutputStream.hideOutput = nil;  
+    local actor = actorAndObjs[1];
+    local obj = actorAndObjs[2];
+    local obj2 = actorAndObjs[3];
+    gCommand = new Command(actor, Examine, obj);
+
+    obj.hiddenBehind = [obj2];
+    obj.dropItemsUnder = true;
+
+    obj.revealOnMove();
+    assertThat(gCommand.afterReports[1]).startsWith(expected);
+  });
+};
+
+TestUnit 'Thing.revealOnMove - 3e meddelandet' run {
+  [
+      [spelare1aPerspektiv, appletObjNeutrumSingular, nyckel]    ->'När äpplet flyttades synliggjordes en nyckel tidigare dold bakom det. Även en nyckel lämnades kvar.'
+    , [spelare2aPerspektiv, hatten, vindruvorObjNeutrumPlural]   ->'När hatten flyttades synliggjordes några vindruvor tidigare dold bakom den. Även några vindruvor lämnades kvar.'
+    , [spelare3ePerspektiv, vindruvorObjNeutrumPlural, skarpet]   ->'När vindruvorna flyttades synliggjordes ett skärp tidigare dold bakom dem. Även ett skärp lämnades kvar.'
+
+  ].forEachAssoc(function(actorAndObjs, expected) {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    mainOutputStream.hideOutput = nil;  
+    local actor = actorAndObjs[1];
+    local obj = actorAndObjs[2];
+    local obj2 = actorAndObjs[3];
+    gCommand = new Command(actor, Examine, obj);
+
+    obj.hiddenBehind = [obj2];
+
+    obj.dropItemsUnder = true;
+    obj.contType = Under;
+    obj.contents = [obj2];
+
+    obj.revealOnMove();
+    assertThat(gCommand.afterReports[1]).startsWith(expected);
+  });
+};
+
+
+
+TestUnit 'Actor.sayActorArriving(fromLoc)' run {
+  [
+      [musketorer, baren]   ->'Musketörerna anlände till platsen.'
+    , [vaktaren, baren]     ->'Väktaren anlände till platsen.'
+
+  ].forEachAssoc(function(objs, expected) {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    //mainOutputStream.hideOutput = nil;  
+    local person = objs[1];
+    local room = objs[2];
+
+    person.sayActorArriving(room);
+    assertThat(o.trimWS()).startsWith(expected);
+  });
+};
+
+
+TestUnit 'Actor.actorRemoteSpecialDesc(pov)' run {
+  [
+      [musketorer, baren]   ->'\^musketörerna var i hallen'
+
+  ].forEachAssoc(function(objs, expected) {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    //mainOutputStream.hideOutput = nil;  
+    local person = objs[1];
+    person.actorRemoteSpecialDesc(nil);
+    assertThat(o).startsWith(expected);
+  });
+};

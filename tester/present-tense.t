@@ -102,15 +102,11 @@ bobsOgonObjNeutrumPlural: Thing 'ögon+en;;;dem'
     
 
 
-/*
+musketorer: Actor 'musketörer+na;;;dem honom' @hallen;
+vaktaren: Actor 'väktare+n;;;honom' @hallen;
+hobbit: Actor 'hobbit+en;;;honom' @hallen;
 
-musketorer: Actor 'musketörer+na'
-  pcReferralPerson = ThirdPerson
-  isProper = nil
-  isHim = true
-  isPlural = true
-;
-*/
+
 appletObjNeutrumSingular: Thing 'äpple+t;rö:tt+da;;det';
 jordgubbeObjUtrumSingular: Thing 'jordgubbe+n;;en';
 vindruvorObjNeutrumPlural: Thing 'vindruvor+na[pl];;;dem';
@@ -120,6 +116,8 @@ lasken: Thing 'läsk+en';
 dropparna: Thing 'droppar+na[pl];;;dem';
 
 korgen: Container 'korg+en';
++puppet: Thing 'docka+n';
+
 hyllan: Surface 'hylla+n'; 
 karlet: Surface 'kärl+et'; 
 garderoben: OpenableContainer 'garderob+en';
@@ -173,12 +171,21 @@ roret: Container 'rör+et' 'rör' ;
 
 stegen: Thing 'stege+n' 'stege';
 vaggen: DefaultWall 'vägg+en' 'väggen';
+*/
 
-hobbit: Actor 'hobbit+en' 'hobbit' isHim = true isProper = nil;
+
 baren: Room 'baren' 'baren'   theName = 'baren'
   east = valvgangPathPassage
-  south = passageThroughPassage
 ;
+hallen: Room 'hallen' 'hallen'
+  west = valvgangPathPassage
+;
++ valvgangPathPassage: PathPassage 'valvgång+en';
++ trappan: StairwayUp 'trappa+n';
++ kallartrappan: StairwayDown 'trappa+n';
+
+
+/*
 apan: Actor 'apa+n' 'apa';
 
 + krogare: Actor 'krögare+n' 'krögare' isHim = true isProper = nil;
@@ -193,16 +200,7 @@ apan: Actor 'apa+n' 'apa';
   isProper = nil
   posture = sitting
 ;
-
-+ passageThroughPassage: ThroughPassage 'passage+n' 'passage' theName = 'passagen';
-+ trappan: StairwayUp 'trappa+n' 'trappa' theName = 'trappan';
-+ kallartrappan: StairwayDown 'trappa+n' 'trappa' theName = 'källartrappan';
 fylke: OutdoorRoom 'Fylke' 'Fylke';
-hallen: Room 'hallen' 'hallen'
-  west = valvgangPathPassage
-;
-
-+ valvgangPathPassage: PathPassage 'valvgång+en' 'valvgång' theName = 'valvgången';
 masten: OutdoorRoom 'masten' 'masten';
 +pirat: Actor 'pirat+en' 'pirat';
 +matros: Actor 'matros+en' 'matros';
@@ -3541,3 +3539,119 @@ TestUnit 'cannotGoNearThereMsg' run {
   });
 };
 
+TestUnit 'Thing.revealOnMove under' run {
+  [
+      [spelare1aPerspektiv, appletObjNeutrumSingular, nyckel]    ->'När äpplet flyttas synliggörs en nyckel tidigare dold under det. '
+    , [spelare2aPerspektiv, hatten, vindruvorObjNeutrumPlural]   ->'När hatten flyttas synliggörs några vindruvor tidigare dold under den. '
+    , [spelare3ePerspektiv, vindruvorObjNeutrumPlural, skarpet]   ->'När vindruvorna flyttas synliggörs ett skärp tidigare dold under dem. '
+
+  ].forEachAssoc(function(actorAndObjs, expected) {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    mainOutputStream.hideOutput = nil;  
+    local actor = actorAndObjs[1];
+    local obj = actorAndObjs[2];
+    local obj2 = actorAndObjs[3];
+    gCommand = new Command(actor, Examine, obj);
+    obj.hiddenUnder = [obj2];
+
+    obj.revealOnMove();
+    assertThat(gCommand.afterReports[1]).startsWith(expected);
+  });
+}
+;
+
+
+TestUnit 'Thing.revealOnMove bakom' run {
+  [
+      [spelare1aPerspektiv, appletObjNeutrumSingular, nyckel]    ->'När äpplet flyttas synliggörs en nyckel tidigare dold bakom det. '
+    , [spelare2aPerspektiv, hatten, vindruvorObjNeutrumPlural]   ->'När hatten flyttas synliggörs några vindruvor tidigare dold bakom den. '
+    , [spelare3ePerspektiv, vindruvorObjNeutrumPlural, skarpet]   ->'När vindruvorna flyttas synliggörs ett skärp tidigare dold bakom dem. '
+
+  ].forEachAssoc(function(actorAndObjs, expected) {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    mainOutputStream.hideOutput = nil;  
+    local actor = actorAndObjs[1];
+    local obj = actorAndObjs[2];
+    local obj2 = actorAndObjs[3];
+    gCommand = new Command(actor, Examine, obj);
+
+    obj.hiddenBehind = [obj2];    
+    obj.revealOnMove();
+    assertThat(gCommand.afterReports[1]).startsWith(expected);
+  });
+};
+
+
+TestUnit 'Thing.revealOnMove - 3e meddelandet' run {
+  [
+      [spelare1aPerspektiv, appletObjNeutrumSingular, nyckel]    ->'När äpplet flyttas synliggörs en nyckel tidigare dold bakom det. Även en nyckel lämnas kvar.'
+    , [spelare2aPerspektiv, hatten, vindruvorObjNeutrumPlural]   ->'När hatten flyttas synliggörs några vindruvor tidigare dold bakom den. Även några vindruvor lämnas kvar.'
+    , [spelare3ePerspektiv, vindruvorObjNeutrumPlural, skarpet]   ->'När vindruvorna flyttas synliggörs ett skärp tidigare dold bakom dem. Även ett skärp lämnas kvar.'
+
+  ].forEachAssoc(function(actorAndObjs, expected) {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    mainOutputStream.hideOutput = nil;  
+    local actor = actorAndObjs[1];
+    local obj = actorAndObjs[2];
+    local obj2 = actorAndObjs[3];
+    gCommand = new Command(actor, Examine, obj);
+
+    obj.hiddenBehind = [obj2];
+
+    obj.dropItemsUnder = true;
+    obj.contType = Under;
+    obj.contents = [obj2];
+
+    obj.revealOnMove();
+    assertThat(gCommand.afterReports[1]).startsWith(expected);
+  });
+};
+
+TestUnit 'Actor.sayActorArriving(fromLoc)' run {
+  [
+      [musketorer, baren]   ->'Musketörerna anländer till platsen.'
+    , [vaktaren, baren]     ->'Väktaren anländer till platsen.'
+
+  ].forEachAssoc(function(objs, expected) {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    //mainOutputStream.hideOutput = nil;  
+    local person = objs[1];
+    local room = objs[2];
+
+    person.sayActorArriving(room);
+    assertThat(o.trimWS()).startsWith(expected);
+  });
+};
+
+TestUnit 'Actor.actorRemoteSpecialDesc(pov)' run {
+  [
+      [hobbit, baren]   ->'\^hobbiten är i hallen'
+
+  ].forEachAssoc(function(objs, expected) {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    //mainOutputStream.hideOutput = nil;  
+    local person = objs[1];
+    person.actorRemoteSpecialDesc(nil) ;
+    assertThat(o).startsWith(expected);
+  });
+};
+
+
+/*
+TestUnit 'Room.statusName(actor)' run {
+  [
+      [korgen, puppet]   ->'\^hobbiten är i hallen'
+
+  ].forEachAssoc(function(objs, expected) {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    //mainOutputStream.hideOutput = nil;  
+    local room = objs[1];
+    local actor = objs[2];
+    room.statusName(actor);
+    assertThat(o).startsWith(expected);
+  });
+}
+only=true;
+*/
+
+// TODO: ''

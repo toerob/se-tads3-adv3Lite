@@ -788,9 +788,17 @@ CustomMessages
         Msg(cant climb doen from here,  '{Jag} {kan} inte klättra ner för {ref dobj} {här}ifrån. '),
         Msg(alreadt attached to iobj, '{The subj dobj} {is} already attachd to {1}. '),
 
+
+
         // Overriden in swe_mods / swe_messages
-        // Msg(actor arriving from dir, '{Ref subj traveler} anländ{er/e} från <<dir.arrivalName>>. '),
-        // Msg(actor arriving from dir, '{Ref subj traveler} anländ{er/e} från .  '),
+        //Msg(report left behind, 'När {1}{dummy} {flyttas} synlig{gör}s {2} tidigare dold bakom {3}. '),
+        //Msg(report left behind, '<<if moveReport == ''>>När {1}{dummy} {flyttas} {lämnas} {2} kvar. <<else>>Även <<end>>{dummy}{2} {lämnas} kvar. '),
+        //Msg(report left under, 'När {1}{dummy} {flyttas} synlig{gör}s {2} tidigare dold bakom {3}. '),
+
+        // TODO: test
+        //Msg(actor arriving from dir, '{Ref subj traveler} anländ{er/e} från <<dir.arrivalName>>. '),
+        //Msg(actor arriving from dir, '{Ref subj traveler} anländ{er/e} från .  '),
+
         // Msg(actor arriving, '{Ref subj traveler} anländer till området. '),
         // Msg(actor in location, '\^<<theNameIs>> <<postureDesc>> <<location.objInName>>. ');        		
 
@@ -803,7 +811,6 @@ CustomMessages
         // Msg(default pcsayquip, '<q><<gTopicText.substr(1,1).toUpper()>><<gTopicText.substr(2).toLower()>>,</q> {i} {say}. '),
         // Msg(toggle suggestion enum, 'Uppräkning av ämnesförslag är nu <b><<suggestedTopicLister.enumerateSuggestions ? 'påslaget' : 'avstängt'>></b>.<.p>'),
         // Msg(cant do that special, '{I} {can\'t} <<svPhrase>> {that dobj}. '),
-        // Msg(report left behind, '<<if moveReport == ''>>Flyttar {1} <<else>>Det också <<end>> {dummy} lämnar {2} bakom. '),
         // Msg(input script okay, '<.parser>Läser kommandon från <q><< File.getRootName(fname).htmlify()>></q>...<./parser>\n '),
         // Msg(save failed on server, '<.parser>Misslyckades, på grund av ett problem med att komma åt lagringsservern: <<makeSentence(sse.errMsg)>><./parser>'),
         // Msg(restore failed on server,'<.parser>Misslyckades, på grund av ett problem med att komma åt lagringsservern: <<makeSentence(sse.errMsg)>><./parser>'), 
@@ -851,6 +858,8 @@ CustomMessages
 ;
 
 
+// TODO: These modifications will go away when the library is fixed
+
 modify explicitExitLister
     showListItem(obj, options, pov, infoTab)
     {               
@@ -860,3 +869,335 @@ modify explicitExitLister
         
     }   
 ;
+
+modify Action
+    acknowledgeNotifyStatus(stat) {
+        DMsg(acknowledge notify status, '<.notification>Score notifications are now
+        <<stat ? 'on' : 'off'>>.<./notification> ');
+    }
+;
+
+modify FactHelper
+    doubtFactMsg(beliefVal) {
+        return BMsg(doubt fact, ' (though {i} now regard{s/ed} that as
+            <<str(beliefVal)>>)');
+    }
+;
+
+modify Actor
+    pcDefaultSayQuip = //BMsg(default pcsayquip,  
+        bmsg('<q><<gTopicText.substr(1,1).toUpper()>><<gTopicText.substr(2).toLower()>>,</q> {säger} {jag}. ')   
+
+    actorSpecialDesc() {
+        if(isPlayerChar) {
+            return;
+        }
+        local descName = proper ? theName : aName;
+
+        if(location == getOutermostRoom)
+            dmsg('\^<<descName>> <<postureDesc>> {här|där}. ');
+        else
+            dmsg('\^<<descName>> <<postureDesc>> <<location.objInName>>. ');
+    }
+
+    sayActorArriving(fromLoc)
+    {
+        local traveler = self;
+        gMessageParams(traveler);
+        local dir = getOutermostRoom.getDirectionTo(fromLoc);              
+        if(dir) {
+            //DMsg(actor arriving from dir,
+            dmsg('{Ref subj traveler} {anländer} från <<dir.arrivalName>>. ');
+        } else {
+            //DMsg(actor arriving, 
+            dmsg('{Ref subj traveler} {anländer} till platsen. ');
+        }
+    }
+
+    // TODO: testa av, borde fungera som den är utan override
+    actorRemoteSpecialDesc(pov) 
+    { 
+        if(fDaemon == nil) {
+            //dmsg('\^<<theNameIs>> <<if location != getOutermostRoom>><<location.remoteObjInName(pov)>> <<end>> <<getOutermostRoom.inRoomName(pov)>>. ');
+            //"\^<<theNameIs>> <<location.remoteObjInName(pov)>> <<getOutermostRoom.inRoomName(pov)>>. ";
+            //"\^<<theNameIs>> <<getOutermostRoom.inRoomName(pov)>>. ";
+            if(location != getOutermostRoom) {
+                dmsg('\^<<theNameIs>> <<location.remoteObjInName(pov)>> <<getOutermostRoom.inRoomName(pov)>>. ');
+            } else {
+                dmsg('\^<<theNameIs>> <<getOutermostRoom.inRoomName(pov)>>. ');
+            }
+        }
+    }
+    // TODO: samma med
+    //statusName(actor)
+    
+;
+
+modify EnumerateSuggestions
+    execAction(cmd) {
+        if(defined(suggestedTopicLister)) {
+            suggestedTopicLister.enumerateSuggestions = !suggestedTopicLister.enumerateSuggestions;
+            
+            //DMsg(toggle suggestion enum, 
+            dmsg('Uppräkning av ämnesförslag är nu <b><<suggestedTopicLister.enumerateSuggestions ? 'påslaget' : 'avstängt'>></b>.<.p>');
+        }
+    }
+;
+
+
+modify SpecialVerb
+    showFailureMsg(svPhrase) {
+        DMsg(cant do that special, '{Jag} {kaninte} <<svPhrase>> {det dobj}. ');
+    }
+;    
+
+// TODO: too much overriding
+modify Thing 
+    revealOnMove()
+    {
+        local moveReport = '';
+        local underLoc = location;
+        local behindLoc = location;
+        
+        /* 
+         *   If I don't want to leave items under me behind when I'm moved, and
+         *   I am or have an underside, change the location to move items hidden
+         *   under me to accordingly.
+         */
+        if(contType == Under && dropItemsUnder == nil)
+            underLoc = self;
+        else if(remapUnder != nil && dropItemsUnder == nil)
+            underLoc = remapUnder;
+        
+         /* 
+          *   If I don't want to leave items behind me behind when I'm moved,
+          *   and I am or have a RearContainer, change the location to move
+          *   items hidden under me to accordingly.
+          */
+        if(contType == Behind && dropItemsBehind == nil)
+            behindLoc = self;
+        else if(remapBehind != nil && dropItemsBehind == nil)
+            behindLoc = remapBehind;
+        
+        
+        /* 
+         *   If anything is hidden under us, add a report saying that it's just
+         *   been revealed moved and then move the previously hidden items to
+         *   our location.
+         */
+        if(hiddenUnder.length > 0)
+        {
+            moveReport += bmsg(
+                //report left under, 
+                 'När {1}{dummy} {flyttas} synlig{gör}s {2} tidigare dold under {3}. ',
+                 theName, makeListStr(hiddenUnder), himName);
+                //BMsg(reveal move under,'Moving {1} {dummy} reveal{s/ed} {2}
+                //    previously hidden under {3}. ',
+                //     theName, makeListStr(hiddenUnder), himName);
+                     
+            moveHidden(&hiddenUnder, underLoc);
+            
+        }
+        
+        
+        /* 
+         *   If anything is hidden behind us, add a report saying that's just
+         *   been revealed and then move the previously hidden items to our
+         *   location.
+         */
+        if(hiddenBehind.length > 0)
+        {
+            moveReport += bmsg(//report left behind, 
+                    'När {1}{dummy} {flyttas} synlig{gör}s {2} tidigare dold bakom {3}. ',
+                     theName, makeListStr(hiddenBehind), himName);            
+                //BMsg(reveal move behind,'Moving {1} {dummy} reveal{s/ed} {2}
+                //    previously hidden behind {3}. ',
+                //    theName, makeListStr(hiddenBehind), himName);
+                        
+            moveHidden(&hiddenBehind, behindLoc);            
+        }
+        
+        /* 
+         *   Construct a list of anything left behind from under or behind us
+         *   when we're moved.
+         */
+        local lst = [];
+        
+        if(dropItemsUnder)
+        {
+            if(contType == Under)
+                lst = contents;
+            else if(remapUnder)
+                lst = remapUnder.contents;                    
+        }
+               
+        if(dropItemsBehind)
+        {
+            if(contType == Behind)
+                lst += contents;
+            else if(remapBehind)
+                lst += remapBehind.contents;           
+        }
+        
+        lst = lst.subset({o: !o.isFixed});
+        
+        if(lst.length > 0)
+        {
+            foreach(local cur in lst)
+                cur.moveInto(location);                
+         
+            moveReport +=
+                //BMsg(report left behind, '<<if moveReport == ''>>Moving {1}
+                //    <<else>>It also <<end>> {dummy} {leaves} {2} behind. ',
+                //     theName, makeListStr(lst));
+
+                bmsg(//report left behind, 
+                '<<if moveReport == ''>>När {1}{dummy} {flyttas} {lämnas} {2} kvar. <<else>>Även <<end>>{dummy}{2} {lämnas} kvar. ',
+                    theName, makeListStr(lst));
+
+        }
+        
+        
+        /* 
+         *   If anything has been reported as being revealed, report the
+         *   discovery after reporting the action that caused it.
+         */
+        if(moveReport != '' )
+            reportAfter(moveReport);
+    }
+
+    sayFindHidden(prop, prep)
+    {
+        // TODO: testa av meddelandet 
+        dmsg('\^{1} {ref dobj} {jag} hitta{r|de} {2}<<if findHiddenDest == 
+            gActor>>, som {jag} tar<<end>>. ', 
+            prep.prep, makeListStr(self.(prop)));
+
+    }
+;
+
+modify actorInStagingLocation
+    checkPreCondition(obj, allowImplicit)
+    {
+        local loc = gActor.location;
+        local stagingLoc = obj.stagingLocation;
+        local action;
+        
+        /* If the actor's location is the staging location then we're done. */
+        if(loc == stagingLoc)
+            return true;
+        
+        if(stagingLoc == nil) {
+            gMessageParams(obj);
+            //DMsg(no staging loc, 
+            dmsg('{Ref subj obj} {kaninte} nås. ');
+            return nil;
+        }
+        
+        if(allowImplicit) {
+            local tried = nil;
+            while(!stagingLoc.isOrIsIn(loc)) {
+                action = loc.contType == In ? GetOutOf : GetOff;
+                tried = tryImplicitAction(action, loc);
+                if(gActor.location == loc)
+                    break;
+                
+                loc = gActor.location;
+            }
+                                  
+            if(stagingLoc == loc) return true;
+            
+            local path = [];
+            local step = stagingLoc;
+            
+            while(step && step != loc) {
+                path = [step] + path;
+                step = step.stagingLocation;
+            }
+            
+            foreach(step in path) {
+                action = step.contType == In ? Enter : Board;
+                tried = tryImplicitAction(action, step);                
+                if(gActor.location != step)
+                    break;
+            }
+            if(stagingLoc == gActor.location) return true;        
+            if(tried) return nil;
+        }
+        gMessageParams(stagingLoc);
+        //DMsg(not in staging location,
+        dmsg('{Jag} måste vara <<if stagingLoc.ofKind(Room)>>direkt<<end>> {i stagingloc} för att göra det. ');
+
+        return nil;          
+    }    
+;
+
+modify scoreNotifier
+    firstScoreChange(delta) {
+        scoreChange(delta);
+        //DMsg(first score change, 
+        dmsg('<.p><.parser>Om du föredrar att inte få poängnotifikationer framöver, skriv NOTIFIERA AV.<./parser>');
+    }
+
+    basicScoreChange(delta) {
+        cquoteOutputFilter.deactivate();
+        //DMsg(basic score change,         
+        dmsg('''Din <<aHref('full score', 'poäng', 
+                        'Visa fullständig poäng')>> 
+        har just <<delta > 0 ? 'ökat' : 'minskat'>> med 
+        <<spellNumber(delta > 0 ? delta : -delta)>> 
+        poäng<<delta is in (1, -1) ? '' : 's'>>.''');
+        cquoteOutputFilter.activate();
+    }
+;
+
+modify libScore
+    showScoreMessage(points, maxPoints, turns) {
+        //DMsg(show score,
+        dmsg('På {1} drag<<turns == 1 ? '' : 's'>> har du fått 
+            {2} av totalt {3} poäng<<maxPoints == 1 ? '' : 's'>>. ',
+            turns, points, maxPoints);
+    }
+    showScoreNoMaxMessage(points, turns) {
+        //DMsg(show score no max, 
+        dmsg('På {1} drag<<turns == 1 ? '' : 's'>> har du fått 
+            {2} poäng<<points == 1 ? '' : 's'>>. ',
+             turns, points);        
+    }
+;
+/*
+// TODO: behöver kanske inte inte överridas på det här viset.
+//       Testa av först
+
+modify Room
+    statusName(actor)
+    {
+        local nestedLoc = '';
+        if(!actor.location.ofKind(Room))
+            nestedLoc = 
+        BMsg(actor nested location name,  ' (<<actor.location.objInPrep>> <<actor.location.theName>>)');        
+        if(isIlluminated) {
+            "<<roomTitle>><<nestedLoc>>";
+        } else {
+            "<<darkName>><<nestedLoc>>";            
+        }
+    }
+;
+*/
+
+// TODO: testa av, bör inte behöva ändras, används bara i postures/swe_postures+extensionen:
+// Msg(actor nested location posture name, ' (<<actor.posture.participle>> <<actor.location.objInPrep>> <<actor.location.theName>>)'),
+
+
+// Msg(show notify status, '<.parser>Poängnotifikationer är för närvarande <<stat ? 'på' : 'av'>>.<./parser> '),
+// Msg(extra hints status, 'Extra ledtrådar är för närvarande <<onOrOff(extraHintsActive)>>. För att stänga av dem <<onOrOff(!extraHintsActive)>> använd kommandot <<aHref(cmdstr, cmdstr, 'Stäng av extra ledtrådar ' + onOrOff(!extraHintsActive))>>. '),
+// Msg(exits on off okay, 'Okej. Utgångslistning i statusraden är nu <<stat ? 'PÅ' : 'AV'>>, medan utgångslistning i rumsbeskrivningar är nu <<look ? 'PÅ' : 'AV'>>. '),        
+// Msg(current exit settings, 'Utgångar listas <<if(inStatusLine && inRoomDesc)>> både i statusraden och i rumsbeskrivningar. <<else if(inStatusLine && !inRoomDesc)>> endast i statusraden. <<else if(!inStatusLine && inRoomDesc)>> endast i rumsbeskrivningar. <<else if(!inStatusLine && !inRoomDesc)>> varken i statusraden eller i rumsbeskrivningar. <<end>>'),
+// Msg(time fuse interval error, 'Felaktigt intervall <<interval>> angivet till TimeFuse-konstruktorn. '),
+// Msg(extra hint cmd str, '<<aHref('EXTRA ' + stat, 'EXTRA ' + stat, 'Slår på extra ledtrådar ' + stat.toLower)>>'),        
+// Msg(illegal actor state, '<FONT COLOR=RED><b>VARNING!</b></FONT> I anropet till setState(stat) på Actor <<theName>>, var stat <<stat>> inte en ActorState som tillhörde <<theName>>.'),
+// Msg(set stance error, '<FONT color=red><b>VARNING</b></FONT>: i setStanceToward(<<actor>>, <<stance_>>) är inte <<actor>> en Actor och/eller <<stance_>> inte en Stance.'),
+// Msg(set mood error, '<FONT color=red><b>VARNING!</b></FONT>: i setMood(<<mood_>>), är <<mood_>> inte ett Mood.'),
+// Msg(duplicate fact name, 'FEL! Försökte skapa duplicerat fakta med namnet \'<<namn_>>\'.'),
+// Msg(short notify status, 'NOTIFY <<isOn ? 'PÅ' : 'AV'>>'),
+// Msg(bad agenda item, '<FONT COLOR=RED><b>VARNING!</b></FONT>: försök att lägga till något i agendan för <<getActor.theName>> som inte är en AgendaItem som tillhör denna Actor.'),
