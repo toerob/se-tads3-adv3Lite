@@ -119,10 +119,6 @@ ticketArea: Room 'Biljettområdet' 'biljettområdet'
     "En brokig samling turister och affärsmän, så vitt man kan bedöma, många 
     av dem ser alltmer frustrerade ut över köns längd."
     
-    /*e = "A motley collection of tourists and businesspeople, so far as you can
-    tell, many of them looking increasingly frustrated at the length of the
-    queue. "*/
-  
     notImportantMsg = 'Du har inte tid att bry dig om dem, och du vill inte 
     riskera att dra uppmärksamhet till dig själv.'
 ;
@@ -164,13 +160,6 @@ securityGate: Room 'Säkerhetsgrind' 'Säkerhetsgrinden'
         innan han räcker det till en kollega som går iväg med det. 
         <.reveal kort-konfiskerat> ";
 
-        /*eng = "The metal detector buzzes furiously as you pass through it. The
-        security guard beckons you back immediately, with a pointed
-        tap of his holstered pistol. After a brisk search, he discovers the ID
-        card and takes it off you with a disapproving shake of his head,
-        before handing it to a colleague who walks off with it. <.reveal
-        card-confiscated> ";*/
-        
         IDcard.moveInto(counter);
     }
     
@@ -188,30 +177,18 @@ securityGate: Room 'Säkerhetsgrind' 'Säkerhetsgrinden'
     och sedan utom synhåll bakom ett skrivbord till höger på den bortre sidan. 
     Du är inte säker på att det är ett arrangemang som skulle uppskattas av 
     hälso- och säkerhetsinspektörerna därhemma, men det verkar fungera."
-
-    /*eng = "The cable trails rather slackly from one side of the metal detector across
-    the floor and then out of sight behind a desk over to the right on the far
-    side. You're not sure it's an arrangement that would find favour with health
-    and safety inspectors back home, but it appears to do the job. "*/
     
     notImportantMsg = 'Du är moraliskt säker på att säkerhetsvakten inte kommer 
     låta dig komma i närheten av den. '
         
 ;
 
-//Hall' 'hall; lång; korridor'
 concourse: Room 'Samlingshallen' 'samlingshall+en; lång+a; hall+en'
     "Du är i en lång korridor som förbinder terminalbyggnaden 
     (som ligger söderut) med gaterna (som ligger norrut). I öster 
     finns en snack bar och en dörr som leder västerut. Bredvid dörren till 
     väster, är en liten springa som ser ut som den accepterar magnetiska 
     ID-kort för att manövrera dörrlåset. "
-
-    /*eng = "You are in a long hallway connecting the terminal
-    building (which lies to the south) to the boarding gates (which are
-    to the north). To the east is a snack bar, and a door leads west.
-    Next to the door on the west in a small slot that looks like it
-    accepts magnetic ID cards to operate the door lock. "*/
     
     north = gateArea
     south = securityGate
@@ -255,12 +232,9 @@ concourse: Room 'Samlingshallen' 'samlingshall+en; lång+a; hall+en'
     
 ;
 
-// TODO: bättre ord för slot
 + cardslot: Fixture 'kort|fack+et;;kort|plats+en'  
     "Facket verkar acceptera speciella ID-kort med magnetisk kodning. Om du hade 
     ett lämpligt ID-kort kunde du sätta in det i facket för att öppna dörren."
-    /*"The slot appears to accept special ID cards with magnetic encoding. If you
-    had an appropriate ID card, you could put it in the slot to open the door. "*/
     
     cannotPutInMsg = '{Ref subj dobj} {ser} inte ut som om {han dobj} är menad att
         passa in där. '
@@ -280,16 +254,11 @@ Doer 'lås securityDoor; lås securityDoor med IDcard'
     }    
 ;
 
-snackBar: Room 'Matställe' 'matstället'
-    "Matstället verkar vara full av resenärer som trängs med varandra för att 
+snackBar: Room 'Cafeteria' 'cafeteria'
+    "cafeteria verkar vara full av resenärer som trängs med varandra för att 
     komma till serveringsdisken, eller äter sina homogeniserade snacks vid de 
     trånga borden, även om det av någon anledning fortfarande finns ett bord 
     ledigt. Västerut ligger den relativa lugnet i hallen"
-
-    /*"Snack baren seems to be full of passengers jostling one another to get at
-    the serving counter, or consuming their homogenized snacks at the crowded
-    tables, though for some reason, one table remains free. To the west lies
-    the relative calm of the concourse. "*/
 
     west = concourse
     out asExit(west)
@@ -300,10 +269,6 @@ snackBar: Room 'Matställe' 'matstället'
     "Av ljudet att döma från deras röster verkar de vara en blandning av 
     amerikaner och lokalbefolkning, alla lika ledigt klädda
     <<if darkSuits.isIn(location)>> -- förutom en handfull män i mörka kostymer<<end>>."
-
-    /*"From the sound of their voices they seem to be a mixture of Americans and
-    locals, all alike casually dressed<< if darkSuits.isIn(location)>> -- except
-    for a handful of men in dark suits<<end>>. "*/
 ;
 
 + darkSuits: Decoration 'män[n] i[prep] mörk+a kostymer; ondskefull+a senior+a; 
@@ -353,28 +318,6 @@ snackBar: Room 'Matställe' 'matstället'
                 det visste du ändå; det var det som förde dig till detta gudsförgätna 
                 helveteshål. '''
 
-    /*
-    readDescEng = '''A quick skim of the paper reveals nothing unusual for this part
-        of the world. Yet another government minister is denying charges of
-        corruption, money-laundering and enjoying a surfeit of mistresses whose
-        combined age would only just add up to his. Only eighteen gang-related
-        killings were committed on the streets of Narcosia yesterday, making it
-        an unusually quiet day in the capital. The President had defended
-        spending another twenty billion trillion terapesos (about half a billion
-        dollars) on yet another grand extension to his palace on the grounds
-        that it vital to national prestige and will surely attract the kind of
-        foreign investment that will lift the poorest eighty per cent of the
-        nation slightly closer to the breadline. The defence minister is
-        congratulated for his acumen in buying up stock in Polemicorp
-        International before placing a large arms order with them; the finance
-        minister is quoted as saying that this is just the kind of
-        entrepreneurial spirit the country needs. The police have once again
-        failed to make any arrests of the enterprising drug barons who are
-        largely funding their pension pots. All in all, it's business as usual
-        -- except for some editorial speculation that El Diablo may be planning
-        something <i>big</i>, but you knew that anyway; that's what brought you
-        to this godforsaken hell-hole. '''
-   */ 
     hiddenIn = [ticket]
     
     revealOnMove()
@@ -382,10 +325,6 @@ snackBar: Room 'Matställe' 'matstället'
         
         if(hiddenIn.length > 0)
         {
-
-            //"As you pick up the newspaper <<list of hiddenIn>> {prev} {falls}
-            //out of it and land{s/ed} on the floor. ";
-
             "När du hämtar tidningen {faller} <<list of hiddenIn>> ut ur den
             och landa{r/de} på golvet. ";
             
@@ -402,7 +341,7 @@ ticket: Thing 'biljett+en'
     "Det är en biljett för flyg TI 179 till Buenos Aires. "
     
     readDesc = (desc)
-    specialDesc = "En biljett ligger på på golvet. " // TODO: eller marken?
+    specialDesc = "En biljett ligger på på markytan. "
     useSpecialDesc = (location == getOutermostRoom)
     
     bulk = 1
@@ -435,19 +374,11 @@ securityArea: Room 'Säkerhetsområde' 'säkerhetsområde'
     otherSide = securityDoor
 ;
 
-// TODO: bookmark
 lounge: Room 'Pilotloungen' 'pilotloungen'
     "Även om den något bleka inredningen i det här rummet inte antyder att det är 
     tänkt till att vara någon sorts relaxavdelning, så är det tydligt nog med tanke 
     på den långa soffan som löper längs ena väggen samt de utspridda fåtöljerna. Den 
     enda vägen ut är norrut."
-
-
-    // eng = "Even if the somewhat faded decor of this room didn't suggest that it was
-    // meant to be some sort of relaxation area, this is plain enough from the long
-    // settee that runs along one wall and the scattering of easy chairs. The only
-    // way out is to the north. "
-
     
     north = securityArea
     out asExit(north)
@@ -457,9 +388,7 @@ lounge: Room 'Pilotloungen' 'pilotloungen'
     "Det är en svart resväska med ett kombinationslås och ett tydligt
     klistermärke med en fransk trikolor och sloganen <q>Vive la revolution 
     francaise!</q>."
-    // "It's a black suitcase with a combination lock and a prominent sticker
-    // bearing a French tricolor and the slogan <q>Vive la revolution
-    // francaise!</q>. "
+
     initSpecialDesc = "En resväska står prydligt placerad brevid soffan. "  
     
     bulk = 8
@@ -544,10 +473,6 @@ lounge: Room 'Pilotloungen' 'pilotloungen'
     "Det är en uniform för en Timo Airlines-pilot. Den är lite för stor för dig, men
     <<if wornBy == gPlayerChar>> den passar inte så dåligt<<else>>du skulle nog kunna
     bära den <<end>>. "
-
-    // eng = "It's a uniform for a Timo Airlines pilot. It's a little large for you, but
-    // <<if wornBy == gPlayerChar>> it's not too bad a f<<else>>you could probably wear
-    // <<end>>it. "
     
     bulk = 6
     subLocation = &remapIn
@@ -558,9 +483,6 @@ lounge: Room 'Pilotloungen' 'pilotloungen'
         {
             "Efter all mödan det innebar att få tag på den här uniformen har 
             du ingen större brådska att ta av dig den. ";
-
-            // "After going to all that trouble to get this uniform you're in no
-            // hurry to take it off. ";
         }
     }
     
@@ -581,14 +503,10 @@ class ComboWheel: NumberedDial
     desc = "Det är ett litet mässingshjul som kan vridas till valfritt tal 
         mellan 0 och 9, och det står för närvarande på <<curSetting>>. "
     
-    // eng = "It's a small brass wheel that can be turned to any number between 0
-    //     and 9, and is currently at <<curSetting>>. "
-    
     maxSetting = 9
     
     cannotTakeMsg = 'Det kan du inte; det är en del av kombinationslåset.' 
-                    //'You can\'t; it\'s part of the combination lock. '
-    
+
     makeSetting(val)
     {
         inherited(val);
@@ -598,14 +516,10 @@ class ComboWheel: NumberedDial
 
 
 securityCentre: Room 'Säkerhetscentral' 'säkerhetscentralen'
-    // "Judging by the monitors on the walls, this must be some sort of security
-    // centre. Otherwise the room is mostly bare apart from the utilitarian desk
-    // located somewhere in the middle. The only way out is to the east. "
     "Av bildskärmarna på väggarna att döma måste detta vara någon sorts 
     säkerhetscentral. Rummet är annars mestadels tomt, förutom det funktionella 
     skrivbordet placerat någonstans i mitten. Den enda vägen ut är österut."
 
-    
     east = securityArea
     out asExit(east)
 ;
@@ -614,7 +528,6 @@ securityCentre: Room 'Säkerhetscentral' 'säkerhetscentralen'
     "De är alla blanka; antingen är de avstängda eller så fungerar de inte."
     
     notImportantMsg = 'Du har verkligen inte tid att leka med bildskärmarna.'
-    //'You really don\'t have time to play around with the monitors. '
 ;
 
 + desk: Heavy 'metall|skrivbord; praktisk:a+t '
@@ -638,11 +551,6 @@ securityCentre: Room 'Säkerhetscentral' 'säkerhetscentralen'
         tecken, alla överstrukna förutom det sista, som lyder 
         <<password>>. "
     
-    
-    // "It turns to be full of lots of sets of random-looking
-    //     characters, all crossed out apart from the last, which reads
-    //     <<password>>. "
-
     password = 'B49qJt0'
     
     dobjFor(Open) asDobjFor(Read)
@@ -694,7 +602,6 @@ securityCentre: Room 'Säkerhetscentral' 'säkerhetscentralen'
                 "Du kan inte göra det förrän datorn har slagits på. ";
             
             else if(passwordEntered)
-                
                 "Du har redan knappat in lösenordet;  detta är inte rätt läge att börja 
                 experimentera med slumpmässiga kommandon ";
         }
@@ -702,18 +609,13 @@ securityCentre: Room 'Säkerhetscentral' 'säkerhetscentralen'
         action()
         {
             if(gLiteral == notebook.password)
-            {
-                //"The computer displays WELCOME for a few seconds, and then
-                //clears to allow you to enter commands. ";
-                
+            {                
                 "Datorn visar VÄLKOMMEN i några sekunder och sedan 
                 försvinner texten så att du kan ange kommandon. ";
-
                 
                 passwordEntered  = true;
             }
             else
-                //"The computer flashes PASSWORD NOT RECOGNIZED at you. ";
                 "Datorn blinkar med texten OIGENKÄNNLIGT LÖSENORD. ";
                 
         }
@@ -726,10 +628,6 @@ securityCentre: Room 'Säkerhetscentral' 'säkerhetscentralen'
 +++ ConsultTopic @tFrenchRevolution
     "Enligt Wikipedia började den franska revolutionen 1789. Artikeln fortsätter 
     med att berätta en hel del mer om den, men du har inte tid att läsa allt nu."
-
-    // "According to Wikipedia, the French Revolution began in 1789. The article
-    // goes on to tell you quite a bit more about it, but you don't have time to
-    // read it all now. "
 ;
 
 +++ ConsultTopic @tFlightDepartures
@@ -738,18 +636,11 @@ securityCentre: Room 'Säkerhetscentral' 'säkerhetscentralen'
     till Buenos Aires sannolikt att vara den enda flygningen som kommer 
     härifrån under de närmaste timmarna, alla andra är försenade av en mängd 
     olika irriterande orsaker, såsom strejker, sjukdom och dåligt väder."
-
-    // "So far as you can tell from the information displayed, Timo Flight 179 to
-    // Buenos Aires is likely to be the only one out of here for the next several
-    // hours, all the others being delayed for a variety of annoying reasons such
-    // as strikes, illness and inclement weather. "
 ;
 
 +++ DefaultConsultTopic
     "Detta är inte av omedelbart intresse för dig just nu; du har mer brådskande 
     saker att ta itu med."
-    // "That's of no immediate interest to you right now; you have more urgent
-    // things to attend to. "
 ;
 
 tFrenchRevolution: Topic 'fransk+a revolution+en';
@@ -757,8 +648,7 @@ tFlightDepartures: Topic '() flight flyg|avgångar+na; plan+et; flyg|tider+na[pl
 tPilot: Topic 'pilot+en';
 tDoingTonight: Topic 'hon gör ikväll; hon är du ära';
 tEnjoyWork: Topic 'hon tycker om sitt arbete+t; du tycker om ditt gillar jobb+et; ditt jobb+et';
-                // she enjoys her work; you enjoy your like likes; job';
-
+                
 VerbRule(GoogleFor)
     'googla' ('efter'|'om'|'på'|) topicIobj 'på' singleDobj
     : VerbProduction
@@ -789,7 +679,7 @@ TopHintMenu;
         'Om du söker runt lite kanske du kan hitta den. ',
         'Vart brukar folk på en flygplats gå medan de väntar på ett flyg? ',
         'Särskilt om de är lite sugna. ',
-        'Har du besökt matstället? ',
+        'Har du besökt cafeteria? ',
         'Har du sett något kvarliggandes där? ',
         'Försök ta en närmare titt på den där tidningen. '
     ]

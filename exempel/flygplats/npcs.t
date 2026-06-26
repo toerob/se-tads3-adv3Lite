@@ -3,15 +3,16 @@
 #include <tads.h>
 #include "advlite.h"
 
-guard: Actor 'security guard; burly flab; man; honom' @securityGate
-    "He's a burly-looking fellow, though it's probably as much flab as muscle. "
-    
-    actorSpecialDesc = "En säkerhetsvakt står brevid metalldetektorn, och blickar 
+
+guard: Actor 'säkerhets|vakt+en; kraftig+a; man+nen' @securityGate
+    "Han ser kraftig ut, men det är nog lika mycket fett som muskler. "
+
+    actorSpecialDesc = "En säkerhetsvakt står brevid metalldetektorn, och blickar
         misstänksamt på dig. "
-    
+
     checkAttackMsg = 'Med din träning skulle du förmodligen lätt kunna övermanna honom,
-        även om han är beväpnad och du inte, men det skulle det troligen resultera i 
-        att all annan flygplatssäkerhetspersonal skulle komma efter dig, vilket är en 
+        även om han är beväpnad och du inte, men det skulle det troligen resultera i
+        att all annan flygplatssäkerhetspersonal skulle komma efter dig, vilket är en
         komplikation du gärna skulle klara dig från just nu.'
 
     /*
@@ -24,114 +25,112 @@ guard: Actor 'security guard; burly flab; man; honom' @securityGate
 
 + AskTopic, StopEventList @tFlightDepartures
     [
-        '<q>When\'s the next plane out of here?</q> you ask.\b
-        <q>Listen for the announcements, Se&ntilde;or,</q> he suggests, <q>or
-        look at the departure boards through there.</q> He jerks his thumb
-        vaguely in the direction of north. ',
-        
-        '<q>Is there a flight leaving soon?</q> you enquire.\b
-        <q>I already told you, Se&ntilde;or: listen for the announcements or
-        watch the board,</q> he replies with a faint air of impatience.'
+        '<q>När går nästa plan härifrån?</q> frågar du.\b
+        <q>Lyssna på högtalarna, Se&ntilde;or,</q> föreslår han, <q>eller
+        titta på avgångstavlorna där inne.</q> Han nickar vagt mot norr. ',
+
+        '<q>Avgår det något flyg snart?</q> frågar du.\b
+        <q>Jag sa det redan, Se&ntilde;or: lyssna på högtalarna eller
+        titta på tavlan,</q> svarar han med ett lätt uns av otålighet.'
     ]
 ;
 
 + TellTopic, StopEventList @cortez
     [
-        '<q>A criminal called Pablo Cortez has just tried to take over the
-        flight to Buenos Aires,</q> you say.\b
-        <q>I am sure it will all be taken care of, Se&ntilde;or,</q> the guard
-        assures you nonchalantly. ',
-        
-        '<q>Pablo Cortez...</q> you begin.\b
-        The guard cuts you off with a gesture of his hand. <q>All taken care
-        of, Se&ntilde;or,</q> he insists. '
+        '<q>En kriminell vid namn Pablo Cortez har nyss försökt ta över
+        flyget till Buenos Aires,</q> säger du.\b
+        <q>Jag är säker på att det ordnar sig, Se&ntilde;or,</q> försäkrar
+        vakten dig likgiltigt. ',
+
+        '<q>Pablo Cortez...</q> börjar du.\b
+        Vakten avbryter dig med en handrörelse. <q>Allt är ordnat,
+        Se&ntilde;or,</q> insisterar han. '
     ]
 ;
 
 + AskForTopic @IDcard
-    "<q>Can I have my ID card back, please?</q> you ask.\b
-    <q>That was not your ID card, Se&ntilde;or,</q> the guard replies equably.
-    <q>I know Antonio Velaquez, and you are not he.</q> "
-    
+    "<q>Kan jag få tillbaka mitt ID-kort, tack?</q> frågar du.\b
+    <q>Det var inte ditt ID-kort, Se&ntilde;or,</q> svarar vakten lugnt.
+    <q>Jag känner Antonio Velaquez, och du är inte han.</q> "
+
     isActive = gRevealed('card-confiscated') && IDcard.location == counter
 ;
 
 + ShowTopic @IDcard
     topicResponse()
     {
-        "You flash the ID card at the security guard, in the hope that it'll
-        persuade him to let you straight through without any further questions,
-        but instead he snatches it off you, stares at it with a deep frown.\b
-        <q>This is not yours, Se&ntilde;or,</q> he remarks.\b
-        So saying, he hands the card to a colleague who at once carries it off
-        somewhere.<.reveal card-confiscated> ";
-        
+        "Du visar upp ID-kortet för säkerhetsvakten i hopp om att det ska
+        övertala honom att låta dig passera utan fler frågor, men istället
+        rycker han det ur händerna på dig och stirrar på det med en djup rynka.\b
+        <q>Det här är inte ditt, Se&ntilde;or,</q> konstaterar han.\b
+        Med dessa ord lämnar han kortet till en kollega som genast bär iväg
+        med det.<.reveal card-confiscated> ";
+
         IDcard.moveInto(counter);
     }
-    
+
 ;
 
 + DefaultAnyTopic
-    "The guard merely shrugs and mutters something that could be either, <q>Not
-    my concern, Se&ntilde;or,</q> or <q>Not your concern, Se&ntilde;or.</q> "
+    "Vakten rycker bara på axlarna och mumlar något som antingen kan vara <q>Inte
+    min sak, Se&ntilde;or,</q> eller <q>Inte din sak, Se&ntilde;or.</q> "
 ;
 
 //==============================================================================
 
-cortez: Actor 'Pablo Cortez; evil latinate;man;honom'
-    "He's really quite a handsome man, in a latinate sort of way; if you met him
-    in a different context you might not realize quite what an evil devil he
-    actually is. "
-    
-    actorSpecialDesc = "Pablo Cortez<<first time>>, El Dialbo's right-hand man,
-        <<only>> is standing by the main exit, hurrying the passengers off the
-        plane with muzzle of his machine-pistol. "
-    
-    checkAttackMsg = 'You know better than to attempt it; he\'s known to be
-        quite deadly with that gun. '
-    
+cortez: Actor 'Pablo Cortez; stilig+a ond+a ondske|full+a ondsint:e+a latino+n;man+nen;honom'
+    "Han är faktiskt ganska stilig, på ett latinoaktigt vis; om du mött honom
+    i ett annat sammanhang kanske du inte förstått vilken ondskefull djävul han
+    egentligen är. "
+
+    actorSpecialDesc = "Pablo Cortez<<first time>>, El Diablos högra hand,
+        <<only>> står vid huvudutgången och driver bort passagerarna från planet
+        med mynningen av sin kulspruta. "
+
+    checkAttackMsg = 'Du vet bättre än att försöka; han är känd för att vara
+        ytterst dödlig med det vapnet. '
+
     cannotTakeFromActorMsg(obj)
     {
-        return 'Cortez would shoot you dead before your hands got anywhere near
-            it. ';
+        return 'Cortez skulle skjuta ihjäl dig innan dina händer ens kom i
+            närheten av det. ';
     }
-    
+
     actorBeforeTravel(traveler, connector)
     {
         if(traveler == gPlayerChar && connector == cockpitDoor)
         {
-            "Cortez looks round at you suspiciously as you head for the cockpit
-            door. <q>Hey, you, Pond!</q> he shouts. As you make a dash for the
-            door he opens fire with his machine pistol, riddling your body with
-            bullets. ";
+            "Cortez ser misstänksamt åt ditt håll när du rör dig mot
+            cockpitdörren. <q>Hej du, Pond!</q> ropar han. När du rusar mot
+            dörren öppnar han eld med sin kulspruta och genomborrar din
+            kropp med kulor. ";
             finishGameMsg(ftDeath, [finishOptionUndo]);
         }
-        else if (traveler == gPlayerChar && connector == planeRear) 
+        else if (traveler == gPlayerChar && connector == planeRear)
         {
-            "Your makeshift disguise won't fool Cortez for long; it's best
-            to leave the plane as quickly as possible. ";
+            "Din improviserade förklädnad luras inte Cortez länge; det är bäst
+            att lämna planet så snabbt som möjligt. ";
             exit;
         }
-        
+
     }
 ;
 
 + DefaultAnyTopic
-    "You really don't want to attract his attention. If he recognizes you he'll
-    kill you. "
-    
+    "Du vill verkligen inte dra till dig hans uppmärksamhet. Om han känner
+    igen dig dödar han dig. "
+
     isConversational = nil
 ;
 
 + gun: Thing 'gun; machine 93r beretta; pistol machine-pistol'
-    "It's a Beretta 93R, capable of firing at a rate of more than a thousand
-    rounds per minute. "
+    "Det är en Beretta 93R, kapabel att avfyra mer än tusen skott per minut. "
 ;
 
 + cortezArrivalAgenda: AgendaItem
     initiallyActive = true
     isReady = (takeover.isHappening)
-    
+
     invokeItem()
     {
         isDone = true;
@@ -142,15 +141,15 @@ cortez: Actor 'Pablo Cortez; evil latinate;man;honom'
 
 + cortezTalkingAgenda: AgendaItem
     isReady = (gPlayerChar.isIn(planeFront))
-    
+
     invokeItem()
     {
         isDone = true;
-        "<q>Hurry up! Get off this plane! El Diablo is not a patient man and he
-        needs it for important business!</q> you hear Cortez tell the
-        passengers. <q>If the plane is not cleared by the time our pilot arrives
-        I shall shoot any of you who are still aboard! Now, move, move!</q> ";
-        
+        "<q>Skynda på! Lämna det här planet! El Diablo är inte en tålmodig man
+        och han behöver det för viktiga affärer!</q> hör du Cortez säga till
+        passagerarna. <q>Om planet inte är tömt när vår pilot anländer ska jag
+        skjuta var och en av er som fortfarande är ombord! Nu, rör på er!</q> ";
+
         getActor.addToAgenda(cortezShootingAgenda.setDelay(2));
     }
 ;
@@ -161,35 +160,35 @@ cortez: Actor 'Pablo Cortez; evil latinate;man;honom'
         isDone = true;
         if(gPlayerChar.isIn(planeFront))
         {
-            "Cortez suddenly looks your way. For a split-second he seems frozen
-            with astonishment, but only for a split-second.\b
-            <q>Hey! You!</q> he cries. A moment later he raises his machine
-            pistol and fires into your belly at point-blank range. ";
+            "Cortez ser plötsligt åt ditt håll. En bråkdels sekund verkar han
+            frusen av förvåning, men bara en bråkdels sekund.\b
+            <q>Hallå där! Du!</q> ropar han. Ett ögonblick senare lyfter han sin
+            kulspruta och avfyrar rakt in i din mage på noll hålls avstånd. ";
             finishGameMsg(ftDeath, [finishOptionUndo]);
         }
         else
-            getActor.moveInto(nil);                
+            getActor.moveInto(nil);
     }
 ;
-    
+
 
 //==============================================================================
 
 angela: Actor 'flight attendant; statuesque young; woman angela; henne'
     @planeFront
-    "She's a statuesque and by no means unattractive young woman. "
-    
-    checkAttackMsg = 'That would be cruel and unnecessary. '
-    
+    "Hon är en statylik och ingalunda ful ung kvinna. "
+
+    checkAttackMsg = 'Det skulle vara grymt och onödigt. '
+
     globalParamName = 'angela'
-    
+
     makeProper
     {
         proper = true;
         name = 'Angela';
         return name;
     }
-    
+
     suggestionKey = 'top'
 ;
 
@@ -197,23 +196,23 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 
 ++ AskTopic @angela
     keyTopics = 'angela'
-    
+
     name = 'herself'
 ;
 
 ++ QueryTopic 'when' 'this plane is going to leave; depart take off'
-    "<q>When is this plane going to leave?</q> you ask.\b
-    <q>Just as soon as the pilot comes aboard,</q> she tells you. <.reveal
+    "<q>När ska det här planet avgå?</q> frågar du.\b
+    <q>Så fort piloten kommit ombord,</q> säger hon. <.reveal
     pilot-awaited> "
-    
+
     askMatchObj = tFlightDepartures
 ;
 
 
 ++ AskTopic @tPilot
-    "<q>What's happened to the pilot?</q> you ask.\b
-    <q>I don't know; we're still waiting for him,</q> she replies. <q>But don't
-    worry; I'm sure he'll turn up any moment now.</q> "
+    "<q>Vad har hänt med piloten?</q> frågar du.\b
+    <q>Det vet jag inte; vi väntar fortfarande på honom,</q> svarar hon. <q>Men
+    oroa dig inte; jag är säker på att han dyker upp nu när som helst.</q> "
 
     autoName = true
     isActive = gRevealed('pilot-awaited')
@@ -222,82 +221,80 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 
 
 + QueryTopic 'what' 'her name is; your'
-    "<q>What's your name?</q> you ask.\b
-    <q><<getActor.makeProper>>,</q> she replies. "
-    
+    "<q>Vad heter du?</q> frågar du.\b
+    <q><<getActor.makeProper>>,</q> svarar hon. "
+
     isActive = !getActor.proper
-    
+
     convKeys = 'angela'
 ;
 
 + QueryTopic, StopEventList 'what' @tDoingTonight
     [
-        '<q>What are you doing tonight?</q> you ask.\b
-        She cocks one eyebrow at you. <q>I have my plans,</q> she replies
-        vaguely. ',
-        
-        '<q>What <i>are</i> you doing tonight?</q> you insist.\b
-        <q>I don\'t think that\'s any of your business,</q> she replies, with
-        rather a bleak smile. <q>Do you?</q> <.convnode not-your-business>',
-        
-        '<q>About tonight...</q> you begin.\b
-        She cuts you off by pressing her lips together and raising her eyebrows
-        in a mildly disapproving manner, as if to say, <q>That topic is
-        closed.</q> '       
+        '<q>Vad ska du göra i kväll?</q> frågar du.\b
+        Hon höjer ett ögonbryn. <q>Jag har mina planer,</q> svarar hon
+        vagt. ',
+
+        '<q>Vad <i>ska</i> du göra i kväll?</q> insisterar du.\b
+        <q>Jag tror inte det är din sak,</q> svarar hon med ett ganska
+        kyligt leende. <q>Eller?</q> <.convnode not-your-business>',
+
+        '<q>Om i kväll...</q> börjar du.\b
+        Hon avbryter dig genom att pressa ihop läpparna och höja ögonbrynen
+        på ett milt ogillande sätt, som om hon vill säga <q>Det ämnet är
+        avslutat.</q> '
     ]
-    
+
     convKeys = 'angela'
 ;
 
 + ConvNode 'not-your-business';
 
 ++ YesTopic
-    "<q>As a matter of fact I do,</q> you reply boldly.\b
-    <q>In that case we shall have to agree to differ,</q> she replies, just a
-    little stiffly."     
+    "<q>Jo faktiskt,</q> svarar du djärvt.\b
+    <q>I så fall får vi vara oense,</q> svarar hon, en aning stelt."
 ;
 
 ++ NoTopic
-    "<q>No, I suppose not,</q> you concede.\b
-    <q>No; well, there you are then,</q> she remarks. "  
+    "<q>Nej, det antar jag inte,</q> medger du.\b
+    <q>Nej; nåväl, så var det med det,</q> konstaterar hon. "
 ;
 
 + QueryTopic 'when' 'this plane is going to leave; depart take off'
-    "<q>When is this plane going to leave?</q> you ask.\b
-    <q>Just as soon as the pilot comes aboard,</q> she tells you. <.reveal
+    "<q>När ska det här planet avgå?</q> frågar du.\b
+    <q>Så fort piloten kommit ombord,</q> säger hon. <.reveal
     pilot-awaited> "
-    
+
     askMatchObj = tFlightDepartures
 ;
 
 + DefaultAskForTopic
-    "{The subj angela} listens to your request and shakes her head. <q>Sorry, I
-    can't help you with that,</q> she says. "
+    "{Ref subj angela} lyssnar på din förfrågan och skakar på huvudet. <q>Förlåt, jag
+    kan inte hjälpa dig med det,</q> säger hon. "
 ;
-    
+
 + DefaultCommandTopic
-    "<q><<if angela.proper>>Angela<<else>>Miss<<end>>, would you
-    <<actionPhrase>>, please?</q> you request.\b
-    In reply she merely cocks an eyebrow at you and looks at you as if to say,
-    <q>Who do you think you're talking to?</q> "
+    "<q><<if angela.proper>>Angela<<else>>Fröken<<end>>, skulle du kunna
+    <<actionPhrase>>, tack?</q> ber du.\b
+    Till svar höjer hon bara ett ögonbryn och ser på dig som om hon vill säga,
+    <q>Vem tror du att du pratar med?</q> "
 ;
 
 
 + DefaultAnyTopic
-    "{The subj angela} smiles and shrugs. "  
+    "{Ref subj angela} ler och rycker på axlarna. "
 ;
 
 + DefaultGiveShowTopic
-    "You offer {the angela} {the dobj}, but she shakes her head and pushes {him
-    dobj} away, saying, <q>I'm afraid I can't accept {that dobj} from you,
-    sir.</q> "
+    "Du erbjuder {ref angela} {ref dobj}, men hon skakar på huvudet och skjuter {honom
+    dobj} ifrån sig och säger <q>Tyvärr kan jag inte ta emot {that dobj} av dig.</q> "
 ;
 
 + DefaultShowTopic
-    "You point towards {the dobj}.\b
-    <q>Very interesting, I'm sure, sir,</q> {the subj angela} remarks without
-    much enthusiasm. "
-    
+    "Du pekar mot {ref dobj}.\b
+    <q>Mycket intressant, det är jag säker på,</q> konstaterar {ref subj angela}
+    utan större entusiasm. "
+
     isActive = gDobj.isFixed
 ;
 
@@ -306,15 +303,15 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 ;
 
 ++ DefaultAskQueryTopic
-    "<q>That question's too difficult for me!</q> she declares. "
+    "<q>Den frågan är för svår för mig!</q> utbrister hon. "
 ;
 
 + angelaGreetingState: ActorState
     isInitState = true
-    specialDesc = "{The subj angela} {is} standing just inside the entrance
-        greeting passengers as they board. "
-    stateDesc = "Right now, she's wearing a fixed professional smile. "
-    
+    specialDesc = "{Ref subj angela} {är} precis innanför ingången och tar emot
+        passagerare när de stiger ombord. "
+    stateDesc = "Just nu bär hon på ett inövat professionellt leende. "
+
     beforeTravel(traveler, connector)
     {
         if(traveler == gPlayerChar)
@@ -322,17 +319,17 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
             switch(connector)
             {
             case cockpitDoor:
-                "<q>I'm afraid you can't go in there, sir,</q> {the subj angela}
-                stops you. <q>Only flight crew are allowed in the cockpit.</q>.
+                "<q>Tyvärr kan du inte gå in där,</q> {ref subj angela}
+                stoppar dig. <q>Endast flygbesättning är tillåten i cockpit.</q>
                 ";
-                
+
                 exit;
-               
+
             case planeRear:
                 if(!ticketSeen)
                 {
-                    "<q>I'm afraid I can\'t let you board the plane till I\'ve
-                    seen your ticket, sir,</q> {the subj angela} insists. ";
+                    "<q>Tyvärr kan jag inte låta dig gå ombord förrän jag sett
+                    din biljett,</q> {ref subj angela} insisterar. ";
                     exit;
                 }
                 break;
@@ -345,28 +342,28 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
             }
         }
     }
-    
+
     ticketSeen = nil
 ;
 
 ++ GiveShowTopic @ticket
     topicResponse()
     {
-        "<q>Here you are,</q> you say, holding out the ticket for {the angela}
-        to see.\b
-        She glances down at the ticket in your hand, and temporarily takes it
-        off you to check. <q>That's fine, sir,</q> she assures you as she
-        returns it to you. <q>Please move to the rear of the plane to find a
-        seat.</q> ";
+        "<q>Varsågod,</q> säger du och håller fram biljetten för {ref angela}
+        att se.\b
+        Hon blickar snabbt på biljetten i din hand och tar den tillfälligt
+        för att kontrollera. <q>Det ser bra ut,</q> försäkrar hon dig när hon
+        lämnar tillbaka den. <q>Var vänlig gå till bakre delen av planet och
+        hitta din plats.</q> ";
         angelaGreetingState.ticketSeen = true;
         boardingAchievement.awardPointsOnce();
     }
 ;
-    
+
 ++ QueryTopic 'if|whether' @tEnjoyWork
-    "<q>Do you enjoy your work?</q> you ask.\b
-    <q>Of course, sir,</q> she replies with a bland smile. "    
-    
+    "<q>Trivs du med ditt jobb?</q> frågar du.\b
+    <q>Självklart,</q> svarar hon med ett inövat leende. "
+
     convKeys = 'angela'
 ;
 
@@ -376,14 +373,14 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 ;
 
 ++ DefaultAskQueryTopic
-    "<q>I really need to see your ticket, sir,</q> she insists <<one
-      of>>politely<<or>>once more<<stopping>>. "
+    "<q>Jag måste verkligen se din biljett,</q> insisterar hon <<one
+      of>>artigt<<or>>en gång till<<stopping>>. "
 ;
 
 ++ DefaultSayTellTalkTopic
-    "{The subj angela} listens <<one of>>politely<<or>>a little impatiently
-    <<stopping>> to what you have to say, then replies, <q>May I see your
-    ticket, sir?</q> "
+    "{Ref subj angela} lyssnar <<one of>>artigt<<or>>lite otåligt
+    <<stopping>> på vad du har att säga och svarar sedan, <q>Får jag se
+    din biljett?</q> "
 ;
 
 + TopicGroup +5
@@ -392,39 +389,39 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 ;
 
 ++ DefaultAskQueryTopic
-    "<q>If you have any further questions perhaps you could ask them once we're
-    in flight,</q> she <<one of>>suggests<<or>>repeats<<stopping>>. <q><<one
-      of>>It would be best if you moved <<or>> Please move<<stopping>> to the
-    rear of the plane and <<one of>>took<<or>>take<<stopping>> your seat now,
-    sir.</q> "
+    "<q>Om du har fler frågor kan du kanske ställa dem när vi är i luften,</q>
+    <<one of>>föreslår<<or>>upprepar<<stopping>> hon. <q><<one
+      of>>Det vore bäst om du gick <<or>> Var vänlig gå<<stopping>> till
+    bakre delen av planet och <<one of>>tog<<or>>tar<<stopping>> din plats
+    nu.</q> "
 ;
 
 ++ DefaultSayTellTalkTopic
-    "{The subj angela} holds up her hand to stop you in mid-flow. <q>Can I ask
-    you to move to the rear of your plane and take your seat now, sir?</q> she
-    <<one of>>requests<<or>>repeats<<or>>insists<<stopping>>. "
+    "{Ref subj angela} räcker upp handen för att stoppa dig. <q>Kan jag be dig
+    gå till bakre delen av planet och ta din plats nu?</q> <<one
+    of>>ber<<or>>upprepar<<or>>insisterar<<stopping>> hon. "
 ;
 
 
 
 + angelaAssistingState: ActorState
-    specialDesc = "{The subj angela} {is} standing in the middle of the jetway,
-        trying to calm the passengers who have just been forced off the plane. "
-    
-    stateDesc = "Right now, she's looking rather harrassed. "
+    specialDesc = "{Ref subj angela} {är} i mitten av passagerarbryggan och 
+                   försöker lugna passagerarna som just tvingats lämna planet. "
+
+    stateDesc = "Just nu ser hon ganska pressad ut. "
 ;
 
 ++ HelloTopic, StopEventList
     [
-        '<q>Excuse me, might I have a word?</q> you say.\b
-        {The subj angela} turns to you with a fixed smile, no doubt mentally
-        preparing herself for another barrage of complaints. <q>Yes; how can I
-        help?</q> she replies. ',
-        
-        '<q>Might I have another word?</q> you ask.\b
-        <q>Yes?</q> she replies, turning to you just a little warily. '
+        '<q>Ursäkta, kan jag få ett ord?</q> säger du.\b
+        {Ref subj angela} vänder sig mot dig med ett inövat leende, och
+        förbereder sig mentalt för ytterligare en storm av klagomål. <q>Ja;
+        hur kan jag hjälpa dig?</q> svarar hon. ',
+
+        '<q>Kan jag få ett ord till?</q> frågar du.\b
+        <q>Ja?</q> svarar hon och vänder sig mot dig med lätt försiktighet. '
     ]
-    
+
     changeToState = angelaTalkingState
 ;
 
@@ -432,46 +429,46 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 
 
 + angelaTalkingState: ActorState
-    specialDesc = "{The subj angela} {is} facing you, waiting for you to speak.
-        "    
+    specialDesc = "{Ref subj angela} {är} vänd mot dig och väntar på att du
+        ska tala. "
 ;
 
 ++ QueryTopic 'if|whether' @tEnjoyWork
-   "<q>Do you enjoy your work -- at times like these?</q> you ask.\b
-   <q>At times like these...</q> she leaves the sentence unfinished with an
-   expressive grimace. "    
-    
+   "<q>Trivs du med ditt jobb -- i stunder som dessa?</q> frågar du.\b
+   <q>I stunder som dessa...</q> låter hon meningen hänga oavslutad med en
+   talande grimas. "
+
     convKeys = 'angela'
 ;
 
 ++ ByeTopic
-    "<q>Well, cheerio for now then,</q> you say.\b
-    <q>Goodbye,</q> she replies with a brisk nod, before turning to yet another
-    importuning displaced passenger anxious for her attention. "
-    
+    "<q>Nåväl, hej då så länge,</q> säger du.\b
+    <q>Hejdå,</q> svarar hon med en snabb nick, innan hon vänder sig mot ännu
+    en påträngande fördriven passagerare som vill ha hennes uppmärksamhet. "
+
     changeToState = angelaAssistingState
 ;
 
 ++ LeaveByeTopic
-    "{The subj angela} looks momentarily taken aback at your somewhat abrupt
-    departure, but quickly turns back to the other passengers clamouring for
-    her attention. "
-    
+    "{Ref subj angela} ser ett ögonblick förbryllad över ditt något abruptat
+    uppbrott, men vänder sig snabbt tillbaka till de andra passagerarna som
+    ropar på hennes uppmärksamhet. "
+
     changeToState = angelaAssistingState
 ;
 
 ++ AskTellTopic, StopEventList @cortez
     [
-        '<q>Do you know who that man waving a gun around at the front of the
-        plane is?</q> you ask, lowering your voice. <q>It\'s Pablo Cortez, El
-        Diablo\'s right-hand man!</q>\b
-        Her smile becomes rather frosty as she replies, <q>What\'s that to
-        you?</q> <.inform cortez> <.convnodet what-to-you>',
-        
-        '<q>You need to be <i>very</i> careful around Cortez,</q> you warn
-        her.\b
-        <q>I shall be,</q> she assures you. '
-    
+        '<q>Vet du vem den där mannen som viftar med ett vapen vid framsidan
+        av planet är?</q> frågar du och sänker rösten. <q>Det är Pablo Cortez,
+        El Diablos högra hand!</q>\b
+        Hennes leende blir ganska kallt när hon svarar, <q>Vad angår det
+        dig?</q> <.inform cortez> <.convnodet what-to-you>',
+
+        '<q>Du måste vara <i>mycket</i> försiktig runt Cortez,</q> varnar
+        du henne.\b
+        <q>Det ska jag vara,</q> försäkrar hon dig. '
+
     ]
     autoName = true
     convKeys = 'top'
@@ -479,36 +476,37 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 ;
 
 + ConvNode 'what-to-you';
-    
-++ TellTopic @gPlayerChar    
-    "<q>The name's Pond, Sherlock Pond,</q> you tell her. <q>I'm a British
-    secret agent on the track of these villains!</q>\b
-    <q>Indeed!</q> she replies with ill-disguised scepticism. <.inform agent>" 
-    
-    name = 'yourself'    
+
+++ TellTopic @gPlayerChar
+    "<q>Jag heter Pond, Sherlock Pond,</q> berättar du för henne. <q>Jag är en
+    brittisk hemlig agent på spåren av dessa skurkar!</q>\b
+    <q>Verkligen!</q> svarar hon med dåligt dold skepticism. <.inform agent>"
+
+    name = 'yourself'
 ;
 
 ++ SayTopic 'Cortez is dangerous'
-    "<q>Pablo Cortez is a <i>very</i> dangerous man,</q> you warn her. <q>He's
-    killed more men than I've had hot dinners!</q><.inform cortez-dangerous>\b
-    <q>Anyone waving a gun around aboard a passenger aircraft might be
-    considered dangerous,</q> she points out pragmatically. "        
+    "<q>Pablo Cortez är en <i>mycket</i> farlig man,</q> varnar du henne. <q>Han har
+    dödat fler män än jag haft varma middagar!</q><.inform cortez-dangerous>\b
+    <q>Vem som helst som viftar med ett vapen ombord på ett passagerarplan kan
+    betraktas som farlig,</q> påpekar hon pragmatiskt. "
 ;
 
 ++ SayTopic 'she should call security; you'
-    "<q>You should call airport security to deal with him!</q> you urge her.\b
-    <q>Airport security -- in Narcosia?</q> she asks incredulously. <q>Somehow I
-    don\'t think that will exactly help the situation!</q> "    
+    "<q>Du borde tillkalla flygplatssäkerheten för att hantera honom!</q> uppmanar
+    du henne.\b
+    <q>Flygplatssäkerheten -- i Narcosia?</q> frågar hon otroget. <q>På något
+    sätt tror jag inte det hjälper situationen precis!</q> "
 ;
 
 ++ DefaultAnyTopic, StopEventList
     [
-        '<q>No, but what is it to you who this man is?</q> she interrupts you.
-        <.convstay> ',
-    
-        'She shakes her head. <q>Very well, don\'t answer my question then,</q>
-        she mutters. '
-    ]    
+        '<q>Nej, men vad angår det dig vem den här mannen är?</q> avbryter
+        hon dig. <.convstay> ',
+
+        'Hon skakar på huvudet. <q>Nåväl, svara inte på min fråga då,</q>
+        muttrar hon. '
+    ]
 ;
 
 ++ NodeEndCheck
@@ -516,18 +514,18 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
     {
         if(reason == endConvBye)
         {
-            "<q><q>Goodbye,</q> isn't an answer,</q> {the subj angela}
-            complains. <q>Why are you so bothered about this man Cortez?</q> ";
-                              
+            "<q><q>Hejdå</q> är inte ett svar,</q> klagar {ref subj angela}.
+            <q>Varför bryr du dig så mycket om den här mannen Cortez?</q> ";
+
             return blockEndConv;
         }
-        
+
         if(reason == endConvLeave)
         {
-            "This doesn't seem a good point to break off the conversation. ";
+            "Det verkar inte vara ett bra tillfälle att avbryta samtalet. ";
             return nil;
         }
-        
+
         return true;
     }
 ;
@@ -538,57 +536,57 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 
 ++  DefaultAskQueryTopic, ShuffledEventList
     [
-        '{The subj angela} mutters something inaudible and looks round, as if
-        dropping a heavy hint that she has other people besides you to attend
-        to. ',
-        
-        '<q>Maybe we can discuss that some other time,</q> she suggests, with
-        a significant glance at the other passengers anxious to attract her
-        attention. ',
-        
-        '<q>Hm, well,</q> she says, in a tone of voice that rather suggests
-        she has more urgent things on her mind. ',
-        
-        '<q>I think perhaps...</q> she begins, and then trails off as one of the
-        other passengers taps her on the arm in an attempt to grab her
-        attention. '
+        '{Ref subj angela} muttrar något ohörbart och ser sig omkring, som
+        om hon ger en tydlig antydan om att hon har andra att ta hand om
+        förutom dig. ',
+
+        '<q>Kanske vi kan diskutera det en annan gång,</q> föreslår hon med en
+        meningsfull blick mot de andra passagerarna som ivrar att fånga hennes
+        uppmärksamhet. ',
+
+        '<q>Hm, ja,</q> säger hon i en ton som snarast antyder att hon har
+        mer brådskande saker på hjärnan. ',
+
+        '<q>Jag tänker kanske...</q> börjar hon, men avbryts när en av de andra
+        passagerarna klappar henne på armen i ett försök att fånga hennes
+        uppmärksamhet. '
     ]
 ;
 
 ++ DefaultSayTellTalkTopic
-    "{The subj angela} listens to what you have to say without comment, but with
-    the air of one who has other things on her mind. "
+    "{Ref subj angela} lyssnar på vad du har att säga utan kommentar, men med
+    minen av en som har annat på hjärnan. "
 ;
 
 
 
 + angelaSeatedState: ActorState
-    specialDesc = "{The subj angela} {is} sitting near the front of the plane. "
-    stateDesc = "Right now, though, she's looking worried and afraid. "
+    specialDesc = "{Ref subj angela} {är} sittande nära framsidan av planet. "
+    stateDesc = "Just nu ser hon dock orolig och rädd ut. "
 ;
 
 ++ QueryTopic 'if|whether' @tEnjoyWork
-   "<q>Are you enjoying your work now?</q> you ask.\b
-   <q>I'll be glad when this particular flight is over,</q> she replies
-   quietly. "    
-    
+   "<q>Trivs du med ditt jobb nu?</q> frågar du.\b
+   <q>Jag kommer vara glad när just det här flyget är över,</q> svarar hon
+   tyst. "
+
     convKeys = 'angela'
 ;
 
 ++ QueryTopic, StopEventList 'what' @tDoingTonight
     [
-        '<q>What are your plans for tonight now?</q> you ask.\b
-        <q>I\'m not sure,</q> she replies, just a little nervously. <q>I think
-        I\'d rather wait until this plane has safely landed at its destination
-        and -- well, you know.</q> She indicates the new set of passengers with
-        a flick of her eyes. <q>I think I\'d rather wait until this is all over
-        before making any further plans.</q> ',
-        
-        '<q>About later tonight...</q> you begin.\b
-        <q>Let\'s discuss it when we\'ve arrived at the other end,</q> she
-        insists. '
+        '<q>Vad har du för planer för i kväll nu?</q> frågar du.\b
+        <q>Jag är inte säker,</q> svarar hon lite nervöst. <q>Jag tror
+        att jag hellre väntar tills det här planet har landat och säkert 
+        nått mål och -- ja, du förstår.</q> Hon indikerar de nya passagerarna 
+        med en snabb ögonrörelse. <q>Jag tror att jag hellre väntar tills 
+        allt det här är över innan jag gör fler planer.</q> ',
+
+        '<q>Om senare i kväll...</q> börjar du.\b
+        <q>Vi diskuterar det när vi har anlänt på andra sidan,</q> insisterar
+        hon. '
     ]
-    
+
     convKeys = 'angela'
 ;
 
@@ -598,34 +596,35 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 
 ++ DefaultAskQueryTopic, ShuffledEventList
     [
-        '{The subj angela} lowers her voice and swivels her eyes just enough to
-        remind you of the other people in earshot. <q>Perhaps we should discuss
-        that some other time,</q> she suggests. ',
-        
-        '<q>I don\'t think I care to answer that right now,</q> she replies,
-        with just enough movement of the head to indicate how easily you might
-        be overheard by the hoodlums in the other passenger seats. ',
-        
-        '<q>I think...</q> she begins, and then breaks off. <q>I think this may
-        not be the best time to talk about that,</q> she concludes. ',
-        
-        '<q>Hm,</q> she says, <q>right.</q> It\'s obviously intended as a
-        non-answer, perhaps because she\'s worried about who else might hear
-        what she says. '       
+        '{Ref subj angela} sänker rösten och vrider ögonen precis tillräckligt
+        för att påminna dig om de andra personerna inom hörhåll. <q>Vi kanske
+        borde diskutera det en annan gång,</q> föreslår hon. ',
+
+        '<q>Jag tror inte att jag vill svara på det just nu,</q> svarar hon,
+        med precis tillräcklig rörelse med huvudet för att visa hur lätt du
+        kan avlyssnas av ligisterna i de andra passagerarsätena. ',
+
+        '<q>Jag tänker...</q> börjar hon och avbryter sig sedan. <q>Jag tror
+        att det kanske inte är det bästa tillfället att tala om det,</q>
+        avslutar hon. ',
+
+        '<q>Hm,</q> säger hon, <q>just det.</q> Det är uppenbarligen menat
+        som ett icke-svar, kanske för att hon är orolig för vem annars som
+        kan höra vad hon säger. '
     ]
 ;
 
 ++ DefaultSayTellTalkTopic
-    "{The subj angela} merely listens, looking faintly disapproving at your
-    garrulousness. "
+    "{Ref subj angela} lyssnar bara och ser svagt ogillande på din
+    pratsamhet. "
 ;
-    
-    
+
+
 
 + angelaAssistingAgenda: AgendaItem
     initiallyActive = true
     isReady = (takeover.isHappening)
-    
+
     invokeItem()
     {
         isDone = true;
@@ -637,7 +636,7 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 
 + angelaReboardingAgenda: AgendaItem
     isReady = (takeover.hasHappened)
-    
+
     invokeItem()
     {
         isDone = true;
@@ -645,69 +644,71 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
         getActor.setState(angelaSeatedState);
         getActor.addToAgenda(angelaPilotAgenda);
     }
-    
+
 ;
 
-+ angelaPilotAgenda: ConvAgendaItem    
++ angelaPilotAgenda: ConvAgendaItem
     invokeItem()
     {
         isDone = true;
-        "{The subj angela} looks up at you sharply and frowns. <q>Hey! You're
-        one of the the passengers, aren't you?</q> she remarks. <q>I remember
-        looking at your ticket! You certainly aren't our pilot. What are you
-        doing in that uniform?</q><.convnodet uniform> ";
-        
+        "{Ref subj angela} ser skarpt upp mot dig och rynkar pannan. <q>Hallå där! Du är
+        en av passagerarna, eller hur?</q> konstaterar hon. <q>Jag minns att jag
+        tittade på din biljett! Du är definitivt inte vår pilot. Vad gör du
+        i den uniformen?</q><.convnodet uniform> ";
+
     }
 ;
-    
+
 + ConvNode 'uniform';
 
-++ SayTopic 'all British agents learn to fly'
-    "<q>I told you, I'm a British agent, and all British agents learn to fly --
-    it's part of our training,</q> you tell her.\b
-    <q>You mean you actually intend to fly this aircraft?</q> she demands,
-    startled. <.convnodet intend-fly> "
-    
+++ SayTopic 'alla brittiska agenter lär sig flyga'
+    "<q>Jag sa ju det, jag är en brittisk agent, och alla brittiska agenter lär sig
+    flyga -- det är en del av vår utbildning,</q> berättar du för henne.\b
+    <q>Menar du att du verkligen tänker flyga det här flygplanet?</q> kräver hon
+    att veta, förskräckt. <.convnodet intend-fly> "
+
     isActive = gInformed('agent')
 ;
 
-++ SayTopic 'you have a pilot\'s license; i'
-    "<q>It's quite all right, I have a pilot's license,</q> you assure her.\b
-    <q>Yes, but...</q> she begins. <q>Do you actually mean to say you intend to
-    fly this plane?</q> <.convnodet intend-fly> "
-    
+++ SayTopic 'du har en pilotlicens; jag'
+    "<q>Det är helt lugnt, jag har flygcertifikat,</q> försäkrar du henne.\b
+    <q>Ja, men...</q> börjar hon. <q>Menar du verkligen att du tänker flyga
+    det här planet?</q> <.convnodet intend-fly> "
+
     isActive = !gInformed('agent')
 ;
 
-++ SayTopic 'you\'re the replacement pilot; you are i am i\'m'
-    "<q>You said you were waiting for the pilot, but there's no sign of him, so
-    I'm standing in for him,</q> you reply.\b
-    <q>You!</q> she exclaims. <q>You mean, <i>you're</i> going to fly this
-    plane?</q> <.convnodet intend-fly> "
-    
+// TODO: testa av
+++ SayTopic 'du är ersättningspiloten; du är jag är'
+    "<q>Du sa att ni väntade på piloten, men det syns inget till honom, så
+    jag hoppar in istället,</q> svarar du.\b
+    <q>Du!</q> utbrister hon. <q>Menar du att <i>du</i> ska flyga det
+    här planet?</q> <.convnodet intend-fly> "
+
     isActive = gRevealed('pilot-awaited')
 ;
 
-++ SayTopic 'you just found the uniform; i'
-    "<q>I found the uniform, you need a pilot,</q> you reply with a smile and a
-    shrug. <q>Besides, I do know how to fly -- I have a license.</q>\b
-    <q>You mean you're intending to fly this plane?</q> she demands
-    incredulously. <.convnodet intend-fly> "
+++ SayTopic 'du har just hittat uniformen; jag'
+    "<q>Jag hittade uniformen, ni behöver en pilot,</q> svarar du med ett leende
+    och en axelryckning. <q>Dessutom kan jag faktiskt flyga -- jag har
+    certifikat.</q>\b
+    <q>Menar du att du tänker flyga det här planet?</q> kräver hon att veta
+    klentroget. <.convnodet intend-fly> "
 ;
 
 ++ DefaultAnyTopic, ShuffledEventList
     [
-        '<q>No, but answer my question,</q> she interrupts you. <q>What are you
-        doing in that uniform?</q> <.convstay> ',
-        
-        '<q>That\'s not what I asked,</q> she complains. <q>Tell me why you\'re
-        wearing that uniform!</q> <.convstay>',
-        
-        '<q>Why are you wearing that uniform?</q> she insists, brushing aside
-        your irrelevant remarks. <.convstay> ',
-        
-        '<q>That still doesn\'t tell me what you\'re doing with that
-        uniform,</q> she complains. <q>Why are you wearing it?</q> <.convstay> '
+        '<q>Nej, men svara på min fråga,</q> avbryter hon dig. <q>Vad gör du
+        i den uniformen?</q> <.convstay> ',
+
+        '<q>Det var inte det jag frågade,</q> klagar hon. <q>Berätta varför du
+        bär den där uniformen!</q> <.convstay>',
+
+        '<q>Varför bär du den där uniformen?</q> insisterar hon och avfärdar
+        dina irrelevanta anmärkningar. <.convstay> ',
+
+        '<q>Det säger mig fortfarande inte vad du gör med den
+        uniformen,</q> klagar hon. <q>Varför bär du den?</q> <.convstay> '
     ]
 ;
 
@@ -718,12 +719,12 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
         switch(reason)
         {
         case endConvBye:
-            "<q>Oh no, you're not avoiding my question like that!</q> she tells
-            you. <q>Tell me, why are you wearing that pilot's uniform?</q> ";
+            "<q>Nej, du slipper inte undan min fråga på det viset!</q> säger
+            hon. <q>Berätta, varför bär du den där pilotuniformen?</q> ";
             return blockEndConv;
         case endConvLeave:
-            "<q>You're not going anywhere until you tell me what you're doing in
-            that uniform!</q> {the subj angela} insists. ";
+            "<q>Du går ingenstans förrän du berättar vad du gör i den
+            uniformen!</q> insisterar {ref subj angela}. ";
             return blockEndConv;
         default:
             return nil;
@@ -732,41 +733,41 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 ;
 
 ++ NodeContinuationTopic
-    "<q><<one of>>I asked you a question<<or>>I'm still waiting for an
-    answer<<cycling>>,</q> {the subj angela} <<one of>> reminds
-    you<<or>> insists<<or>> repeats<<cycling>>. <q>Why are you wearing that
-    uniform?</q> "
+    "<q><<one of>>Jag ställde dig en fråga<<or>>Jag väntar fortfarande på ett
+    svar<<cycling>>,</q> {ref subj angela} <<one of>> påminner
+    dig<<or>> insisterar<<or>> upprepar<<cycling>>. <q>Varför bär du den
+    uniformen?</q> "
 ;
-    
+
 
 + ConvNode 'intend-fly'
-   commonResponse = "\b<q>Very well, then,</q> she sighs. <q>I suppose we don't
-       have too much choice now, do we? Just as long as you know what you're
-       doing...</q> "
+   commonResponse = "\b<q>Nåväl,</q> suckar hon. <q>Jag antar att vi inte har
+       så mycket val nu, eller hur? Bara du vet vad du gör...</q> "
 ;
 
 ++ YesTopic
-    "<q>Yes, why not?</q> you reply breezily. <q>You can't wait here all day --
-    Pablo Cortez and his merry crew won't stand for it, for one thing!</q>
+    "<q>Ja, varför inte?</q> svarar du lätt. <q>Du kan inte vänta här hela
+    dagen -- Pablo Cortez och hans glada gäng tål inte det, bland annat!</q>
     <<location.commonResponse>>"
 ;
 
 ++ QueryTopic 'why not'
-    "<q>Why not?</q> you ask. <q>You need a pilot and I need to get out of here.
-    Besides, I wouldn't want to be in your shoes when this lot run out of
-    patience!</q> You nod towards the gansgters and drug barons occupying the
-    passenger seats further down the aisle. <<location.commonResponse>>"
+    "<q>Varför inte?</q> frågar du. <q>Ni behöver en pilot och jag behöver ta
+    mig härifrån. Dessutom skulle jag inte vilja vara i dina skor när det här
+    gänget tappar tålamodet!</q> Du nickar mot gangstrarna och narkotikabaronerna
+    som intar passagerarsätena längre bak i mittgången. <<location.commonResponse>>"
 ;
 
-++ QueryTopic 'whether|if she has a better idea; you have'
-    "<q>Do you have a better idea?</q> you counter. <q>There's no sign of your
-    regular pilot, and I wouldn't want to be in your shoes when your current
-    passengers run out of patience!</q> <<location.commonResponse>>"
+// TODO: Testa
+++ QueryTopic 'huruvida|om hon har en bättre idé; du har'
+    "<q>Har du någon bättre idé?</q> kontrar du. <q>Eran ordinarie pilot 
+    syns inte till, och jag skulle inte vilja vara i dina skor när era nuvarande
+    passagerare tappar tålamodet!</q> <<location.commonResponse>>"
 ;
 
 ++ DefaultAnyTopic
-    "<q>Please answer my question,</q> she insists. <q>Do you really intend to
-    fly this plane?</q> <.convstay>"
+    "<q>Vänligen svara på min fråga,</q> insisterar hon. <q>Tänker du verkligen
+    flyga det här planet?</q> <.convstay>"
 ;
 
 ++ NodeEndCheck
@@ -775,13 +776,13 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
         switch(reason)
         {
         case endConvBye:
-            "<q>That's not an answer!</q> she complains. <q>Tell me, are
-            you proposing to fly this plane yourself?</q> ";
+            "<q>Det är inte ett svar!</q> klagar hon. <q>Berätta, tänker
+            du flyga det här planet själv?</q> ";
             return blockEndConv;
         case endConvLeave:
-            "<q>Don't walk off until you've told me whether you're proposing to
-            fly this plane,</q> {the subj angela} insists. <q>Well, are
-            you?</q> ";
+            "<q>Gå inte förrän du berättat om du tänker flyga det här
+            planet,</q> insisterar {ref subj angela}. <q>Nåväl, tänker
+            du det?</q> ";
             return blockEndConv;
         default:
             return nil;
@@ -790,20 +791,20 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 ;
 
 ++ NodeContinuationTopic
-    "<q>I'd appreciate it if you answered my question,</q> {the subj angela}
-    insists. <q>Are you really proposing to fly this aircraft?</q> "
+    "<q>Jag skulle uppskatta om du svarade på min fråga,</q> insisterar {ref subj angela}.
+    <q>Tänker du verkligen flyga det här flygplanet?</q> "
 ;
 
 
 + angelaTicketAgenda: ConvAgendaItem
     initiallyActive = true
-    
+
     invokeItem()
     {
         isDone = true;
-        "<q>Welcome aboard, sir,</q> {the subj angela} greets you with a smile.
-        <q>May I see your ticket please?</q> ";
-        
+        "<q>Välkommen ombord,</q> hälsar {ref subj angela} dig med ett leende.
+        <q>Får jag se din biljett, tack?</q> ";
+
 //        /* The code shown commented out below can be deleted */
 //        if(ticket.isDirectlyIn(me))
 //        {
@@ -813,7 +814,6 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 //            find a seat.</q> ";
 //            angelaGreetingState.ticketSeen = true;
 //        }
-        
+
     }
 ;
-

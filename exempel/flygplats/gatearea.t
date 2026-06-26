@@ -3,17 +3,11 @@
 #include <tads.h>
 #include "advlite.h"
 
-gateArea: Room 'Gate Area' 'gate area'
+gateArea: Room 'Gateområde' 'gateområdet'
     "Vägarna till gate 1, 2 och 3 är skyltade mot nordväst, norr respektive nordost,
     medan en skylt monterad högt uppe på väggen visar vilka flyg som bordas och 
     avgår var och när. Omedelbart österut finns en metalldörr, medan 
     huvudsamlingshallen ligger söderut."
-
-    // eng = "The ways to Gates 1, 2 and 3 are signposted to the northwest, north and
-    // northeast respectively, while a display board mounted high up on the wall
-    // indicates what flights are boarding and departing where and when.
-    // Immediately to the east is a metal door, while the main concourse lies
-    // south. "
     
     south = concourse
     northwest = gate1
@@ -23,9 +17,9 @@ gateArea: Room 'Gate Area' 'gate area'
 ;
 
 
-+ maintenanceRoomDoor: Door 'metal door'
-    "It's marked <q>Personal de Mantenimiento S&oacute;lo</q>, and <<if isOpen>>
-    is currently open<<else>> looks firmly closed<<end>>. "
++ maintenanceRoomDoor: Door 'metall|dörr+en'
+    "Den är märkt <q>Personal de Mantenimiento S&oacute;lo</q>, och <<if isOpen>>
+    är för närvarande öppen<<else>> ser ut att vara ordentligt stängd<<end>>."
     
     otherSide = mrDoorOut
     lockability = lockableWithKey
@@ -34,20 +28,26 @@ gateArea: Room 'Gate Area' 'gate area'
     lockedMsg = (inherited + '<.reveal maintenance-door-locked>')
 ;
 
-+ Distant 'display board'
-    "The display imparts the following information:\b
-    TI 179 to Buenos Aires <FONT COLOR=GREEN>BOARDING GATE 3</FONT>\n
-    RO 359 to Mexico City <FONT COLOR=RED>DELAYED</FONT>\n
-    PZ 87 to Houston <FONT COLOR=RED>DELAYED</FONT>\n
-    BU 4567 to Bogota <FONT COLOR=RED>DELAYED</FONT>"
+
++ Distant 'display+en' //'display board'
+    //"The display imparts the following information:\b
+    "Displayen visar följande information:\b
+    TI 179 till Buenos Aires <FONT COLOR=GREEN>BOARDING GATE 3</FONT>\n
+    RO 359 till Mexico City <FONT COLOR=RED>FÖRSENAD</FONT>\n
+    PZ 87 till Houston <FONT COLOR=RED>FÖRSENAD</FONT>\n
+    BU 4567 till Bogota <FONT COLOR=RED>FÖRSENAD</FONT>"
  
     decorationActions = [Examine, GoTo, Read]
     readDesc = desc
 ;
 
 
-maintenanceRoom: Room 'Maintenance Room' 'maintenance room'
-    "<<one of>>On entering the room you immediately notice<<or>>This is a small
+maintenanceRoom: Room 'Underhållsrum' 'underhållsrummet'
+    "<<one of>>När du kommer in i rummet lägger du omedelbart märke till<<or>>Detta är ett 
+    litet, fyrkantigt rum med<<stopping>> ett par stålskåp monterade mot ena väggen, det ena
+    mycket högre än det andra. Den enda vägen ut är genom en dörr mot väster. "
+
+    eng = "<<one of>>On entering the room you immediately notice<<or>>This is a small
     square room with<<stopping>> a pair of steel cabinets mounted against one
     wall, one much taller than the other. The only way out is through a door to
     the west. "
@@ -55,24 +55,23 @@ maintenanceRoom: Room 'Maintenance Room' 'maintenance room'
     out asExit(west)
 ;
 
-+ mrDoorOut: Door 'metal door; plain'
-    "It's just a plain metal door, currently <<if isOpen>> open<<else>>
-    closed<<end>>. "
++ mrDoorOut: Door 'metall|dörr+en; vanlig+a'
+    "Det är bara en vanlig metalldörr, för närvarande <<if isOpen>> öppen<<else>>
+    stängd<<end>>. "
     
     otherSide = maintenanceRoomDoor    
     lockability = lockableWithKey
     isLocked = true
 ;
 
-+ tallCabinet: OpenableContainer, Fixture 'tall metal cabinet; green'
-    "It's a good two metres high and painted an institutional green. "
++ tallCabinet: OpenableContainer, Fixture 'hög+a metall|kabinett+en; två meter målad+e institutions|grön+a'
+    "Den är hela två meter hög och målad i en institutionsgrön färg."
     
     bulkCapacity = 20
 ;
 
-+ shortCabinet: Fixture 'short metal cabinet; light grey gray'
-    "It's about a metre high and painted light grey. "
-    
++ shortCabinet: Fixture 'låg+a metall|kabinett+en; lätt+a låg+a ljus|grå+a'
+    "Den är ungefär en meter hög och målad i ljusgrått. "
     remapIn: SubComponent 
     {
         isOpenable = true
@@ -85,10 +84,11 @@ maintenanceRoom: Room 'Maintenance Room' 'maintenance room'
     
 ;
 
-++ powerSwitch: Fixture, Switch 'big red switch{-zz}'
-    "It's marked <q>Metal Detector</q> and is currently in the <<if isOn>>ON
-    <<else>> OFF<<end>> position. "
-    
+//++ powerSwitch: Fixture, Switch 'big red switch{-zz}' // TODO: vad gjorde -zz?
+++ powerSwitch: Fixture, Switch 'stor+a röd+a ström|brytare+en'
+    "Den är märkt <q>Metalldetektor</q> och är för närvarande i 
+    <<if isOn>>PÅ<<else>>AV<<end>>-position. "
+
     isOn = true
     subLocation = &remapIn
     
@@ -100,21 +100,21 @@ maintenanceRoom: Room 'Maintenance Room' 'maintenance room'
     }
 ;
 
-++ Decoration 'switches; other of[prep]; bank rows row; dem'
-    "There's four rows of switches in a variety of colours, but your attention
-    is quickly drawn to the big red one marked <q>Metal Detector</q>. "
+++ Decoration 'strömbrytar:e+na[pl]; de andra av[prep]; uppsättning+en rad+er rad+en; dem'
+    "Det finns fyra rader med strömbrytare i en mängd olika färger, men din 
+    uppmärksamhet dras snabbt till den stora röda märkta <q>Metalldetektor</q>."
 
-    notImportantMsg = 'Only the big red switch is off any interest with you; you
-        don\'t want to risk drawing attention to yourself by messing with any of
-        the others. '
+    notImportantMsg = 'Det är bara den stora röda strömbrytaren som är av något 
+    intresse för dig; du vill inte riskera att dra till dig uppmärksamhet genom att 
+    mixtra med någon av de andra.'
+    
     subLocation = &remapIn
-    specialDesc = "A bank of switches is mounted at the rear of the 
-        cabinet. "
+    specialDesc = "En uppsättning brytare är monterade på baksidan av skåpet. "
 ;
 
     
-++ potPlant: Thing 'pot plant; small; cactus'
-    "It looks like a small cactus. "
+++ potPlant: Thing 'krukväxt+en; li:ten:lla; kaktus+en'
+    "Det ser ut som en liten kaktus. "
     
     maxBulkHiddenUnder = 1
     hiddenUnder = [silverKey]
@@ -122,11 +122,11 @@ maintenanceRoom: Room 'Maintenance Room' 'maintenance room'
     
     subLocation = &remapOn
     
-    cannotPutUnderMsg = '{I} {can\'t} put anything under the pot plant unless
-        it\'s resting on something. '
+    cannotPutUnderMsg = '{Jag} {kan} inte stoppa något under krukväxten såvida den inte 
+    står på någonting. '
 ;
 
-silverKey: Key 'small silver key'
+silverKey: Key 'silver|nyckel+n; li:ten+lla'
     
     bulk = 1
     actualLockList = [shortCabinet]
@@ -134,58 +134,56 @@ silverKey: Key 'small silver key'
 ;
 
 
-gate1: Room 'Gate 1' 'gate[n] 1[adj]; one'
-    "Disconsolate passengers lounge around on seats waiting for a flight that
-    seems never to arrive. The gate to the west is closed, so the only way out
-    from here is back to the southeast. " 
+gate1: Room 'Gate 1' 'gate[n] 1[adj]; ett första'
+    "Misströstande passagerare sitter och väntar på ett flyg som aldrig verkar
+    komma fram. Gaten västerut är stängd, så den enda vägen ut är tillbaka mot 
+    sydost."
     
     southeast = gateArea    
 ;
 
-+ Decoration 'disconsolate passengers;;;dem'    
++ Decoration 'misströstande passagerare;;;dem'    
 ;
  
 + Decoration 'säten+a;;;dem'
 ;    
 
-gate2: Room 'Gate 2' 'gate[n] 2[adj]; two'
-    "This area is totally deserted, as if no one even expects a flight will ever
-    board here. The gate to the north looks firmly locked, so the only
-    practicable way out would seem to be back to the south. "
-    
+gate2: Room 'Gate 2' 'gate[n] 2[adj]; två andra'
+    "Det här området är helt öde, som om alla slutat förvänta sig att ett flyg 
+    någonsin kommer att bordas här. Gaten mot norr ser ordentligt låst ut, så 
+    den enda praktiska vägen härifrån verkar vara att gå tillbaka till söder. "
+
     south = gateArea
 ;
 
-gate3: Room 'Gate 3' 'gate[n] 3[adj]; three'
-    "The area is practically deserted, apart from the odd belated passenger
-    dashing off through the open gate to the east. "
+gate3: Room 'Gate 3' 'gate[n] 3[adj]; tre+dje '
+    "Området är praktiskt taget öde, bortsett från en och annan försenad 
+    passagerare som rusar iväg genom den öppna porten mot öster."
     
     southwest = gateArea
     east = openGate
 ;
 
-+ Decoration 'seats; empty deserted unoccupied; seating; dem'
-    "All the seats at this departure gate are unoccupied, suggesting that any
-    passengers for the current flight have already boarded the plane. "
-    
++ Decoration 'säten+a; tom+ma övergivna otagna oupptagna lediga; sitt|platser+na; dem'
+    "Alla platser vid denna avgångsgate är lediga, vilket tyder på att alla passagerare 
+    för den aktuella flygningen redan har gått ombord på planet."    
 ;
 
-+ openGate: Passage 'open gate; unattended wide'
-    "The gate is wide open, and for some reason totally unattended. That
-    hardly seems like a high level of security.  "
-    cannotOpenMsg = 'It\'s already open. '
-    cannotCloseMsg = 'That hardly seems appropriate. '
++ openGate: Passage 'öpp:en+na gate+n; unattended wide'
+    "Gaten står vidöppen, och av någon anledning helt obevakad. Det verkar
+    knappast som en hög säkerhetsnivå. "
+    cannotOpenMsg = 'Den är redan öppen. '
+    cannotCloseMsg = 'Det verkar knappast passande att göra. '
     
     destination = jetway
 ;
 
-jetway: Room 'Jetway' 'jetway;short enclosed; walkway'
-    "This is little more than a short enclosed walkway leading west-east from
-    the gate to the plane. <<if takeover.isHappening>> Right now it's thronging
-    with a stream of disgruntled passengers who have just been forced to
-    disembark from their flight. <<else unless takeover.hasHappened>>You seem to
-    be the only person here, as if everyone else has already boarded.<<end>> "
-    
+jetway: Room 'Passagerarbrygga' 'passagerar|brygga+n;kort+a inneslut:en+na; land|gång+en'
+    "Detta är inte mycket mer än en kort, sluten gångväg som leder väst-öst från gaten 
+    till planet. <<if takeover.isHappening>> Just nu kryllar det av en ström av missnöjda 
+    passagerare som just har tvingats gå av sitt flyg. <<else unless takeover.hasHappened>>
+    Du verkar vara den enda personen här, som om alla andra redan har gått ombord.<<end>>"
+
     west = gate3
     east: TravelConnector
     {
@@ -194,8 +192,8 @@ jetway: Room 'Jetway' 'jetway;short enclosed; walkway'
         canTravelerPass(traveler) { return !takeover.isHappening; }
         explainTravelBarrier(traveler)
         {
-            "You dare not go back aboard the plane until you've found a rather
-            more effective disguise than a handful of cleaning items. ";
+            "Du vågar inte gå tillbaka ombord på planet förrän du har hittat en mer 
+            effektiv förklädnad än en handfull rengöringsartiklar. ";
         }
     }
     

@@ -14,9 +14,10 @@ planeRegion: Region
 ;
 
 cockpit: Room 'Cockpit' 'cockpit'
-    "The cockpit is quite small but has everything you might expect: a
-    windscreen looking forward, a pilot's seat from which you can operate all
-    the usual controls, and a door leading out aft. "
+    "Cockpiten är ganska liten men har allt man kan förvänta sig: en 
+    vindruta som tittar framåt, en pilotstol från vilken man kan manövrera
+    alla de vanliga reglagen och en dörr som leder ut akterut."
+
     aft = cabinDoor
     south asExit(aft)
     out asExit(aft)
@@ -30,11 +31,11 @@ cockpit: Room 'Cockpit' 'cockpit'
     }
 ;
 
-+ cabinDoor: LockablePlaneDoor 'cabin door'
++ cabinDoor: LockablePlaneDoor 'hytt|dörr+en;;kabindörr+en'
     otherSide = cockpitDoor
 ;
 
-+ pilotSeat: Fixture, Platform 'pilot\'s seat;;chair'
++ pilotSeat: Fixture, Platform 'pilot|säte+t;;pilot|stol+en'
         
     dobjFor(Enter) asDobjFor(Board)
     
@@ -44,40 +45,38 @@ cockpit: Room 'Cockpit' 'cockpit'
     }
 ;
 
-+ controls: Fixture 'controls;; instruments;dem'
-    "The instruments and controls of most immediate interest to you are
++ controls: Fixture 'reglage+n;; kontroller+na;dem'
+    "De instrument och reglage som är mest intressanta för dig är 
     <<makeListStr(contents, &theName)>>. "
     
     checkReach(actor)
     {
         if(!actor.isIn(pilotSeat))
-            "You really need to be sitting in the pilot's seat before you start
-            operating the controls. ";
+            "Du behöver sitta i pilotsätet innan du kan använda reglagen. ";
     }
 ;
 
-++ controlColumn: Fixture 'control column;;stick'
-    "It's basically a stick that can be pushed forward or pulled back, with a
-    wheel attached at the top. It's currently <<positionDesc>>. "
+++ controlColumn: Fixture 'styr|spak+en;;spak|stång+en'
+    "Det är i princip en spak som kan skjutas framåt eller dras bakåt, med ett hjul fäst högst upp. Den är för närvarande <<positionDesc>>."
     listOrder = 10
     
     position = 0
     
-    positionDesc = ['pulled right back', 'vertical', 
-        'pushed all the way forward'][position + 2]
+    positionDesc = ['helt tillbakadragen', 'vertikal', 
+        'framskjuten hela vägen'][position + 2]
     
     dobjFor(Push)
     {
         check()
         {
             if(position > 0)
-                "It's already pushed forward as far as it will go. ";
+                "Den är redan framskjuten så långt det går att få den. ";
         }
         
         action()
         {
             position++;
-            "You push the control column so that it's now <<positionDesc>>. ";
+            "Du trycker fram styrspaken så att den nu är <<positionDesc>>. ";
         }
     }
     
@@ -86,20 +85,20 @@ cockpit: Room 'Cockpit' 'cockpit'
         check()
         {
             if(position < 0)
-                "It's already pulled back as far as it will go. ";
+                "Den är redan så långt tillbakadragen som det går att få den. ";
         }
         
         action()
         {
             position--;
-            "You pull the control column so that it's now <<positionDesc>>. ";
+            "Du drar bak styrspaken så att den nu är <<positionDesc>>. ";
         }
     }
 ;
 
-+++ wheel: Fixture 'wheel'
-    "The wheel can be turned to port or starboard to steer the aircraft. It's
-    currently <<angleDesc>>. "
++++ wheel: Fixture 'ratt+en'
+    "Ratten kan vridas åt babord eller styrbord för att styra flygplanet. 
+    Den är för närvarande <<angleDesc>>."
     
     isTurnable = true
     angle = 0
@@ -109,19 +108,19 @@ cockpit: Room 'Cockpit' 'cockpit'
         switch(angle)
         {
         case -60:
-            "hard to port";
+            "svår att styra mer babords";
             break;
         case -30:
-            "slightly to port";
+            "något åt babords";
             break;
         case 0:
-            "amidships";
+            "midskepps";
             break;
         case 30:
-            "slightly to starboard";
+            "lite åt styrbords";
             break;
         case 60:
-            "hard to starboard";
+            "svår att styra mer styrbords";
             break;
         }
     }
@@ -131,14 +130,13 @@ cockpit: Room 'Cockpit' 'cockpit'
         check()
         {
             if(angle >= 60)
-                "It's already turned as far to starboard as it will go. ";
+                "Den är redan vriden så långt styrbords som det går att få den. ";
         }
         
         action()
         {
             angle += 30;
-            "You turn the wheel 30 degrees to starboard so that it ends up
-            <<angleDesc>>. ";
+            "Du vrider hjulet 30 grader styrbords så den blir <<angleDesc>>. ";
         }
     }
     
@@ -147,14 +145,13 @@ cockpit: Room 'Cockpit' 'cockpit'
         check()
         {
             if(angle <= -60)
-                "It's already turned as far to port as it will go. ";            
+                "Den är redan vriden så långt babords som det går att få den. ";            
         }
         
         action()
         {
             angle -= 30;
-            "You turn the wheel 30 degrees to port so that it ends up
-            <<angleDesc>>. ";
+            "Du vrider hjulet 30 grader babords så den blir <<angleDesc>>. ";
         }
     }
     
@@ -169,9 +166,8 @@ cockpit: Room 'Cockpit' 'cockpit'
     }
 ;
 
-++ thrustLever: Settable, Lever 'thrust lever'
-    "It's a lever that can be pushed forward or pulled back. It's currently
-    <<settingDesc>>. "
+++ thrustLever: Settable, Lever 'drivkrafts|spak+en;drivkraft;tryckspak+en kraftspak+en'
+    "Det är en spak som tryckas framåt eller dras bakåt. Den är för närvarande <<settingDesc>>. "
     listOrder = 20
     
     settingDesc()
@@ -179,11 +175,11 @@ cockpit: Room 'Cockpit' 'cockpit'
         switch(curSetting)
         {
         case '0':
-            return 'pulled all the way back to 0';
+            return 'tillbakadragen hela vägen till 0';
         case '5':
-            return 'pushed all the way forward to 5';
+            return 'framskjuten hela vägen till 5';
         default:
-            return 'in the <<curSetting>> position';
+            return 'i position <<curSetting>> ';
         }
     }
     
@@ -200,14 +196,14 @@ cockpit: Room 'Cockpit' 'cockpit'
     {
         local oldVal = curSetting;
         inherited(val);
-        "You <<if oldVal < val>> push the thrust lever forward<<else>> pull the
-        lever back<<end>> to <<curSetting>>. ";
+        "Du <<if oldVal < val>> trycker drivkraftsspaken framåt<<else>> drar 
+        drivkraftsspaken bakåt<<end>> till <<curSetting>>. ";
         
         if(ignitionButton.isOn)
         {
-            "The whine of the engine <<if oldVal < val>>increases <<else>>
-            decreases<<end>> in pitch and volume<<if val=='0'>>, dying away to
-            a barely perceptible whisper<<end>>. ";
+            "Motorns vinande <<if oldVal < val>>ökar <<else>>
+            minskar<<end>> i tonhöjd och volym<<if val=='0'>> och dör ut till en
+            knappt hörbar viskning<<end>>. ";
         }
         
     }
@@ -221,80 +217,88 @@ cockpit: Room 'Cockpit' 'cockpit'
     isPushed = (curSetting == '5')
 ;
 
-++ ignitionButton: Button 'engine ignition button; big green'
-    "It's a big green button. "
+++ ignitionButton: Button '() motorns tändnings|knapp+en; stor+a grön+a'
+    "Det är en stor grön knapp. "
     listOrder = 30
     isOn = nil
     
     makePushed()
     {
         if(isOn)
-            "The engines are already running. ";
+            "Motorerna är redan igång. ";
         else
         {
             isOn = true;
-            "The plane judders as the engines roar into life. ";
+            "Flygplanet skakar till när motorerna dånar till liv. ";
         }
     }
 ;
 
-++ asi: Fixture 'airspeed indicator; air speed; numbers asi'
-    "It's currently registering an airspeed of <<airspeed>> knots. Most of the
-    numbers round the dial are marked in white, but 115 knots is marked in
-    green. "
+
+
+++ asi: Fixture 'luft|hastighets|indikator+n; lufthastighet+en; siffror+na asi+n'
+    "Den mäter för närvarande en flyghastighet på <<lufthastighet>> knop. 
+    De flesta siffrorna runt urtavlan är markerade med vitt, men 115 knop är 
+    markerat med grönt. "
     listOrder = 40
     
     airspeed = 0
 ;
 
-++ altimeter: Fixture 'altimeter'
-    "It's currently indicating an altitude of <<altitude>> feet. "
+++ altimeter: Fixture 'höjdmätare+n'
+    "Den indikerar för närvarande en altitud av <<altitude>> fot. "
     listOrder = 50
     
     altitude = 0
 ;
 
-++ fuelGauge: Fixture 'fuel gauge'
-    "It's currently registering full. "
+++ fuelGauge: Fixture 'bränsle|mätare+n'
+    "Den mäter för närvarande full tank. "
     listOrder = 60
 ;
 
-+ windscreen: Fixture 'windscreen;; window windshield'
++ windscreen: Fixture 'vind|ruta+n;; fönst:er+ret'
     desc()
     {
         if(takeoff.isHappening)
             takeoffDesc();
         else
-            "The light is starting to fade outside, but you can easily makeout
-            the terminal off to the port side and the last-minute bustle of
-            preparations around your plane. ";            
+            "Ljuset börjar blekna utanför, men du kan lätt urskilja 
+            terminalen på babords sida och sista minuten-jäkten av 
+            förberedelser runt ditt flygplan. ";
+
+            // "The light is starting to fade outside, but you can easily makeout
+            // the terminal off to the port side and the last-minute bustle of
+            // preparations around your plane. ";            
     }
     
     takeoffDesc()
     {
         local dt = takeoff.distanceTraveled/5;
         
-        "It's now quite dark outside, but you can see the landing lights marking
-        the course of the runway <<if asi.airspeed == 0>>stationery on either
-        side<<else if asi.airspeed < 30>> moving slowly past <<else>> rushing
-        past<<end>>. <<if dt < 10>> Virtually the whole length of the runway
-        stretches ahead of you<<else if dt < 33>> Most of the runway still lies
-        ahead<< else if dt < 67>> So far as you can judge only about half the
-        runway still lies ahead<<else if dt < 85>> You're starting to run out of
-        runway<<else>> You're nearly at the end of the runway<<end>>.";
+        "Det är ganska mörkt ute nu, men du kan se landningsljusen som markerar
+        landningsbanans bana <<if asi.airspeed == 0>>stationerade på vardera 
+        sida <<else if asi.airspeed < 30>> röra sig långsamt förbi <<else>> rusa 
+        förbi<<end>>. 
+        <<if dt < 10>> Nästan hela banans längd sträcker ut sig framför dig
+        <<else if dt < 33>> Större delen av banan ligger fortfarande framför dig
+        << else if dt < 67>> Såvitt du kan bedöma ligger bara ungefär hälften av 
+        banan fortfarande framför dig
+        <<else if dt < 85>> Banan börjar att ta slut
+        <<else>> Du är nästan framme vid slutet på banan<<end>>.";
     }
     
     
     dobjFor(LookThrough) asDobjFor(Examine)
 ;
 
-+ terminalBuilding: Distant 'terminal building; shabby white large; structure'
-    "It's a large white structure just off to port. In the fading light you
-    can't really make out how shabby it actually looks. "
++ terminalBuilding: Distant 'terminal+byggnad+en; sjaskig+a vit+a stor+a; struktur+en'
+    "Det är en stor vit byggnad precis åt babord. I det avtagande ljuset kan man inte 
+    riktigt se hur sjaskig den egentligen ser ut. "
 ;
 
-landingLights: Distant 'landing lights; red green;;dem'
-    "The red lights are to port and the greens ones to starboard. "
+landingLights: Distant 'landnings|ljus+en; röd+a grön+a;;dem'
+    "De röda ljusen är åt babord och de gröna åt styrbord. "
 ;
 
 takeoff: Scene
@@ -302,11 +306,12 @@ takeoff: Scene
     
     whenStarting()
     {
-        "A few moments later a truck tows your plane away from the jetway, and
-        following the instructions from the control tower, you taxi the plane to 
-        the start of Runway 2 just as the sun finally disappears below the
-        horizon. About a minute later, you are cleared for take-off. ";
-        
+        "Några ögonblick senare bogserar en lastbil bort ditt plan från 
+        landningsbanan, och efter instruktioner från kontrolltornet rullar 
+        du planet till början av landningsbana 2 precis när solen äntligen 
+        försvinner under horisonten. Ungefär en minut senare; får du en ny 
+        startklarering. ";
+
         /* reset all controls to their initial positions */
         thrustLever.curSetting = '0';
         wheel.angle = 0;
@@ -314,8 +319,7 @@ takeoff: Scene
         
         /* close off the exit from the plane */
         
-        planeFront.port = 'You can\'t leave the plane now it\'s left the jetway.
-            ';
+        planeFront.port = 'Du kan inte lämna planet nu när det har lämnat passagerarbryggan. ';
         
         landingLights.moveInto(cockpit);
         terminalBuilding.moveInto(nil);
@@ -332,14 +336,23 @@ takeoff: Scene
         {
             if(asi.airspeed >= 115)
             {
-                "The aircraft leaves the ground and continues up into the sky,
-                climbing rapidly above the city. Once you've gained enough
-                height you turn the plane --- not south towards Bogota but north
-                towards Miami. Hopefully those hoodlums back in passenger cabin
-                won't notice, though, at least, not until it's far too late. You
-                reach for the radio to call ahead and arrange a suitable
-                reception committee, and then settle back in your seat, content
-                with a job well done. ";
+                // "The aircraft leaves the ground and continues up into the sky,
+                // climbing rapidly above the city. Once you've gained enough
+                // height you turn the plane --- not south towards Bogota but north
+                // towards Miami. Hopefully those hoodlums back in passenger cabin
+                // won't notice, though, at least, not until it's far too late. You
+                // reach for the radio to call ahead and arrange a suitable
+                // reception committee, and then settle back in your seat, content
+                // with a job well done. ";
+
+                "Flygplanet lämnar marken och fortsätter upp i luften, och stiger 
+                snabbt upp ovan staden. När du väl har nått tillräckligt med höjd 
+                svänger du planet --- inte söderut mot Bogotá utan norrut mot Miami. 
+                Förhoppningsvis märker inte de där ligisterna i passagerarkabinen 
+                det, åtminstone inte förrän det är alldeles för sent. Du sträcker 
+                dig efter radion för att anropa i förväg och ordna med en lämplig 
+                mottagningskommitté, och lutar dig sedan tillbaka i din stol, 
+                nöjd med ett väl utfört jobb. ";
                 
                 flyingAchievement.awardPointsOnce();
                 
@@ -347,14 +360,15 @@ takeoff: Scene
             }
             else if(asi.airspeed > 90)
             {
-                "The aircraft leaves the ground for a moment and then stalls,
-                rapidly losing speed and bumping back down onto the runway. ";
+                "Flygplanet lämnar marken ett ögonblick och stannar sedan, tappar 
+                snabbt fart och stöter tillbaka ner på banan. ";
+
                 
                 asi.airspeed -= 30;
             }
             else
-                "The aircraft judders slightly but nothing else happens; it
-                isn't traveling nearly fast enough to take off. ";
+                "Flygplanet skakar lite men inget annat händer; det flyger inte alls 
+                tillräckligt snabbt för att lyfta. ";
         }
         
         local thrust = toInteger(thrustLever.curSetting) * 400 - asi.airspeed;
@@ -375,10 +389,14 @@ takeoff: Scene
         /* If we go too far, we run off the end of the runway */
         if(distanceTraveled > 500)
         {
-            "The plane reaches the end of the runway, ploughs through the fences
+            /*"The plane reaches the end of the runway, ploughs through the fences
             and crashes into some buildings. What happens after that you never
             know, but it seems a terribly destructive way to displose of a
-            plane-load of hoodlums. ";
+            plane-load of hoodlums. ";*/
+            "Planet når slutet av landningsbanan, plöjer igenom stängslen och 
+            kraschar in i några byggnader. Vad som händer efter detta vet man 
+            aldrig, men det verkar vara ett fruktansvärt destruktivt sätt att 
+            göra sig av med en flygplanslast med ligister. ";
             
             finishGameMsg(ftDeath, [finishOptionUndo, finishOptionFullScore]);
         }
@@ -391,13 +409,20 @@ takeoff: Scene
         
         if(wheel.angle != 0 && asi.airspeed > 0)
         {
-            "The plane lurches off the <<if wheel.angle < 0>> port <<else>>
+            /*"The plane lurches off the <<if wheel.angle < 0>> port <<else>>
             starboard<<end>> side of the runway <<one of>>into the path of a
             taxying airliner <<or>> and smashes into a hangar <<or>> and
             collides with a stationary airliner <<or>> and runs into a group of
             sheds <<purely at random>> with predictably disastrous consequences.
-            Fortunately, you won't be around to answer for your incompetence. ";
+            Fortunately, you won't be around to answer for your incompetence. ";*/
             
+            "Flygplanet kränger av <<if wheel.angle < 0>> babord <<else>>
+            styrbordssidan <<end>> av banan <<one of>> in i banan för ett taxande 
+            flygplan <<or>> och krockar med en hangar <<or>> och kolliderar 
+            med ett stillastående flygplan <<eller>> och kör in i en grupp skjul 
+            <<purely at random>>> med förutsägbara katastrofala konsekvenser.
+            Som tur är kommer du inte hänga kvar för att stå till svars för 
+            din inkompetens. ";
             finishGameMsg(ftDeath, [finishOptionUndo, finishOptionFullScore]);
         }
         
@@ -419,11 +444,12 @@ takeoff: Scene
 ;
 
 
-planeFront: Room 'Front of Plane' 'front[n] of the plane;;airplane aeroplane'
-    "The main ailse comes to an end at the port exit of the plane, but continues
-    aft past the seating. A little further forward is a door that <<unless
-      gPlayerChar.hasSeen(cockpit)>>presumably<<end>> leads into the cockpit. "
-    
+//Front of Plane' 'framsidan[n] av planet;;flygplan flygplan'
+planeFront: Room 'Framsidan av Planet' '() framsida+n[n] av plan+et;;flyg|plan+et flyg+et'
+    "Huvudgången slutar vid babords utgång på planet, men fortsätter akterut 
+    förbi sätet. Lite längre fram finns en dörr som <<unless gPlayerChar
+    .hasSeen(cockpit)>>förmodligen<<end>> leder in i cockpiten."
+
     fore = cockpitDoor
     north asExit(fore)
     port = jetway
@@ -435,14 +461,14 @@ planeFront: Room 'Front of Plane' 'front[n] of the plane;;airplane aeroplane'
     regions = [planeRegion]
 ;
 
-+ cockpitDoor: PlaneDoor 'cockpit door'
++ cockpitDoor: PlaneDoor 'cockpit|dörr+en'
     otherSide = cabinDoor
 ;
 
 
-planeRear: Room 'Rear of Plane' 'rear[n] of the plane;;airplane aeroplane'
-    "The main aisle continue forward to the front of the plane and aft to the
-    bathroom between rows of red coloured seats. "
+planeRear: Room 'Baksidan av planet' '() baksida+n[n] av plan+et;;flyg|plan+et flyg+et'
+    "Huvudgången fortsätter framåt till planets främre del och akterut till 
+    toaletten mellan raderna av rödfärgade säten."
     fore: TravelConnector
     {
         destination = planeFront
@@ -453,40 +479,43 @@ planeRear: Room 'Rear of Plane' 'rear[n] of the plane;;airplane aeroplane'
         
         explainTravelBarrier(traveler)
         {       
-            "You take a step forward towards the front of the plane, but ";
+            "Du tar ett steg framåt mot planets främre del, men ";
             
             switch(cleanerItemCount(traveler))
             {                
             case 0:
             case 1:
-                "as you do so, you catch sight of Pablo Cortez, one of El
-                Diablo's most ruthless henchmen, standing near the exit, so you
-                take a hasty step back into the throng of passengers before he
-                can recognize you, wondering how you might disguise yourself. ";   
+                "Du tar ett steg framåt mot planets främre del, men när du gör 
+                det får du syn på Pablo Cortez, en av El Diablos mest 
+                hänsynslösa hantlangare, som står nära utgången, så du tar ett 
+                hastigt steg tillbaka in i passagerarvimlet innan han kan känna 
+                igen dig, och undrar hur du ska kunna förklä dig själv. ";
                 break;
             case 2:
-                "you spot Pablo Cortez, El Diablo's evil lieutenant, standing
-                by the exit looking increasingly impatient at the passengers'
-                disorganized departure. You step back hastily, not at all
-                sure that he'll mistake you for a cleaner. ";
+                "du får syn på Pablo Cortez, El Diablos onde löjtnant, som står 
+                vid utgången och ser alltmer otålig ut över passagerarnas 
+                oorganiserade avfärd. Du backar hastigt, inte alls säker på att 
+                han kommer att missta dig för en städare. ";
                 break;
             case 3:
-                "at that moment Pablo Cortez, El Diablo's particularly nasty
-                right-hand man, glances aft from the front of the plane, as if
-                he's trying to place you. Maybe you aren't carrying quite enough
-                to be mistaken as a cleaner, so you take a hasty step back. ";
+                "i det ögonblicket tittar Pablo Cortez, El Diablos särskilt 
+                otrevliga högra hand, bakåt från planets framsida, som om han 
+                försöker placera dig. Du kans inte bär på tillräckligt mycket 
+                för att misstas för en städare, så du tar ett hastigt steg 
+                tillbaka. ";
+
                 break;
                 
             }
         }
         
-        travelDesc = "<<if takeover.isHappening>>Clutching the bucket and the
-            garbage bag in such a way to hide as much as yourself as possible,
-            you push your way through the passengers milling in the aisle,
-            hoping to avoid Pablo Cortez's eye. If he catches you, you'll be
-            dead before you can say <q>funeral expenses</q>! <<else>>Ignoring
-            the passengers seated either side of the aisle, you return to the
-            front of the plane. <<end>>" 
+        travelDesc = "<<if takeover.isHappening>>Du greppar tag i hinken och 
+        sopsäcken på ett sådant sätt att du gömmer dig så mycket som möjligt, 
+        och tränger dig fram mellan passagerarna som rör sig i gången, i hopp 
+        om att undvika Pablo Cortez blick. Om han fångar dig kommer du att 
+        vara död innan du hinner säga <q>begravningskostnader</q>! 
+        <<else>>Du ignorerar passagerarna som sitter på vardera sidan av 
+        gången och återvänder till planets främre del. <<end>>"
         
         cleanerItemCount(traveler)
         {
@@ -503,34 +532,35 @@ planeRear: Room 'Rear of Plane' 'rear[n] of the plane;;airplane aeroplane'
     regions = [planeRegion]    
 ;
 
-+ bathroomDoor: PlaneDoor 'bathroom door; loo toilet lavatory'
++ bathroomDoor: PlaneDoor 'toalett|dörr+en; toa+n lavatory'
     otherSide = bathroomDoorInside
 ;
 
-MultiLoc, Decoration 'seats; red; seating seat airline; dem'
-    "Like all airline seats, these ones look like they were designed for the
-    average-sized person of a century and a half ago. "
+MultiLoc, Decoration 'flyplans|säten+a; röd+a; 
+                      flyg|stolar+ar flyg|stol+en sitt|platser+na[pl] sitt|plats+en säten[pl] säte+t; dem'
+    "Liksom alla flygstolar ser dessa ut som om de var designade för hur mycket 
+    en genomsnittlig person vägde för ett och ett halvt sekel sedan."
     
-    notImportantMsg = '<<if takeover.isHappening>>You can\'t get at the seats
-        for the press of passengers in the aisle<<else>>All the seats round here
-        seem to be taken, so you\'d best leave them alone<<end>>. '
+    notImportantMsg = '<<if takeover.isHappening>>Du kan inte komma åt sätena på
+    grund av trängseln av passagerare i gången<<else>>Alla platser här runt omkring
+     verkar vara upptagna, så det är bäst att du lämnar dem ifred.<<end>>. '
     
     locationList = [planeFront, planeRear]
 ;
 
-airlinePassengers: MultiLoc, Decoration 'passengers;;men women; dem'
-    "<<if takeover.isHappening>>They seem confused and annoyed in equal
-    measure<<else>>You sense an air of impatience about them, as if they're all
-    wondering when the aircraft is finally going to leave<<end>>. "
+airlinePassengers: MultiLoc, Decoration 'passagerar:e+na;;män+nen[pl] kvinnor+na[pl]; dem'
+    "<<if takeover.isHappening>>De verkar lika förvirrade som de är irriterade
+    <<else>>Du känner en otålighet omkring dem, som om de alla undrar när 
+    flygplanet äntligen ska lyfta<<end>>. "
     
-    notImportantMsg = 'Better leave them alone; you don\'t want to draw
-        attention to yourself. ' 
+    notImportantMsg = 'Bäst att låta bli dem; du vill inte dra på dig onödig
+        uppmärksamhet. ' 
     
     locationList = [planeFront, planeRear]
     
-    specialDesc = "The aisle is full of passengers trying to leave their seats,
-        retrieve their luggage, and make their way to the <<if
-          me.isIn(planeRear)>> front of the plane<<else>>exit<<end>>. "
+    specialDesc = "Gången är full av passagerare som försöker lämna sina säten,
+        plocka ner sitt bagage, och bege sig mot planets <<if me.isIn(planeRear)>>
+        framsida <<else>>utgången<<end>>. "
     
     useSpecialDesc = (takeover.isHappening)  
     
@@ -538,9 +568,8 @@ airlinePassengers: MultiLoc, Decoration 'passengers;;men women; dem'
 
 
 
-bathroom: Room 'Bathroom' 'bathroom;;loo lavatory toilet wc cubicle'
-    "The bathroom is just a tiny cubicle with all the standard fittings you'd
-    expect. "
+bathroom: Room 'Toaletten' 'toalett+en;;toa+n lavatory wc bås+et'
+    "Toaletten är bara ett litet bås med alla de typiska beslag du kan förvänta dig. "
     
     fore = bathroomDoorInside
     north asExit(fore)
@@ -549,20 +578,23 @@ bathroom: Room 'Bathroom' 'bathroom;;loo lavatory toilet wc cubicle'
     regions = [planeRegion] 
 ;
 
-+ bathroomDoorInside: LockablePlaneDoor 'cabin door'
++ bathroomDoorInside: LockablePlaneDoor 'hytt|dörr+en;;kabin|dörr+en'
     otherSide = bathroomDoor
 ;
 
-+ Decoration 'fittings; wash; washbasin basin taps faucets bowl; dem'
-     "At least the washbasin and the bowl look reasonably clean. "
++ Decoration 'beslag+en; 
+              tvätt; 
+              tvätt|ställ+et blandar+na blandare+n kranar+na kran+en skål+en; 
+              washbasin basin taps; dem'
     
-    notImportantMsg = 'You have no need to make use of any of these facilities
-        right now. '
+    "Handfatet och toalettstolen ser åtminstone någorlunda rena ut. "
+    
+    notImportantMsg = 'Du behöver inte använda någon av dessa faciliteter just nu. '
 ;
 
-+ bucket: Container 'bucket; plain yellow plastic; pail'
-    "It's just a plain yellow plastic bucket. "
-    initSpecialDesc = "Some cleaner seems to have left all his things here:
++ bucket: Container 'gul+a plast|hink+en; vanlig+a plastig+a; spann+et'
+    "Det är bara en vanlig gul plasthink. "
+    initSpecialDesc = "Någon städare verkar ha lämnat alla sina saker här:
         <<list of location.listableContents.subset({x: x.moved == nil})>>. "
     
     bulk = 6
@@ -570,21 +602,21 @@ bathroom: Room 'Bathroom' 'bathroom;;loo lavatory toilet wc cubicle'
     
 ;
 
-+ sponge: Thing 'sponge; turquoise'
-    "It's a kind of turquoise colour. "
++ sponge: Thing 'tvätt|svamp+en;turkos+a'
+    "det är en slags turkos färg. "
     
     bulk = 3
 ;
 
-+ garbageBag: Container 'garbage bag; large green plastic rubbish; bag'
-    "It's basically just a large green plastic bag. "
++ garbageBag: Container 'sop|säck+en; stor+a grön+a plast|avfall+et; påse'
+    "Det är i princip bara en stor grön plastpåse. "
     
     bulk = (2 + getBulkWithin)    
     bulkCapacity = 10
 ;
 
-+ brassKey: Key 'small brass key; yale'
-    "It's just like all the other yale keys you've ever seen. "    
++ brassKey: Key 'li:ten+lla mässing|nyckel+n; yale;yale-|dubb+nyckel+n'
+    "Den ser ut precis som vilken \"yale\"-dubbnyckel du har sett förut. "
     
     actualLockList = [maintenanceRoomDoor, mrDoorOut]
     plausibleLockList = [maintenanceRoomDoor, mrDoorOut]
@@ -595,7 +627,7 @@ bathroom: Room 'Bathroom' 'bathroom;;loo lavatory toilet wc cubicle'
 Doer 'gå dir'
     execAction(c)
     {
-        "Shipboard directions don't have much meaning here. ";
+        "Ombordsanvisningar har inte så stor betydelse här. ";
         abort;
     }
     
@@ -605,16 +637,16 @@ Doer 'gå dir'
 
 
 class PlaneDoor: Door 
-    desc = "It's <<if isOpen>>open<<else>>closed<<end>>. "
+    desc = "Den {är} <<if isOpen>>öppen<<else>>stängd<<end>>. "
     lockability = indirectLockable
-    indirectLockableMsg = 'It looks like this door can only be locked and
-        unlocked from the other side. '
+    indirectLockableMsg = 'Det ser ut som denna dörr bara kan 
+                           låsas och låsas upp från andra sidan'
     isLocked = nil
 ;
 
 class LockablePlaneDoor: Door
-    desc = "It's currently <<if isOpen>>open<<else>>closed and <<if isLocked>>
-        locked<<else>>unlocked<<end>><<end>>. "
+    desc = "Den är för närvarande <<if isOpen>>öppen<<else>>stängd och <<if isLocked>>
+        låst<<else>>olåst<<end>><<end>>. "
     lockability = lockableWithoutKey
     isLocked = nil
 ;
@@ -624,12 +656,11 @@ takeover: Scene
     
     whenStarting()
     {
-        "An annoucement comes over the intercom: <q>Due to scheduling problems,
-        passengers are kindly requested to disembark from the aircraft and
-        return to the airport lounge. Please remember to take all your personal
-        belongings with you.</q>\b
-        The announcement is immediately greeted by a chorus of groans from the
-        cabin. ";   
+        "Ett meddelande hörs via intercom: <q>På grund av problem med 
+        tidtabellen ombeds passagerare vänligen att gå av flygplanet och 
+        återvända till flygplatsloungen. Kom ihåg att ta med alla dina 
+        personliga tillhörigheter.</q>\b Meddelandet möts omedelbart av en 
+        klagokör av stönanden från kabinen. ";
         
         announcementObj.stopDaemon();
         disembarkingPassengers.moveInto(jetway);
@@ -646,23 +677,24 @@ takeover: Scene
     }
 ;
 
-criminalPassengers: Decoration 'passengers; smart dark of[prep]; men gangsters
-    suits lieutenants bunch people; dem'
-    "They may all be dressed in smart dark suits but you're well aware they're
-    little more than a bunch of gangsters, the senior lieutenants of men like El
-    Diablo who'd slit their own grandmothers' throats for a couple of pesos. "
-    
-    notImportantMsg = 'You really don\'t want to do anything that might make any
-        of those people take any notice of you. '
+criminalPassengers: Decoration 'passagera:re+rna; elegant+a mörk+a av[prep]; män+nen gangster+s
+    kostym+er löjtnanter+na gäng+et folk+et; dem'
+    "De må alla vara klädda i eleganta mörka kostymer, men du är väl medveten 
+    om att de inte är mycket mer än ett gäng gangsters, högre löjtnanter till 
+    män som El Diablo som skulle skar halsen av sina egna mormödrar för ett 
+    par pesos. "
+
+    notImportantMsg = 'Du vill verkligen inte göra något som kan få någon av 
+    de där människorna att lägga märke till dig.'
     
     beforeTravel(traveler, connector)
     {
         if(traveler == gPlayerChar && connector == planeRear)
         {
-            "You really don't want to call attention to yourself by walking past
-            those passengers to the rear of the plane, since even the most
-            simple-minded gansgter will think it odd it the pilot goes anywhere
-            but the cockpit. ";
+            "Du vill verkligen inte dra till dig uppmärksamhet genom att gå 
+            förbi passagerarna längst bak i planet, eftersom även den mest 
+            enkla gangstern kommer att tycka att det är konstigt om piloten 
+            går någon annanstans än in i cockpiten.";
             
             exit;
         }
@@ -670,22 +702,22 @@ criminalPassengers: Decoration 'passengers; smart dark of[prep]; men gangsters
 ;
 
 
-disembarkingPassengers: Decoration 
-    'disgruntled passengers; disembarking grumbing of[prep]; men women people
-    stream throng; dem'
+disembarkingPassengers: Decoration 'missnöjda passagera:re+na; 
+                                    avstigande trängande muttrande+t från[prep]; 
+                                    män+nen kvinnor+na trängsel+n människor+na ström+en folkmassa+n;
+                                    dem'
+    "Några av passagerarna som tvingades gå av planet står bara där och muttrar,
+    några andra är på väg tillbaka in i terminalen, 
+    medan andra fortsätter att komma ut ur planet."
     
-    "Some of the passengers forced to disembark from the plane are standing
-    around grumbling, and some are making their way back into the terminal,
-    while others continue to emerge from the plane. "
-    
-    notImportantMsg = 'You don\'t have time for these people right now. '
+    notImportantMsg = 'Du har inte tid för de här människorna just nu. '
 ;
 
 Doer 'släpp Thing'
     execAction(c)
     {
-        "You'd better not start dropping things here; it might make Cortez
-        notice you. ";
+        "Det är bäst att inte börja sätta ner saker här; det kanske får Cortez
+        att lägga märke till dig. ";
         exit;
     }
     
@@ -694,20 +726,20 @@ Doer 'släpp Thing'
 ;
 
 VerbRule(PushForward)
-    'push' multiDobj 'forward'
-    | 'push' 'forward' 'on' multiDobj
+    'tryck' multiDobj 'framåt'
+    | 'tryck' 'framåt' 'på' multiDobj
     : VerbProduction
     action = Push
-    verbPhrase = 'push/pushing forward (what)'
-    missingQ = 'what do you want to push forward'
+    verbPhrase = 'trycka/trycker framåt (vad)'
+    missingQ = 'vad vill du trycka framåt'
 //    dobjReply = singleNoun
 //    priority = 60
 
 ;
 
 modify VerbRule(Pull)
-    ('pull' multiDobj ( | 'back')) |
-    'pull' 'back' 'on' multiDobj    
+    ( ('dra'|'drag') multiDobj ( | 'bak'|'bakåt')) 
+    | ('dra'|'drag') ('bakåt'|'bakåt') 'på' multiDobj    
     : 
 ;
 
@@ -718,20 +750,20 @@ DefineTAction(TurnRight)
 ;
 
 VerbRule(TurnLeft)
-    'turn' singleDobj (| 'to' (| 'the')) ('left' | 'port')
+    'vrid' singleDobj (| 'till' ) ('vänster' | 'babord')
     : VerbProduction
     action = TurnLeft
-    verbPhrase = 'turn/turning (what) left'
-    missinqQ = 'what do you want to turn left'
+    verbPhrase = 'vrida/vrider (vad) vänster'
+    missinqQ = 'vad vill du vrida till vänster'
     priority = 60
 ;
 
 VerbRule(TurnRight)
-    'turn' singleDobj (| 'to' (| 'the')) ('right' | 'starboard')
+    'vrid' singleDobj (| 'till' ) ('höger' | 'styrbord')
     : VerbProduction
     action = TurnRight
-    verbPhrase = 'turn/turning (what) right'
-    missinqQ = 'what do you want to turn right'
+    verbPhrase = 'vrida/vrider (vad) höger'
+    missinqQ = 'vad vill du vrida till höger'
     priority = 60
 ;
 
@@ -748,7 +780,7 @@ modify Thing
                 
         report()
         {
-            "Turning <<gActionListStr>> to the left has no effect. ";
+            "Att vrida <<gActionListStr>> till vänster ger inget. ";
         }
         
     }
@@ -765,13 +797,13 @@ modify Thing
         
         report()
         {
-            "Turning <<gActionListStr>> to the right has no effect. ";
+            "Att vrida <<gActionListStr>> till höger ger inget. ";
         }
         
     }
 ;
 
 modify VerbRule(SetTo)
-    ('set' | 'move' | 'push' | 'pull') singleDobj 'to' literalIobj
+    ('sätt' | 'flytta' | 'tryck' | 'dra') singleDobj 'till' literalIobj
     :
 ;
