@@ -3565,7 +3565,7 @@ modify openingContentsLister
     showListPrefix(lst, pl, parent)
     {
         gMessageParams(parent);
-        "Öppnar <<parent.theName>> {dummy} avslöjar{r/de} ";        
+        "När {ref parent} öppna{s|des} {dummy}upptäck{er/te} {du} ";        
     }
 
     showListSuffix(lst, pl, paraCnt)
@@ -3575,7 +3575,7 @@ modify openingContentsLister
     
     showListEmpty(parent)  
     {
-        "{Jag} öppnar{s/ed} {the dobj}. ";
+        "{Jag} {öppnar} <<parent.theName>>. ";
     }
     
     showSubListing = (gameMain.useParentheticalListing)
@@ -3590,7 +3590,7 @@ modify lookInLister
     showListPrefix(lst, pl, parent)
     {
         gMessageParams(parent);
-        "{Jag parent} {se} ";        
+        "{Jag parent} {ser} ";        
     }
 
     showListSuffix(lst, pl, paraCnt)
@@ -3618,7 +3618,9 @@ modify simpleAttachmentLister
 
     showListSuffix(lst, pl, parent)
     {
-        " fäst vid <<parent.theName>>. ";
+        //" fäst vid <<parent.theName>>. ";
+        //" fäst i <<parent.theName>>. ";
+        " fäst till <<parent.theName>>. ";
     }
      
     showSubListing = (gameMain.useParentheticalListing) 

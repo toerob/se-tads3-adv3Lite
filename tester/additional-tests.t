@@ -72,7 +72,7 @@ spelare1aPerspektiv: Actor 'jag' @lab
   isHim = true
 ;
 
-spelare2aPerspektiv: Actor 'du' @lab
+spelare2aPerspektiv: Actor 'du' @koket
   person = 2
   isProper = true
   isHim = true
@@ -127,7 +127,7 @@ vindruvorObjNeutrumPlural: Thing 'vindruvor+na[pl];;;dem';
 
 
 koket: Room 'Köket';
-+kylen: Container 'kyl+en';
++kylen: Container 'kyl+en' isOpen = true;
 //+vinet: Thing 'vin+et' vinet: Thing 'vin' massNoun = true;;
 ++vin: Thing 'vin' massNoun = true;
 ++lasken: Thing 'läsk+en';
@@ -487,3 +487,12 @@ TestUnit 'specialDescLister.showListAll' run {
     //assertThat(result).isEqualTo('en ljuskrona (avger ljus), ett ljus, en hatt (påklädd), en jacka (påklädd), en tingest, och ett skåp');
 };
 */
+
+TestUnit 'Thing.listContents (using openingContentsLister)' run {
+    mainOutputStream.hideOutput = nil;  
+    local result = mainOutputStream.captureOutput({: 
+      // anropar listSubcontentsOf med openingContentsLister indirekt
+      kylen.actionDobjOpen()
+    }); 
+    assertThat(result).startsWith('När kylen öppnas upptäcker du vin, några droppar och en läsk.');
+};

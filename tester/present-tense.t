@@ -42,7 +42,7 @@ modify mainOutputStream
 
 modify String
     // Same as trim, both also trims whitespace vertically
-    trimWS() { return findReplace(trimPatWS, ''); }
+    trimWS() { return findReplace(trimPatWS, '').trim(); }
     trimPatWS = R'^<space>+|<vspace>|<newline>+|$'
 ;
 
@@ -111,9 +111,10 @@ appletObjNeutrumSingular: Thing 'äpple+t;rö:tt+da;;det';
 jordgubbeObjUtrumSingular: Thing 'jordgubbe+n;;en';
 vindruvorObjNeutrumPlural: Thing 'vindruvor+na[pl];;;dem';
 
-vinet: Thing 'vin+et';
-lasken: Thing 'läsk+en';
-dropparna: Thing 'droppar+na[pl];;;dem';
+kylen: Container 'kyl+en' @lab isOpen = true;
++vinet: Thing 'vin+et' massNoun = true;
++lasken: Thing 'läsk+en';
++dropparna: Thing 'droppar+na[pl];;;dem';
 
 korgen: Container 'korg+en';
 +puppet: Thing 'docka+n';
@@ -130,9 +131,9 @@ nyckel: Key 'nyckel+n';
 //nyckelring: Keyring 'nyckel|ring+en';
 svardet: Thing 'svärd+et';
 
-hatten: Wearable 'hatt+en';
-skarpet: Wearable 'skärp+et';
-skorna: Wearable 'skor+na;;;dem';
+hatten: Wearable 'hatt+en' @hyllan;
+skarpet: Wearable 'skärp+et' @hyllan;
+skorna: Wearable 'skor+na;;;dem' @hyllan;
 
 
 bergsvaggen: Fixture 'bergs|vägg+en';
@@ -142,6 +143,9 @@ stuprannorna: Fixture 'stuprännor+na;;;dem';
 sandstranden: Floor 'sand|strand+en';
 tragolvet: Floor 'trä|golv+et';
 stenarna: Floor 'stenar+na;;;dem';
+
+lampan: SimpleAttachable 'lampa+n';
+sladden: AttachableComponent 'sladd+en' @lampan;
 
 /*
 bokenObjUtrumSingular: Thing 'bok+en';
@@ -3636,6 +3640,53 @@ TestUnit 'Actor.actorRemoteSpecialDesc(pov)' run {
   });
 };
 
+TestUnit 'Thing.listSubcontentsOf (using openingContentsLister)' run {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    setPlayer(spelare2aPerspektiv);
+    //mainOutputStream.hideOutput = nil;  
+    // anropar listSubcontentsOf med openingContentsLister indirekt
+    //local result = mainOutputStream.captureOutput({: kylen.actionDobjOpen() }); 
+    kylen.actionDobjOpen();
+    assertThat(o.trimWS()).isEqualTo('När kylen öppnas upptäcker du en läsk, några droppar och vin.');
+};
+
+TestUnit 'Thing.listSubcontentsOf (using lookInLister)' run {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    setPlayer(spelare2aPerspektiv);
+
+    // anropar listSubcontentsOf med lookInLister indirekt
+    kylen.actionDobjLookIn();
+    assertThat(o.trimWS()).isEqualTo('Du ser en läsk, några droppar och vin.');
+};
+
+
+TestUnit 'simpleAttachmentLister.show' run {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    simpleAttachmentLister.show([sladden], lampan);
+    assertThat(o.trimWS()).isEqualTo('Du ser en sladd fäst till lampan.');
+};
+
+TestUnit 'plugAttachableLister.show' run {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    plugAttachableLister.show([sladden], lampan);
+    assertThat(o.trimWS()).isEqualTo('Du ser en sladd ansluten till lampan.');
+};
+
+TestUnit 'lookContentsLister.show' run {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    lookContentsLister.show([hatten], hyllan);
+    assertThat(o.trimWS()).isEqualTo('\^på hyllan kan du se en hatt.');
+};
+
+TestUnit 'descContentsLister.show' run {
+    mainOutputStream.capturedOutputBuffer = new StringBuffer();
+    descContentsLister.show([hatten], hyllan);
+    assertThat(o.trimWS()).isEqualTo('På hyllan ser du en hatt.');
+};
+
+// NOTE: Fler tester av listers finns i additional-tests
+
+
 
 /*
 TestUnit 'Room.statusName(actor)' run {
@@ -3647,6 +3698,7 @@ TestUnit 'Room.statusName(actor)' run {
     //mainOutputStream.hideOutput = nil;  
     local room = objs[1];
     local actor = objs[2];
+    room.isIlluminated = true;
     room.statusName(actor);
     assertThat(o).startsWith(expected);
   });
