@@ -164,12 +164,12 @@ gate3: Room 'Gate 3' 'gate[n] 3[adj]; tre+dje '
     east = openGate
 ;
 
-+ Decoration 'säten+a; tom+ma övergivna otagna oupptagna lediga; sitt|platser+na; dem'
++ Decoration 'säten+a; tom+ma övergiv:en+na otag:en+na oupptag:en+na ledig+a ledigt; sitt|platser+na; dem'
     "Alla platser vid denna avgångsgate är lediga, vilket tyder på att alla passagerare 
     för den aktuella flygningen redan har gått ombord på planet."    
 ;
 
-+ openGate: Passage 'öpp:en+na gate+n; unattended wide'
++ openGate: Passage 'öpp:en+na gate+n; obevakad+e vid+a'
     "Gaten står vidöppen, och av någon anledning helt obevakad. Det verkar
     knappast som en hög säkerhetsnivå. "
     cannotOpenMsg = 'Den är redan öppen. '

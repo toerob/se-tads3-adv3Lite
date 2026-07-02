@@ -174,7 +174,7 @@ cortez: Actor 'Pablo Cortez; stilig+a ond+a ondske|full+a ondsint:e+a latino+n;m
 
 //==============================================================================
 
-angela: Actor 'flight attendant; statuesque young; woman angela; henne'
+angela: Actor 'flyg|värdinna+n; statylik+a ung+a; kvinna+n angela; henne'
     @planeFront
     "Hon är en statylik och ingalunda ful ung kvinna. "
 
@@ -197,10 +197,11 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 ++ AskTopic @angela
     keyTopics = 'angela'
 
-    name = 'herself'
+    name = 'hon själv'
 ;
 
-++ QueryTopic 'when' 'this plane is going to leave; depart take off'
+//++ QueryTopic 'when' 'this plane is going to leave; depart take off'
+++ QueryTopic 'när' 'detta plan ska avgå; åka flyga iväg'
     "<q>När ska det här planet avgå?</q> frågar du.\b
     <q>Så fort piloten kommit ombord,</q> säger hon. <.reveal
     pilot-awaited> "
@@ -220,7 +221,7 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
 
 
 
-+ QueryTopic 'what' 'her name is; your'
++ QueryTopic 'vad' 'hennes namn är; ditt'
     "<q>Vad heter du?</q> frågar du.\b
     <q><<getActor.makeProper>>,</q> svarar hon. "
 
@@ -229,7 +230,7 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
     convKeys = 'angela'
 ;
 
-+ QueryTopic, StopEventList 'what' @tDoingTonight
++ QueryTopic, StopEventList 'vad' @tDoingTonight
     [
         '<q>Vad ska du göra i kväll?</q> frågar du.\b
         Hon höjer ett ögonbryn. <q>Jag har mina planer,</q> svarar hon
@@ -573,7 +574,7 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
     convKeys = 'angela'
 ;
 
-++ QueryTopic, StopEventList 'what' @tDoingTonight
+++ QueryTopic, StopEventList 'vad' @tDoingTonight
     [
         '<q>Vad har du för planer för i kväll nu?</q> frågar du.\b
         <q>Jag är inte säker,</q> svarar hon lite nervöst. <q>Jag tror
@@ -751,7 +752,7 @@ angela: Actor 'flight attendant; statuesque young; woman angela; henne'
     <<location.commonResponse>>"
 ;
 
-++ QueryTopic 'why not'
+++ QueryTopic 'varför inte'
     "<q>Varför inte?</q> frågar du. <q>Ni behöver en pilot och jag behöver ta
     mig härifrån. Dessutom skulle jag inte vilja vara i dina skor när det här
     gänget tappar tålamodet!</q> Du nickar mot gangstrarna och narkotikabaronerna

@@ -25,13 +25,13 @@ gameMain: GameMainDef
     {           
        "<font size=+2><b>Flygplats</b></font>\b
        De är ute efter dig. Nej, dem är verkligen det --- <q>de</q> är de 
-       lokala knarkbaronerna. Du har precis fått tag i bevisen som kommer att 
-       sätta  dem bakom galler för resten av århundradet, och nu är du 
-       desperat att ge dig av med dem medan du fortfarande kan, eftersom 
-       El Diablo och hans hantlangare  kommer att vara lika desperata att 
+       lokala knarkbaronerna. Du har precis kommit över bevisen som kommer att 
+       sätta dem bakom lås och bom för resten av århundradet, och nu är du 
+       desperat att ge dig av med dem, medan du fortfarande kan, eftersom 
+       El Diablo och hans hantlangare kommer att vara lika desperata att 
        stoppa dig --- för gott. De har förföljt dig så långt som till 
-       flygplatsen och nu är ditt enda  hopp att få ut det första planet 
-       härifrån.\b";
+       flygplatsen och nu är ditt enda hopp att lyckas komma med det 
+       första planet härifrån.\b";
     }     
     
     usePastTense = nil
@@ -102,8 +102,6 @@ ticketArea: Room 'Biljettområdet' 'biljettområdet'
     dobjFor(ShowTo)   {  preCond = [objHeld]   }
 ;
 
-//magnetremsa; magnetisk brun metallisk; remsa
-//+++ Fixture 'magnetic stripe; mag metallic brown; strip'
 +++ remsa: Fixture 'magnetisk+a remsa+n; mag metallisk+a brun+a'
     "Det är en brun metallisk remsa som löper längs kortets baksida."
     name = 'magnetisk remsa'
@@ -112,8 +110,6 @@ ticketArea: Room 'Biljettområdet' 'biljettområdet'
     magnetremsan från kortet, och det skulle nästan säkert göra kortet 
     oanvändbart om du gjorde det.'
 ;
-
-//+ Decoration 'people; of[prep]; line queue tourists businesspeople; dem'
 
 + Decoration 'folk+et; av[prep]; kö+n turist+er affärsmän+nen; dem'
     "En brokig samling turister och affärsmän, så vitt man kan bedöma, många 
@@ -646,7 +642,7 @@ securityCentre: Room 'Säkerhetscentral' 'säkerhetscentralen'
 tFrenchRevolution: Topic 'fransk+a revolution+en';
 tFlightDepartures: Topic '() flight flyg|avgångar+na; plan+et; flyg|tider+na[pl] tidsplaner+na[pl]';
 tPilot: Topic 'pilot+en';
-tDoingTonight: Topic 'hon gör ikväll; hon är du ära';
+tDoingTonight: Topic 'hon gör ikväll; hon är du göra';
 tEnjoyWork: Topic 'hon tycker om sitt arbete+t; du tycker om ditt gillar jobb+et; ditt jobb+et';
                 
 VerbRule(GoogleFor)
