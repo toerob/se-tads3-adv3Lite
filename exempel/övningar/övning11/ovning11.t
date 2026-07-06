@@ -54,7 +54,6 @@ gameMain: GameMainDef
     /* Display some introductory text at the start of the game */
     showIntro()
     {
-        
         "Du har precis köpt en ny fastighet, så du tänkte ta en snabb 
         titt runt huset och tomten.<.p>";
     }
@@ -79,8 +78,8 @@ gameMain: GameMainDef
  *   
  */
 hall: Room 'Hall'
-    "Hallen är tom, men en passage går söderut, och det finns en valvport 
-    mot öster samt ytterdörren mot norr. En trappa leder ner."
+    "Hallen står tom, men en passage går söderut, och det finns en valvport 
+    österut samt att det står en ytterdörr norrut. En trappa leder nedåt."
  
 
     /* 
@@ -99,7 +98,7 @@ hall: Room 'Hall'
     {
         if(traveler == bicycle)
             "Det slår dig att det nog är bäst att inte cykla in i hallen alltför 
-            ofta, annars kommer du lämna efter dig däckmärken på golvet. ";
+            ofta, annars kommer du lämna däckmärken efter dig på golvet. ";
     }
 ;
 
@@ -198,9 +197,9 @@ hall: Room 'Hall'
 //------------------------------------------------------------------------------
 /* Another ROOM */
 
-kitchen: Room 'Kitchen'
-    "Köket har rivits på allt i väntan på en total renovering. En passage leder 
-    norrut, och det finns en tvättränna i västväggen<<secretPanel.isOpen ? ' 
+kitchen: Room 'Köket'
+    "Köket har rivits på allt i väntan på en total renovering. En passage går 
+    norrut och det finns en tvättränna i västra väggen<<secretPanel.isOpen ? ' 
     och en stor fyrkantig öppning i den östra' : '' >>. "
 
     north = kitchenPassage
@@ -225,7 +224,7 @@ kitchen: Room 'Kitchen'
      *   Without a specialDesc the trolley wouldn't show up in a room
      *   description, since we've made it a Heavy, which descends from Fixture.
      */
-    specialDesc = "Det är en vagn här. "
+    specialDesc = "Det står en vagn här. "
     
     
     /* A trolley is something we can push from place to place */
@@ -239,7 +238,7 @@ kitchen: Room 'Kitchen'
  *   impossible to explore the DarkRoom example (the cellar)
  */
 
-++ torch: Flashlight 'ficklampa; röd+a plast+iga; plast|ficklampa+n'
+++ torch: Flashlight 'fick|lampa+n; röd+a plast+iga; plast|ficklampa+n'
     "Den är gjord av röd plast. "
 ;
 
@@ -249,7 +248,7 @@ kitchen: Room 'Kitchen'
  *   This is the other end of the passage that leads from the hall. 
  */
 
-+ kitchenPassage: Passage 'passage' 
++ kitchenPassage: Passage 'passage+n' 
     destination = hall 
 ;
 
@@ -267,8 +266,8 @@ kitchen: Room 'Kitchen'
  */
 
 + laundryChute: Passage 'Tvättränna'
-    "Även om den är avsedd för tvätt, är den tillräckligt stor för att en 
-    person ska få plats i den också."
+    "Även om den är avsedd för tvätt, är den också tillräckligt stor för att en 
+    person ska få plats i den."
 
     specialDesc = "En tvättränna är placerad i västväggen."
     
@@ -278,9 +277,9 @@ kitchen: Room 'Kitchen'
      */
     travelBarriers = [bikeBarrier, trolleyBarrier]
     
-    travelDesc = "Du upptäcker att du tumlar snabbt nerför tvättrännan
-                 tills du oförbehållsamt kastas ut från dess nedre ände 
-                 och landar med en benskakande stöt."
+    travelDesc = "Du gör en erfarenhet av att snabbt tumlas runt nerför tvättrännan
+                 tills dess du oförbehållsamt kastas ut från dess nedre ände, 
+                 landandes med en benskakande duns."
     
     destination = cellar
 ;
@@ -313,8 +312,8 @@ kitchen: Room 'Kitchen'
  */
 
 cellar: Room 'Källare'    
-    "Källaren är tom, eftersom de förra ägarna flyttat ut allt sitt skräp och du 
-    inte har flyttat in ditt eget skräp ännu. En trappa leder upp, och ena änden 
+    "Källaren står tom, eftersom de förra ägarna flyttat ut allt sitt skräp och du 
+    inte har flyttat in ditt eget ännu. En trappa leder upp, och den ena änden 
     av en tvättränna sticker ut från västväggen. "
     
     isLit = nil
@@ -370,7 +369,7 @@ cellar: Room 'Källare'
      */
     travelDesc = "<<cannotClimbMsg>>"
     
-    cannotClimbMsg = 'Det finns inget sätt att du kan klättra tillbaka upp för rännan.'
+    cannotClimbMsg = 'Det finns inget sätt att klättra tillbaka upp för rännan.'
     
     /* 
      *   This specialDesc will be displayed in the room description (when the
@@ -385,9 +384,9 @@ cellar: Room 'Källare'
 /*  Another ROOM */
 
 lounge: Room 'Vardagsrum' 
-    "Det här kommer utan tvekan att bli ett nog bekvämt rum när det väl är 
-    möblerat. Just nu finns det dock ingenting här förutom en utgång västerut 
-    och en dörr som leder söderut. "
+    "Det här kommer utan tvekan att bli ett bekvämt rum när det väl är möblerat. 
+    Just nu finns det dock ingenting här förutom en utgång västerut 
+    och en dörr söderut. "
     
     /* 
      *   TRAVEL CONNECTOR WITH MESSAGE
@@ -432,8 +431,8 @@ lounge: Room 'Vardagsrum'
 
 study: Room 'Arbetsrum'
     "Detta långa, rektangulära rum är för närvarande omöblerat, men du har 
-    öronmärkt det att bli ditt arbetsrum. Det finns en ekdörr norrut och en tom 
-    bokhylla <<bookcase.isOpen ? 'har svängt upp från' : 'vilar mot'>> 
+    öronmärkt det att bli ditt arbetsrum. Det finns en dörr av ek norrut. 
+    En tom bokhylla <<bookcase.isOpen ? 'står uppsvängd från' : 'vilar mot'>> 
     den västra väggen. "
 
     north = studyDoor    
@@ -463,7 +462,8 @@ study: Room 'Arbetsrum'
 
 + bookcase: Surface, SecretDoor 
     'bokhylla+n; stor+a fyrkantig+a tom+ma trä|bok|hylla+n'
-    "Det är en stor, fyrkantig bokhylla i trä, som för närvarande är tom. <<isOpen? 'Den är svängt upp och avslöjar en hemlig utgång bakom' : ''>> "
+    "Det är en stor, fyrkantig bokhylla i trä, som för närvarande är tom. 
+    <<isOpen? 'Den är står uppsvängd och avslöjar en hemlig utgång bakom sig' : ''>> "
     
     /* The bookcase is the other side of the secret panel from the kitchen */
     otherSide = secretPanel
@@ -491,7 +491,7 @@ study: Room 'Arbetsrum'
         verify()
         {
             if(isOpen)
-                illogicalNow('Den är redan helt öppet. ');
+                illogicalNow('Den är redan helt öppen. ');
         }
         action()
         {
@@ -511,7 +511,7 @@ study: Room 'Arbetsrum'
         {
             makeOpen(nil);
             //"You push the bookcase shut again. ";
-            "Du trycker igen bokhyllan igen. ";
+            "Du trycker ihop bokhyllan igen. ";
         }
     }
     
@@ -548,7 +548,7 @@ study: Room 'Arbetsrum'
 
 //ett par bruna skor; flytande skor; skodon; det dem
 + shoes: Wearable 'ett par bruna skor; flotation; skodon+ena flyt|skor+na flotationsskor+na; det dem'
-    "De är brunfärgade, och märkt <q>vattenavstötande flytskor</q>. "
+    "De är brunfärgade, och märkta <q>vattenavstötande flytskor</q>. "
     
     initSpecialDesc =  "Ett par skor ligger på golvet. "
        
@@ -590,7 +590,7 @@ drive: Room, ShuffledEventList 'Uppfarten'
     north  { 
         "Du vill inte vandra ut på vägen just nu; vid den här tiden 
         på dygnet är trafiken så hög att det helt enkelt inte är säkert 
-        för << me.isIn(bicycle) ? 'cyklist' : 'fotgängare'>>. ";
+        för << me.isIn(bicycle) ? 'cyklister' : 'fotgängare'>>. ";
      }
     
     /* 
@@ -606,7 +606,7 @@ drive: Room, ShuffledEventList 'Uppfarten'
         destination = lexicalParent
         
         travelDesc = "Du <<travelMethod()>> går in i skogen, men stigarna blir så 
-                     förvirrande att du för en stund är vilse. Så småningom hittar 
+                     förvirrande att du för en stund går vilse. Så småningom hittar 
                      du tillbaka till en bekant stig och lyckas återvända till din 
                      startpunkt."
 
@@ -626,10 +626,10 @@ drive: Room, ShuffledEventList 'Uppfarten'
     [
         'En lastbil dundrar förbi på vägen. ',
         'Ljudet av en hög siren tjuter från vägen. ',
-        'Ett par kaniner springer iväg in i skogen. ',
-        'En flock duvor flyger över huvudet. ',
+        'Ett par kaniner skuttar iväg in i skogen. ',
+        'En flock duvor flyger ovanför. ',
         'Solen kommer fram bakom ett moln. ',
-        'En vindpust prasslar i eken.'
+        'En vindpust får eken att prassla.'
     ]
     
     /* 
@@ -787,7 +787,7 @@ drive: Room, ShuffledEventList 'Uppfarten'
 
 topOfTree: Room 'Trädets topp' 'toppen av trädet'
     "Från toppen av trädet är det inte särskilt bra utsikt, 
-    eftersom både löv och grenar är i vägen. "
+    då både löv och grenar är i vägen. "
     
     down = trunk
     
@@ -821,7 +821,7 @@ topOfTree: Room 'Trädets topp' 'toppen av trädet'
 /*   Another OUTDOOR ROOM */
 
 lawn: Room 'Gräsmatta'
-    "Den här stora gräsmattan är omgiven av en krök i en flod till öster och söder, 
+    "Denna stora gräsmattan är omgiven av en flodkrök till öster och söder, 
     men man kan gå ombord på båten som ligger förtöjd strax österut. En stig 
     leder västerut tillbaka till huvudvägen."
 
@@ -858,7 +858,7 @@ lawn: Room 'Gräsmatta'
  *   We'll provide a boat here in order to give examples of Shipboard rooms. */
 
 
-+ boat: Enterable 'stor båt'
++ boat: Enterable 'stor+a båt+en'
     "Den är omkring femton fot lång. "
    specialDesc = "En stor båt båt ligger förtöjd vid floden längst ner i trädgården, strax österut. "
     
@@ -1006,7 +1006,7 @@ mainDeck: Room 'Main Deck'
     
     /* We use a single-qouoted string here so FORE won't be listed as a possible exit. */
     //fore = 'You don\'t want to walk off the bow! ' 
-    fore = 'Du vill inte gå av fören!'
+    fore = 'Du vill inte kliva av fören!'
 
     north asExit(fore)
     
@@ -1125,7 +1125,7 @@ trolleyBarrier: TravelBarrier
 
 travelMethod()
 {
-    return me.isIn(bicycle) ? 'cykla' : 'gå';
+    return me.isIn(bicycle) ? 'cyklar' : 'går';
 }
 
 
@@ -1146,8 +1146,8 @@ VerbRule(Ride)
     ('cykla' | ('kliv' 'på')) singleDobj
     :  VerbProduction
     action = Ride
-    verbPhrase = 'cykla/cyklar (vad)'
-    missinqQ = 'vad vill du cykla'
+    verbPhrase = 'cykla/cyklar på (vad)'
+    missinqQ = 'vad vill du cykla på'
 ;
 
 DefineTAction(RideDir)
@@ -1172,6 +1172,5 @@ modify Thing
         preCond = [touchObj]
         verify() { illogical(cannotRideMsg); }
     }
-    
     cannotRideMsg = '{Ref subj dobj} {är} inte något du kan cykla på. '
 ;
