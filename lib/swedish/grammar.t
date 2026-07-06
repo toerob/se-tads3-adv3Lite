@@ -1778,8 +1778,7 @@ VerbRule(PutIn)
 ;
 
 VerbRule(PutOn)
-    ('lägg' | 'placera' | 'släpp' | 'sätt') multiDobj
-        ('på' | 'uppå') singleIobj
+    (('lägg' | 'placera' | 'släpp' | 'sätt') multiDobj ('på' | 'uppå') singleIobj)
     | 'lägg' multiDobj 'ner' 'på' singleIobj
     : VerbProduction
     action = PutOn
@@ -3235,7 +3234,7 @@ VerbRule(CleanWith)
 ;
 
 VerbRule(AttachTo)
-    ('fäst' | 'anslut') multiDobj 'till' singleIobj
+    ('fäst' | 'anslut') multiDobj ('på' | 'till') singleIobj
     : VerbProduction
     action = AttachTo
     iobjReply = toSingleNoun

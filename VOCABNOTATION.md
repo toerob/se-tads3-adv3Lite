@@ -154,6 +154,200 @@ Adjektiv i sektion 1 genererar sökord precis som adjektiv i sektion 2.
 Använd sektion 1 när adjektivet ska vara en del av objektets namn (som det
 visas i spelet), och sektion 2 när adjektivet bara ska vara ett sökord.
 
+### Prepositioner i sektion 1 — hur ordklassen avgörs
+
+När sektion 1 (kortnamnet) analyseras går parsern igenom orden ett i taget
+och avgör varje ords ordklass enligt denna prioritetsordning:
+
+1. **Preposition** — ordet matchar `prepList` (standard: `till|av|från|med`),
+   eller är uttryckligen annoterat `[prep]`. Prepositioner registreras som
+   sökord men bidrar aldrig till `name`/`definiteForm`.
+2. **Svag token** — ordet är annoterat `[weak]` (eller skrevs inom `(...)` i
+   vocab-strängen).
+3. **Substantiv** — ordet är det **sista ordet i första frasen**, dvs.
+   nästa ord är antingen inget alls eller en preposition (enligt punkt 1).
+   Det första ordet som uppfyller detta blir objektets huvudsubstantiv och
+   sätter `name`/`definiteForm`.
+4. **Adjektiv** — allt annat. Adjektiv **före** huvudsubstantivet samlas i
+   `name`/`shortNameAdjDef` (se ovan). Adjektiv **efter** huvudsubstantivet
+   (dvs. i en prepositionsfras) registreras bara som sökord — de räknas
+   inte in i `name`/`definiteForm`/`shortNameAdjDef`.
+
+Exempel:
+
+```tads3
+nyckel: Thing 'nyckel+n till dörren';
+// 'till' finns i prepList → preposition
+// 'nyckel+n' är sista ordet innan prepositionen → substantiv
+//   name='nyckel', definiteForm='nyckeln'
+// 'dörren' kommer efter prepositionen → bara ett sökord, ingår inte i name
+// → du kan skriva "nyckeln" eller "nyckeln till dörren", båda matchar,
+//   men visas alltid bara som "nyckeln"
+
+hog: Thing 'hög+en med papper';
+// 'med' finns i prepList → preposition
+// 'hög+en' blir substantivet → name='hög', definiteForm='högen'
+// 'papper' är bara ett sökord efter prepositionen
+```
+
+Detta är avsiktligt: en efterställd prepositionsfras behandlas som en
+valfri, disambiguerande kvalificerare (jämför engelskans "key to the door"
+vs. bara "key") — inte som en del av objektets vanliga visningsnamn.
+
+**Lägg inte till fler ord i `prepList` i onödan.** Det är en global lista
+som påverkar *alla* vocab-strängar i spelet, och konsekvensen av att ett ord
+plötsligt tolkas som preposition är att allt efter det ordet försvinner ur
+`name`/`definiteForm` (se nästa avsnitt för ett konkret exempel med `soppa på
+burk`, där `på` medvetet **inte** ingår i `prepList` eftersom det skulle
+knuffa ut hela "på burk"-frasen ur namnet).
+
+Behöver du att just **ett enskilt objekts** vocab-sträng ska tolka ett visst
+ord som preposition — utan att ändra den globala `prepList` och därmed
+påverka alla andra objekt — annotera ordet direkt med `[prep]` istället:
+
+```tads3
+bok: Thing 'bok+en på[prep] hylla+n';
+// 'på' är inte med i prepList, men annoteras uttryckligen som preposition
+// här — bara för det här ordet, bara i det här objektet.
+// 'bok+en' blir då sista ordet innan prepositionen → substantiv:
+//   name='bok', definiteForm='boken'
+// 'hylla+n' hamnar efter prepositionen → bara sökord, ingår inte i name
+// → visas alltid som "boken", men "hylla"/"hyllan" är ändå registrerade
+//   sökord för matchning
+```
+
+Notera skillnaden mot `soppa på burk`: där ska "på burk" vara en del av det
+vanliga visningsnamnet (inte bara en disambiguerande kvalificerare), så där
+används istället en direkt satt `definiteForm` (se nästa avsnitt) snarare än
+`[prep]`-annotering.
+
+### Varför 'för' inte är med i prepList
+
+Den engelska adv3Lite-motsvarigheten till `prepList` är `'to|of|from|with|for'`.
+Fyra av dessa fem ord har direkta, oproblematiska svenska motsvarigheter
+(`till|av|från|med`) — men `för` är **medvetet uteslutet**, till skillnad från
+den engelska förlagan.
+
+Anledningen är att engelska "for" bara har den betydelse vi vill fånga här:
+ett syfte eller en mottagare, som i "instructions **for** use" eller "medicine
+**for** headaches". Svenska "för" har samma betydelse ("instruktioner **för**
+användning"), men är också det vanligaste ordet för förstärkningen
+"för mycket"/"för stort" ("too much"/"too big") — en betydelse engelska "for"
+inte delar. Om `för` stod kvar i `prepList` skulle en kortnamnsfras som
+
+```tads3
+tradigInstruktion: Thing 'för tråkig+a instruktion+en';
+// avsedd betydelse: "the too boring instruction"
+```
+
+feltolkas: `instruktion+en` skulle bli substantivet (sista ordet innan `för`),
+och `för tråkiga` — den del av namnet författaren faktiskt ville visa — skulle
+tyst falla bort ur `name`. Med `för` borttaget ur `prepList` tolkas `för` och
+`tråkig+a` istället som två vanliga ord före substantivet (samma mekanism som
+`blå+a stol+en`), så hela frasen bevaras:
+
+```tads3
+// name         = 'för tråkig instruktion'
+// aName        = 'en för tråkig instruktion'
+```
+
+(`theName` blir dock `'den tråkiga instruktionen'` — `för` saknar egen
+`+`-notation och bidrar därför inte till `shortNameAdjDef`, precis som vilket
+annat oböjligt adjektiv utan `+`-notation som helst i sektion 1. Behövs `för`
+även i den bestämda formen, sätt `definiteForm` direkt enligt nästa avsnitt.)
+
+De legitima "for"-fallen fungerar fortfarande precis som förut — annotera bara
+`för` med `[prep]` i det specifika objektets vocab-sträng:
+
+```tads3
+instruktion: Thing 'instruktion+en för[prep] användning+en';
+// name = 'instruktion', definiteForm = 'instruktionen'
+// 'användning+en' hamnar efter prepositionen, ingår inte i name
+```
+
+Kort sagt: `för` som **syfte/mottagare** ("for use", "for headaches") kräver nu
+`[prep]`-annotering per objekt. `för` som **förstärkning** ("too big", "too
+boring") fungerar automatiskt utan någon annotering alls, eftersom det inte
+längre riskerar att tolkas som en preposition.
+
+### Manuell definiteForm för ovanliga fraser
+
+Notationen ovan täcker "adjektiv + substantiv". Den täcker **inte** ett
+substantiv följt av en oföränderlig prepositionsfras som alltid ska synas i
+namnet, t.ex. "soppa på burk" (bestämd form: "soppan på burk"). Ord efter
+substantivet i sektion 1 tolkas som en efterställd, valfri kvalificerare
+(jämför "nyckel till dörren") och räknas därför inte in i `name`/`definiteForm`
+annat än av en slump.
+
+Sätt istället `definiteForm` direkt på objektet:
+
+```tads3
+soppburken: Container 'soppa+n på burk+en;;konservburk+en'
+    definiteForm = 'soppan på burk'
+;
+// name       = 'soppa på burk'   (byggs som vanligt av vocab-strängen)
+// definiteForm = 'soppan på burk' (satt direkt, används ordagrant)
+// theName    = 'soppan på burk'  (inget artikelprefix läggs till)
+// aName      = 'en soppa på burk'
+```
+
+När `definiteForm` sätts direkt genereras inget automatiskt adjektivprefix
+(`shortNameAdjDef`) — `theNameFrom` returnerar då `definiteForm` precis som
+den skrevs, utan `den`/`det`/`de` framför. Genus (`isNeuter`) härleds i så
+fall från **första ordet** i `definiteForm` (här "soppan" → utrum), så det
+behöver normalt inte sättas manuellt även för flerordsfraser.
+
+**Obs:** sätt inte `theName` direkt i detta syfte — det har ingen effekt.
+Parsern bygger objektreferenser (t.ex. standardmeddelandet "Du ser inget
+speciellt med ...") via `distinguishedName()`, som anropar `theNameFrom(name)`
+direkt och aldrig läser `theName`-egenskapen. Hävstången för att styra hur ett
+objekt refereras till bestämt är alltså `definiteForm`, inte `theName`.
+
+### Sammansättning eller manuell definiteForm — vilket ska man välja?
+
+`soppa på burk` är ett exempel på en **oföränderlig kvalificerare** som hör till
+objektets identitet ("den här typen av soppa"). Men ibland vill man länka två
+substantiv med `av` av en helt annan anledning: för att peka ut en **specifik
+referent** — vem/vad något föreställer, inte vilken typ eller vilket material
+det är gjort av. Då räcker det inte att bara skriva om vocab-strängen med
+sammansättningsnotation (`+`/`^s`/`:`), och lösningen blir densamma som ovan:
+sätt `name`/`definiteForm` direkt.
+
+Jämför de två fallen:
+
+```tads3
+// Material/kategori → sammansättning fungerar utmärkt, inget 'av' behövs:
+papperslappsbit: Thing 'gul+a papper:et^s+lapp^s+bit+en';
+// → papper/papperet, papperslapp/papperslappen, papperslappsbit/papperslappsbiten
+// name='gul papperslappsbit', theName='den gula papperslappsbiten'
+
+// Specifik referens (avbildning) → sammansättning duger inte:
+staty: Thing 'staty+n av kung+en'
+    name = 'staty av kungen'
+    definiteForm = 'statyn av kungen'
+;
+// name         = 'staty av kungen'
+// definiteForm = 'statyn av kungen'
+// theName      = 'statyn av kungen'
+// aName        = 'en staty av kungen'
+```
+
+Varför fungerar inte sammansättning för `staty av kungen`? `kungastaty` skulle
+bara betyda "en staty föreställande en kung i allmänhet" — en generisk kategori
+av statyer. Den bestämda referensen till just **den här** kungen, som ligger i
+`kungen`s `+en`-ändelse, går förlorad så fort ordet pressas in som ett
+sammansättningsled (som alltid använder den obestämda stammen). Samma
+begränsning gäller `porträttet av drottningen`, `fotografiet av Anna`, `kartan
+av ön` — närhelst "av" pekar ut något specifikt snarare än en generisk
+egenskap.
+
+Tumregel: **material/kategori → sammansättning** (`trästol`, `papperslappsbit`).
+**Specifik referens/avbildning → manuell `definiteForm`** (`staty av kungen`).
+I det senare fallet hamnar `staty+n` ändå som huvudsubstantiv i vocab-strängen
+(`av` finns i `prepList`), så utan den manuella överskrivningen hade "av
+kungen" tyst fallit bort som en efterställd, valfri kvalificerare — exakt
+samma mekanism som beskrivs ovan för `soppa på burk`.
+
 ---
 
 ## Pluralformer

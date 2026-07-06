@@ -12,17 +12,17 @@
 
 versionInfo: GameID
     IFID = '13cb0798-2be6-4082-87e1-aa077cb36bb7'
-    name = 'Exercise 13'
-    byline = 'by Eric Eve'
-    htmlByline = 'by <a href="mailto:eric.eve@hmc.ox.ac.uk">Eric Eve</a>'
+    name = 'Övning 13'
+    byline = 'av Eric Eve (Översatt av Tomas Öberg)'
+    htmlByline = 'av <a href="mailto:eric.eve@hmc.ox.ac.uk">Eric Eve</a>'
     version = '1'
     authorEmail = 'Eric Eve <eric.eve@hmc.ox.ac.uk>'
-    desc = 'A sample game to illustrate the use of Containers in adv3Lite and
-        provide a possible solution to Exercises 12 and 13 in Learning TADS 3
-        with AdvLite. '
-    htmlDesc = 'A sample game to illustrate the use of Containers in adv3Lite
-        and provide a possible solution to Exercises 12 and 13 in <i>Learning
-        TADS 3 with AdvLite</i>. '
+    desc = 'Ett exempelspel för att illustrera användningen av Containers
+            i adv3Lite och för att ge en möjlig lösning till Övning 12 och 13 i 
+            Learning TADS 3 with Adv3Lite. '
+    htmlDesc = 'Ett exempelspel för att illustrera användningen av Containers
+            i adv3Lite och för att ge en möjlig lösning till Övning 12 och 13 i 
+            <i>Learning TADS 3 with AdvLite</i>. '
 ;
 
 /*
@@ -37,8 +37,7 @@ gameMain: GameMainDef
     initialPlayerChar = me
     showIntro()
     {
-        "Now your kitchen's been refurbished, you want to take a look
-        around.<.p> ";
+        "Nu har ditt kök renoverats, och du vill titta runt lite. <.p> ";
     }
 ;
 
@@ -61,15 +60,9 @@ gameMain: GameMainDef
  *
  */
 kitchen: Room 'Kitchen'
-    "Much of the space is taken up with a wooden table in the middle of the
-    kitchen. There's a cabinet on one wall, a cooker next to another, with a
-    peg placed conveniently by. A long work surface runs under the cabinet,
-    with a kitchen roll mounted on the wall just above it. The opposite wall is
-    adorned with a cheerful poster. The way out is to the north, but you're not
-    interested in the rest of the house just now. "
-    
-    north() { "There's no need to go wandering round the rest of
-        the house; it's the kitchen you want to investigate right now. "; }    
+    "En stor del av utrymmet upptas av ett träbord mitt i köket. PÅ ena väggen finns ett skåp, en spis bredvid en annan, med en krok praktiskt placerad bredvid. En lång arbetsyta löper under skåpet, med ett hushållspappersrulle monterad på väggen precis ovanför. Den motsatta väggen är prydd med en munter affisch. Utgången är norrut, men du är inte intresserad av resten av huset just nu. "
+
+    north() { "Det finns inget behov att vandra runt i huset i övrigt; det är köket du vill undersöka just nu. "; }
 ;
 
 /* 
@@ -78,7 +71,7 @@ kitchen: Room 'Kitchen'
  *   gameMain.initialPlayerChar accordingly.
  */
 
-+ me: Player'you'   
++ me: Player'du'   
         
     /* 
      *   Give the player character a modest bulkCapacity so we can try out the
@@ -98,11 +91,11 @@ kitchen: Room 'Kitchen'
  *   that's a complication beyond what we want to illustrate in this demo.
  */
 
-+ bulb: Distant 'naked light bulb'
-    "A naked light bulb hangs from the ceiling. "        
++ bulb: Distant 'nak:en+na glöd|lampa+n'
+    "En naken glödlampa hänger ned från taket. "
 ;
 
-+ Distant 'ceiling'
++ Distant 'tak+et'
     desc = bulb.desc
 ;
 
@@ -113,8 +106,8 @@ kitchen: Room 'Kitchen'
  *   examine it without the need to interact with it in any other way.
  */
 
-+ Decoration 'poster; large cheerful sunny landscape poster' 
-    "You put it there because it's cheerful. It depicts a sunny landscape. "    
++ Decoration 'affisch+en; stor+a munt:er+ra solig+a landskap+et planch+en' 
+    "Du har placerat den där för att den är munter. Den avbildar en soligt landskap. "    
 ;
 
 //------------------------------------------------------------------------------
@@ -126,10 +119,8 @@ kitchen: Room 'Kitchen'
  *   make this one a Fixture too, since it obviously can't be moved.
  */
 
-+ workTop: Surface, Fixture 'work surface; long; top counter' 
-    cannotTakeMsg = 'The builder seems to have done his job with the work
-        surface, at any rate; it\'s so firmly fixed in place that you can\'t
-        budge it by as a much as a nanometer. '
++ workTop: Surface, Fixture 'arbets|yta+n; lång+a övre; arbets|bänk+en' 
+    cannotTakeMsg = 'Hantverkaren verkar ha arbetat färdigt med arbetsytan, i vilket fall är den så stadigt fixerad att man inte skulle kunna rubba den en nanometer.'
 ;
 
 /*  
@@ -144,20 +135,20 @@ kitchen: Room 'Kitchen'
  *   fairly basic fashion.
  */
  
-++ pencilSharpener: Container 'small pencil sharpener; red plastic' 
-    "Apart from the blade, it's made of red plastic. "
+++ pencilSharpener: Container 'li:ten+lla plast|penn|vässare+n; röd+a plastig+a; vässar|blad+et' 
+    "Frånsett vässarbladet, är den helt gjort i röd plast. "
     
     notifyInsert(obj)
     {
         if(!obj.ofKind(Pencil))
         {
-            "Only pencils can go in the sharpener. ";
+            "Endast pennor passar i pennvässaren. ";
             exit;
         }
         
         if(contents.length > 0)
         {
-            "The sharpener can only hold one pencil at a time. ";
+            "Vässaren kan vara ta en penna åt gången. ";
             exit;
         }
     }
@@ -174,15 +165,14 @@ kitchen: Room 'Kitchen'
  *   concealed. Note that the note will stay behind when the book is taken.
  */
 
-++ redBook: Thing 'big red book; cookery'
-    "It's a cookery book. "
+++ redBook: Thing 'stor+a röd+a matlagnings|bok+en; matlagning+en'
+    "Det är en matlagningsbok. "
     
     /* 
      *   Giving the redfBood a readDesc is all that's needed to make it readable (i.e. to respond
      *   appropriately to a READ BOOK command.
      */
-    readDesc = "You flick through some of the pages, but none of the recipes
-        take your fancy right now. "    
+    readDesc = "Du bläddar genom några sidor, men inga av recepten intresserar dig just nu. "    
     
     hiddenUnder = [note]
     
@@ -197,12 +187,12 @@ kitchen: Room 'Kitchen'
  */
 
 
-+ peg: Surface, Fixture 'peg;; hook'
++ peg: Surface, Fixture 'häng|krok+en;;'
     notifyInsert(obj)
     {
         if(obj != apron)
         {
-            "{I} {can\'t} hang {the dobj} on the peg. ";
+            "{Jag} {kaninte} hänga {ref dobj} på kroken. ";
             exit;
         }
     }
@@ -210,8 +200,8 @@ kitchen: Room 'Kitchen'
 
 /*   WEARABLE */
 
-++ apron: Wearable 'striped apron; blue (and) red striped'
-    "It's striped blue and red. "
+++ apron: Wearable 'randig:a+t förkläde+t; blå (och) röd randiga'
+    "Det är blå- och rödrandigt. "
     bulk = 4
 ;
 
@@ -228,15 +218,15 @@ kitchen: Room 'Kitchen'
  */
 
 
-+ brownBox: Heavy, RearContainer 'large brown box; square'
-    "It's about two foot square. "
-    initSpecialDesc = "A large brown box sits in the corner. "
-    cannotOpenMsg = 'It\'s full of your china and cutlery, but you don\'t want
-        to start unpacking them yet. '
++ brownBox: Heavy, RearContainer 'stor+a brun+a låd+an; fyr|kantig+a'
+    "Den är ungefär två kvaderatfot stor. "
+    initSpecialDesc = "En stor brun låda står placerad i ena hörnet. "
+    cannotOpenMsg = 'Den är full av ditt porslin och dina bestick, 
+        men du vill inte börja packa upp dem ännu.'
     lookInDesc = "<<cannotOpenMsg>>"
     
-    cannotPutOnMsg = 'You don\'t want to put anything on the box in case you
-        damage the china inside. '
+    cannotPutOnMsg = 'Du vill lägga något på lådan med tanke på risken 
+                    att det skulle skada porslinet inuti. '
     bulk = 8
     
     /* 
@@ -280,7 +270,7 @@ kitchen: Room 'Kitchen'
  */
 
 
-++ sack: Container 'old brown sack'
+++ sack: Container 'gam:mal+la brun+a säck+en'
     bulk = (3 + getBulkWithin)
     isHidden = true    
 ;
@@ -293,7 +283,7 @@ kitchen: Room 'Kitchen'
  *   before any Thing-derived classes in the bag's class list.
  */
 
-++ bag: BagOfHolding, Container 'old beige bag' 
+++ bag: BagOfHolding, Container 'gam:mal+la beige+a väska+n;;bag+en' 
     
     /* 
      *   Making the bulk smaller than the bulk capacity may seem 
@@ -317,8 +307,8 @@ kitchen: Room 'Kitchen'
  */
 
 
-+ oven: Fixture 'cooker;;oven stove' 
-    "It's not quite hard against the wall. "
++ oven: Fixture 'spis+en;;ugn+en' 
+    "Den är inte helt an mot väggen. "
     
     /* 
      *   The remapOn property defines the sub-object we actually put things on
@@ -336,7 +326,9 @@ kitchen: Room 'Kitchen'
      *   The remapBehind property defines the sub-object we actually put things
      *   behind when we notionally put them behind the oven.
      */
-    remapBehind: SubComponent { bulkCapacity = 1 }   
+
+    // TODO: this is what causes not finding anything within the hiddenBehind array
+    // remapBehind: SubComponent { bulkCapacity = 1 }   
     
     /* 
      *   The leaflet will be moved to the remapBehind SubComponent when we look
@@ -351,11 +343,11 @@ kitchen: Room 'Kitchen'
  *   A ContainerDoor is normally only used on a Multiple Container, as here.
  */
 
-++ ContainerDoor '(oven) door; (stove) (cooker)'
+++ ContainerDoor 'ugns|dörr+en; (ugnens) (spisens)'
 ;
 
-++ cake: Food 'chocolate cake; large round delicious brown' 
-    "It's large, round and brown. "
+++ cake: Food 'choklad+tårta+n; stor+a rund+a utsökta+a delikat+a brun+a' 
+    "Den är stor, rund och brun. "
     /* 
      *   Note the special syntax for locating something initially in a 
      *   remapIn object of a multiply-containing object. 
@@ -366,20 +358,20 @@ kitchen: Room 'Kitchen'
     {
         action()
         {
-            "You take one bite and it's delicious, so you take a whole slice;
-            then another, and another and another and another until the whole
-            cake is gone and your waistline threatens to bulge beyond acceptable
-            limits. ";
+            "Du tar en tugga och den är utsökt, så du tar en hel bit; sedan en 
+            till, och en till och en till och en till tills hela kakan är borta 
+            och din midja hotar att bukta ut över acceptabla gränser.";
+            
             inherited;
         }
     }
     
-    tasteDesc = "It tastes deliciously chocolately. "
+    tasteDesc = "Den smakar utsökt chokladig. "
     bulk = 3
 ;
 
-++ saucepan: Container 'saucepan; stainless steel (sauce); pan' 
-    "It's made of stainless steel. "
+++ saucepan: Container 'kastrull+en; rostfri:a+tt stål+et; panna+n' 
+    "Den är gjord av rostfritt stål. "
     
     sLoc(On)
     bulkCapacity = 3
@@ -396,15 +388,15 @@ kitchen: Room 'Kitchen'
  *   Mutliplex Container.
  */
 
-++ pot: Thing 'large orange casserole pot; orange' 
-    "It's a large orange pot with a black handle. "
+++ pot: Thing 'stor+a orange casserole|gryta+n' 
+    "Det är en står orange gryta med ett svart handtag. "
     remapOn: SubComponent 
     {
         notifyInsert(obj)
         {
             if(obj != potLid)
             {
-                "The only thing you can put on the pot is its lid. ";
+                "Det enda du kan lägga på grytan är dess lock. ";
                 exit;
             }
         }
@@ -422,7 +414,7 @@ kitchen: Room 'Kitchen'
             verify()
             {
                 if(isOpen)
-                    illogicalNow('It\'s already open, ');
+                    illogicalNow('Den är redan öppen, ');
             }
             
             action()
@@ -442,7 +434,7 @@ kitchen: Room 'Kitchen'
 
 /* THE LID */
 
-+++ potLid: Thing 'lid' 
++++ potLid: Thing 'lock+et' 
     bulk = 3
     subLocation = &remapOn
     dobjFor(Take)
@@ -450,7 +442,7 @@ kitchen: Room 'Kitchen'
         action()
         {
             if(isIn(pot.remapOn))
-                "You take the lid off the pot. ";
+                "Du tar av locket från grytan. ";
             inherited;
         }
     }
@@ -463,7 +455,7 @@ kitchen: Room 'Kitchen'
  *   like a handle. You couldn't do this directly on an OpenableContainer.
  */
 
-+++ Component 'black handle' 
++++ Component 'svart+a handtag+et' 
 ;
 
 
@@ -480,8 +472,8 @@ kitchen: Room 'Kitchen'
  *   heavy to pick up or move around.
  */
 
-+ table: Heavy 'table; wooden large'
-    "It's a large wooden table. "
++ table: Heavy 'bord+et; trä+iga stor+a;träbord+et'
+    "Det är ett stort bord av trä. "
     remapOn: SubComponent, Platform { }
     remapUnder: SubComponent {}
 ;
@@ -492,7 +484,7 @@ kitchen: Room 'Kitchen'
  *   The red box is a straightforward OpenableContainer 
  */
 
-++ redBox: OpenableContainer 'big red box'
+++ redBox: OpenableContainer 'stor+a röd+a låda+n'
     sLoc(Under) // equivalent to subLocation = &remapUnder
     bulk = 10
     bulkCapacity = 10
@@ -500,7 +492,7 @@ kitchen: Room 'Kitchen'
 
 /*  We'll see how this can opener is used below. */
 
-+++ canOpener: Thing 'can opener; tin'
++++ canOpener: Thing 'konservöppnare+n;; konservburks|öppnare+n plåtburks|öppnare+n'
     iobjFor(OpenWith)
     {
         verify() {}
@@ -515,11 +507,11 @@ kitchen: Room 'Kitchen'
  *   inherit from the Pencil class.
  */
 
-+++ Pencil 'red +';
-+++ Pencil 'blue +';
-+++ Pencil 'green +';
-+++ Pencil 'black +';
-+++ Pencil 'yellow +';
++++ Pencil 'röd+a *';
++++ Pencil 'blå+a *';
++++ Pencil 'grön+a *';
++++ Pencil 'svart+a *';
++++ Pencil 'gul+a *';
 
 
 
@@ -532,8 +524,8 @@ kitchen: Room 'Kitchen'
  */
  
 
-+ cabinet: LockableContainer, Fixture 'cabinet;; cupboard'
-    cannotTakeMsg = 'The cabinet is firmly fastened to the wall. '
++ cabinet: LockableContainer, Fixture 'köks|skåp+et;; kabinett+en'
+    cannotTakeMsg = 'Köksskåpet är ordentligt fäst i väggen. '
     
     /* If we want a LockableContainer to start out locked, we have to say so. */
     isLocked = true
@@ -541,7 +533,7 @@ kitchen: Room 'Kitchen'
 
 /*  TRANSPARENT OPENABLE CONTAINER */
 
-++ glassJar: OpenableContainer 'glass jar' 
+++ glassJar: OpenableContainer 'glas|burk+en'
     /*  
      *   By declaring isTransparent = true, we make it possible to see what's
      *   inside even when it's closed.
@@ -566,8 +558,8 @@ kitchen: Room 'Kitchen'
  *   name, the sugar cubes will automatically be treated as equivalent.
  */
 
-class SugarCube: Food 'sugar cube'    
-    tasteDesc = "It tastes just as sweet as you'd expect. "
+class SugarCube: Food 'sockerbit+en'    
+    tasteDesc = "Den smakar precis så sött som du förväntade dig. "
 ;
 
 /*  
@@ -597,7 +589,9 @@ class SugarCube: Food 'sugar cube'
  *   This requires some custom coding.
  */
 
-++ soupCan: Container 'can of soup;;tin'
+//TODO: can of soup;;tin
++ soupCan: Container 'soppa+n på burk+en;;konservburk+en'
+    definiteForm = 'soppan på burk'
     isOpen = nil    
     
     dobjFor(OpenWith)
@@ -606,17 +600,17 @@ class SugarCube: Food 'sugar cube'
         verify() 
         {
             if(isOpen)
-                illogicalNow('The can is already open. ');
+                illogicalNow('Burken är redan öppen. ');
         }
         check()
         {
             if(gIobj != canOpener)
-                "{I} {can\'t} open the can with {the iobj}. ";
+                "{Jag} {kaninte} öppna burken med {ref iobj}. ";
         }
         action()
         {            
             makeOpen(true);
-            "{I} open{s/ed} the can with {the iobj}. ";
+            "{Jag} öppna{r/de} burken med {ref iobj}. ";
             
             /* 
              *   If opening us is not being performed as an implicit action,
@@ -631,7 +625,7 @@ class SugarCube: Food 'sugar cube'
                        
         }
     }
-    cannotOpenMsg = 'You\'ll need something to open it with. '
+    cannotOpenMsg = 'Du kommer behöva ha något att öppna den med. '
     bulk = 3
     bulkCapacity = 2
     allowPourIntoMe = true
@@ -646,12 +640,12 @@ class SugarCube: Food 'sugar cube'
  */
 
 
-+++ soup: Food 'some tomato soup; red orange thick'
-    "It looks quite thick, and its colour is somewhere between red and orange. "
++++ soup: Food 'lite tomat|soppa+n; röd+a orange tjock+a'
+    "Den ser rätt tjock ut, och färgen är någonstans mellan röd och orange. "
    
     dobjFor(Take)
     {
-        verify() { illogical('It\'s liquid; you can\'t pick it up. '); }
+        verify() { illogical('Det är vätska; du kan inte ta upp det. '); }
     }
     
     dobjFor(PutIn)
@@ -665,7 +659,7 @@ class SugarCube: Food 'sugar cube'
              *   be poured into.
              */
             if(!gIobj.allowPourIntoMe)
-                "It would make too much of a mess to pour the soup in there. ";
+                "Det skulle bli alltför mycket kladd att hälla i soppan där. ";
         }
     }
         
@@ -674,7 +668,7 @@ class SugarCube: Food 'sugar cube'
         preCond = [touchObj]
         check()
         {
-            "You don\'t want to make a mess. ";
+            "Du vill inte kladda ner. ";
         }
     }
     dobjFor(PutUnder) asDobjFor(PutOn)
@@ -695,11 +689,11 @@ class SugarCube: Food 'sugar cube'
         preCond = [touchObj]
         action()
         {
-            "It tastes okay, but it would have been better hot. ";
+            "Det smakar okej, men den skulle vara godare om den var varm. ";
             inherited;
         }
     }
-    tasteDesc = "It tastes of tomato. "
+    tasteDesc = "Det smakar tomat. "
 ;
 
 
@@ -720,13 +714,14 @@ class SugarCube: Food 'sugar cube'
  *   the whole roll, but in this case we won't allow it.
  */
  
-
-+ roll: Immovable, Container 'kitchen roll; (towel); holder'
-    "It's a<<contents.length == 0 ? 'n empty roll' : ' roll of paper towels'>>,
-    mounted on the wall. "
+//rulle med pappershanddukar
+//hushållspapper; (handduksrulle); hållare
++ roll: Immovable, Container 'hushålls|pappers|rulle+n;; hållare'
+    "Det är en<<contents.length == 0 ? ' tom rulle' : ' rulle av pappershanddukar'>>,
+    fastmonterad på väggen. "
     
-    cannotTakeMsg = 'You can\'t detach the roll from its holder; the builder
-        must have fitted it wrong. '
+    cannotTakeMsg = 'Du kan inte ta loss rullen från hållaren; 
+                    hantverkaren måste ha felmonterat den.'
     
     canPutInMe = nil
     
@@ -738,8 +733,8 @@ class SugarCube: Food 'sugar cube'
    *   contents -- we don't have to define it here, but doing so does no harm.
    */
 
-class PaperTowel: Thing 'paper towel; plain paper white square (kitchen)'     
-    "It's a plain, white, square paper towel. "    
+class PaperTowel: Thing 'papper:et^s+handduk+en; vanlig:a+t papp:er+ret vit+a fyrkant+iga (hushålls)'     
+    "Det är en vanlig, vit, fyrkantig pappershandduk. "    
     bulk = 1
 ;
 
@@ -759,12 +754,12 @@ class PaperTowel: Thing 'paper towel; plain paper white square (kitchen)'
  *   A Fixture to represent the wall the clock starts out hanging on, and can be
  *   returned to.
  */
-+ wall: Fixture, Surface 'wall; (north) (n)'
++ wall: Fixture, Surface 'vägg+en; (norra) (n)'
     notifyInsert(obj)
     {
         if(obj != clock)
         {
-            "You can't put that on the wall. ";
+            "Du kan inte sätta det på väggen";
             exit;
         }
     }
@@ -778,8 +773,8 @@ class PaperTowel: Thing 'paper towel; plain paper white square (kitchen)'
  *   thing that can go behind the clock.
  */
 
-++ clock: RearContainer 'clock; round white' 
-   "It's white and round, and shows the current time as <<showTime()>>. "
+++ clock: RearContainer 'klocka+n; rund+a vit+a' 
+   "Den är rund och vit och visar att klockan är <<showTime()>>. "
         
     /* 
      *   When we move the clock we want the label that's behind it to move with
@@ -796,16 +791,16 @@ class PaperTowel: Thing 'paper towel; plain paper white square (kitchen)'
     {
         if(obj != blueLabel)
         {
-            "Only the label can be put on the back of the clock. ";
+            "Endast etiketten kan placeras på klockans baksida. ";
             exit;
         }
     }
     
 
-    initSpecialDesc = "A clock hangs on the north wall. "
+    initSpecialDesc = "En klockan hänger på norra väggen. "
     useInitSpecialDesc = (isIn(wall))
 
-    objInPrep = 'on the back of'
+    objInPrep = 'på baksidan av'
     
     bulk = 3
     
@@ -825,7 +820,7 @@ class PaperTowel: Thing 'paper towel; plain paper white square (kitchen)'
          *   as so many minutes to the hour, otherwise we'll report it as so 
          *   many minutes past the hour.
          */
-        local prep = minute > 30 ? 'to' : 'past';
+        local prep = minute > 30 ? 'i' : 'över';
         
         /*   
          *   If the minute it more than 30, subtract it from 60 to get the 
@@ -837,7 +832,7 @@ class PaperTowel: Thing 'paper towel; plain paper white square (kitchen)'
          *   If we're reporting so many minutes to the hour, we need to add 
          *   one to the hour ( 10:35 is 25 minutes to 11). 
          */
-        hour = prep == 'to' ? hour + 1 : hour;
+        hour = prep == 'i' ? hour + 1 : hour;
         
         /*   
          *   If the hour is more than 12, deduct 12 so it's on a 12 hour 
@@ -848,9 +843,9 @@ class PaperTowel: Thing 'paper towel; plain paper white square (kitchen)'
         /*   Finally spell the time out in words, not numbers. */
         
         if(minute == 0)
-            "<<spellNumber(hour)>> o'clock";
+            "kl. <<spellNumber(hour)>>";
         else
-            "<<spellNumber(minute)>> minute<<minute > 1 ? 's' :''>> <<prep>>
+            "<<spellNumber(minute)>> minut<<minute > 1 ? 'er' :''>> <<prep>>
             <<spellNumber(hour)>>";
     }
 ;
@@ -860,8 +855,8 @@ class PaperTowel: Thing 'paper towel; plain paper white square (kitchen)'
  *   clock is hanging on the wall.
  */
 
-+++ blueLabel: Thing 'blue label' 
-    "It says <q>Made in adv3Lite</q>. "   
++++ blueLabel: Thing 'blå+a etikett+en' 
+    "Det står <q>Made in adv3Lite</q> på den. "   
     isHidden = clock.useInitSpecialDesc
 ;
 
@@ -871,7 +866,7 @@ class PaperTowel: Thing 'paper towel; plain paper white square (kitchen)'
  *   Make PUT SOMETHING ON CLOCK or ATTACH SOMETHING TO CLOCK behave like PUT
  *   SOMETHING BEHIND CLOCK by defining a DOER
  */
-Doer 'put Thing on clock; attach Thing to clock'
+Doer 'sätt Thing på clock; fäst Thing på clock'
     execAction(c)
     {
         doInstead(PutBehind, gDobj, clock);
@@ -884,25 +879,22 @@ Doer 'put Thing on clock; attach Thing to clock'
 
 /* The note that's hidden under the cookery book. */
 
-note: Thing 'piece of yellow paper;; note'
-    "Someone's scribbled a note on it. "
-    readDesc = "It reads: <q>I just realized there was a slight error in my
-        original estimate for fitting this kitchen. Nothing to worry about --
-        just add another couple of noughts to the figure I quoted.\b
-        Buck Grubber (builder)</q>"
-    
+note: Thing 'gul+a papper:et^s+lapp^s+bit+en;anteckning+en'
+    "Någon har klottrat en anteckning på den. "
+    readDesc = "Det står: <q>Jag insåg just att det fanns ett litet 
+        fel i min ursprungliga bedömnning i den här köksmonteringen. Inga 
+        problem -- lägg bara till några nollor till den ursprungliga siffran.\b 
+        Buck Grubber (hantverkare)</q>"
     bulk = 1
 ;
 
+// TODO: cannot find leaflet by looking behind the oven
+
 /* The leaflet that's hidden behind the oven */
-leaflet: Thing 'leaflet; (cooker) instruction'
-    "It looks like the instruction leaflet for the cooker. <<first time>> It
-    must have fallen down behind.<<only>> "
+leaflet: Thing 'broschyr+en;(spisens); spis|instruktion+en'
+    "Det ser ut som instruktionsbladet till spisen. <<first time>> Det måste ha fallit ner bakoms spisen.<<only>>"
     
-    readDesc = "You can't make head nor tail of the instructions. It looks like
-        they've been translated from Chinese with the aid of a
-        Portugese-Swahili phrasebook by someone whose first language was
-        Sanskrit. "
+    readDesc = "Man kan inte urskilja instruktionerna. Det ser ut som att de har översatts från kinesiska med hjälp av en portugisisk-swahili-parlör av någon vars modersmål var sanskrit. "
     dobjFor(Read) { preCond = [objVisible, objHeld] }
     bulk = 1
 ;
@@ -919,7 +911,7 @@ leaflet: Thing 'leaflet; (cooker) instruction'
  *   as it would be typed by the player ('turn') followed by the *programmatic*
  *   name of the item (or class) the command applies to ('pencilSharpener').
  */
-Doer 'turn pencilSharpener'
+Doer 'vrid pencilSharpener'
     execAction(c)
     {
         doInstead(Turn, pencilSharpener.contents[1]);
@@ -930,8 +922,8 @@ Doer 'turn pencilSharpener'
 //==============================================================================
 /* The PENCIL class */
 
-class Pencil: Thing 'pencil'
-    "It's <<if isSharpened>> quite sharp<<else>> rather blunt<<end>>. "
+class Pencil: Thing 'penna+n'
+    "Den är <<if isSharpened>> rätt vass<<else>> ganska trubbig<<end>>. "
     dobjFor(Turn)
     {
         verify() 
@@ -948,11 +940,11 @@ class Pencil: Thing 'pencil'
         {
             if(isIn(pencilSharpener))
             {
-                "You turn the <<theName>> a few times, sharpening it nicely. ";
+                "Du vrider <<theName>> några gånger och vässar till den fint. ";
                 isSharpened = true;
             }
             else
-                "You twiddle <<theName>> around, but it doesn't do much. ";
+                "Du snurrar runt med <<theName>>, men det hjälper inte så mycket. ";
         }
     }
     
@@ -986,7 +978,7 @@ sharpenedState: State
      *   isSharpened property is nil, while the adjectives 'sharp' and
      *   'sharpened' will apply to Pencils whose isSharpened property is true.
      */
-    adjectives = [[nil, ['blunt']], [true, ['sharp', 'sharpened']]]
+    adjectives = [[nil, ['trubbig', 'trubbiga']], [true, ['vass', 'vässad']]]
 ;
 
 
@@ -1002,11 +994,11 @@ DefineTIAction(OpenWith)
 ;
 
 VerbRule(OpenWith)
-    'open' multiDobj 'with' singleIobj
+    'öppna' multiDobj 'med' singleIobj
     : VerbProduction
     action = OpenWith
-    verbPhrase = 'open/opening (what) (with what)'
-    missingQ = 'what do you want to open;what do you want to open it with'
+    verbPhrase = 'öppna/öppnar (vad) (med vad)'
+    missingQ = 'vad vill du öppna;vad vill du öppna med'
 ;
 
 modify Thing
@@ -1020,7 +1012,7 @@ modify Thing
         verify()
         {
             if(isOpenable)
-                illogical('{I} {don\'t need} {the iobj} to open {that dobj}. ');
+                illogical('{Jag} {behöver} inte {ref iobj} för att öppna {denna dobj}. ');
             else
                 illogical(&cannotOpenMsg);
         }
@@ -1034,7 +1026,7 @@ modify Thing
             illogical(cannotOpenWithMsg);
         }
     }
-    cannotOpenWithMsg = '{I} {can\'t} open anything with {that iobj}. '
+    cannotOpenWithMsg = '{Jag} {kaninte} öppna någonting med {detta iobj}. '
     
     /* 
      *   By default the library doesn't allow anything to be the indirect object
@@ -1058,9 +1050,9 @@ modify Thing
 
 
 VerbRule(HangOn)
-    'hang' multiDobj 'on' singleIobj
+    'häng' multiDobj 'på' singleIobj
     : VerbProduction
     action = PutOn // this makes it a synonym for PUT ON
-    verbPhrase = 'hang/hanging (what) (on what)'
-    missingQ = 'what do you want to hang;what do you want to hang it on'
+    verbPhrase = 'hänga/hänger (vad) (på vad)'
+    missingQ = 'vad vill du hänga;vad vill du hänga på'
 ;

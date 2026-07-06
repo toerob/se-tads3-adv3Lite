@@ -34,6 +34,10 @@ croupiern: Actor 'croupier+n;;;honom' proper = nil;
 flygvardinnan: Actor 'flyg|värdinna+n;;;henne' proper = nil;
 
 
+soppburken: Container 'soppa+n på burk+en;;konservburk+en'
+    definiteForm = 'soppan på burk'
+;
+
 
 modify testRunner 
   verboseAboutSuccessfulTests = nil // Visa inte varje testutfall om det är OK
@@ -1166,3 +1170,82 @@ TestUnit 'ananas (blockerat pluralarv med -)' run {
     assertThat(ananas.vocabWords[3]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mogen', MatchAdj]);
     assertThat(ananas.vocabWords[4]).extractingProps([&wordStr, &posFlags]).isEqualTo(['mogna', MatchAdj]);
 };
+
+
+
+// Substantiv följt av en oföränderlig prepositionsfras ('på burk') som ska
+// ingå i det visade namnet, inte bara användas för att särskilja objekt.
+// definiteForm sätts direkt av författaren eftersom den automatiska
+// vokabuläranalysen inte kan härleda en bestämd form för denna typ av fras.
+TestUnit 'Soppa på burk' run {
+    //inspectVocabWords(soppburken);
+
+    assertThat(soppburken.name).isEqualTo('soppa på burk');
+    assertThat(soppburken.definiteForm).isEqualTo('soppan på burk');
+    // Ingen shortNameAdjDef ska genereras eftersom definiteForm sattes direkt
+    assertThat(soppburken.shortNameAdjDef).isNil();
+    // isNeuter härleds från första ordet i definiteForm ('soppan'), inte
+    // hela frasen ('burk') - utrum
+    assertThat(soppburken.isNeuter).isNil();
+    // theName ska returnera den bestämda formen ordagrant, utan artikel
+    assertThat(soppburken.theName).isEqualTo('soppan på burk');
+    assertThat(soppburken.aName).isEqualTo('en soppa på burk');
+};
+
+// 'för' är medvetet uteslutet ur prepList (se kommentar vid prepList i
+// swedish.t). Legitima "for"-fall (syfte/mottagare) fungerar ändå genom att
+// annotera ordet uttryckligen med [prep] i det enskilda objektets
+// vocab-sträng, utan att påverka andra objekt.
+instruktion: Thing 'instruktion+en för[prep] användning+en';
+
+TestUnit 'instruktion för[prep] användning (legitim "for"-betydelse)' run {
+    assertThat(instruktion.name).isEqualTo('instruktion');
+    assertThat(instruktion.definiteForm).isEqualTo('instruktionen');
+    // 'användning+en' hamnar efter prepositionen, ingår inte i name
+    assertThat(instruktion.shortNameAdjDef).isNil();
+    assertThat(instruktion.theName).isEqualTo('instruktionen');
+    assertThat(instruktion.aName).isEqualTo('en instruktion');
+};
+
+// Utan 'för' i prepList tolkas 'för' bara som ytterligare ett ord före
+// substantivet (som 'blå' i 'blå stol+en'), så hela frasen bevaras i name.
+// 'för' saknar egen +notation och bidrar därför inte till shortNameAdjDef -
+// samma kända begränsning som gäller för alla adjektiv utan +notation i
+// sektion 1 (jämför testet 'blå stol+en (adj utan +notation i sektion 1)').
+tradigInstruktion: Thing 'för tråkig+a instruktion+en';
+
+TestUnit 'för tråkiga instruktionen (kollision med förstärkningsordet "för")' run {
+    assertThat(tradigInstruktion.name).isEqualTo('för tråkig instruktion');
+    assertThat(tradigInstruktion.definiteForm).isEqualTo('instruktionen');
+    assertThat(tradigInstruktion.shortNameAdjDef).isEqualTo('tråkiga');
+    assertThat(tradigInstruktion.isNeuter).isNil();
+    // 'för' saknar +notation och faller därför bort ur den bestämda frasen,
+    // precis som ett oannoterat adjektiv skulle göra
+    assertThat(tradigInstruktion.theName).isEqualTo('den tråkiga instruktionen');
+    assertThat(tradigInstruktion.aName).isEqualTo('en för tråkig instruktion');
+};
+
+// 'av' länkar här till en SPECIFIK referent ('kungen', bestämd form), inte en
+// generisk kategori/material. Till skillnad från t.ex. 'papperslappsbit' går
+// detta inte att göra om till ett sammansatt ord: 'kungastaty' skulle bara
+// betyda "en staty föreställande en kung i allmänhet" - den bestämda
+// referensen till DEN HÄR specifika kungen (som 'kungen' bär på) går
+// förlorad. 'av' hamnar dessutom i prepList, så 'staty+n' blir substantivet
+// och 'av kung+en' faller bort som en ren särskiljande kvalificerare (jämför
+// 'nyckel till dörren') om vi inte sätter name/definiteForm direkt.
+staty: Thing 'staty+n av kung+en'
+    name = 'staty av kungen'
+    definiteForm = 'statyn av kungen'
+;
+
+TestUnit 'staty av kungen (referens till något specifikt, ej sammansättning)' run {
+    assertThat(staty.name).isEqualTo('staty av kungen');
+    assertThat(staty.definiteForm).isEqualTo('statyn av kungen');
+    // Ingen shortNameAdjDef ska genereras eftersom definiteForm sattes direkt
+    assertThat(staty.shortNameAdjDef).isNil();
+    assertThat(staty.isNeuter).isNil();
+    // theName ska returnera den bestämda formen ordagrant, med 'av kungen' kvar
+    assertThat(staty.theName).isEqualTo('statyn av kungen');
+    assertThat(staty.aName).isEqualTo('en staty av kungen');
+};
+

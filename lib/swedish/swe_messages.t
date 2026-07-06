@@ -498,7 +498,7 @@ CustomMessages
         Msg(cannot look under, '{Jag} {kan} inte titta under {detta dobj}. '),
         Msg(look under, '{Jag} hitta{r|de} inget av intresse under {ref dobj}. '),
         Msg(cannot look behind, '{Jag} {kan} inte titta bakom {detta dobj}. '),
-        Msg(look behind, '{Jag} hitta{r|de} inget intressant bakom {ref dobj}. '),
+        Msg(look behind, '{Jag} hitta{r|de} inget intressant bakom {ref subj dobj}. '),
         Msg(cannot look through, '{Jag} {kan} inte titta genom {detta dobj}. '),
         Msg(look through, '{Jag} {ser} inget genom {ref dobj}. '),
         Msg(cannot go through,'{Jag} {kan} inte gå genom {detta dobj}. '),
@@ -1069,7 +1069,7 @@ modify Thing
     sayFindHidden(prop, prep)
     {
         // TODO: testa av meddelandet 
-        dmsg('\^{1} {ref dobj} {jag} hitta{r|de} {2}<<if findHiddenDest == 
+        dmsg('\^{1} {ref dobj} hitta{r|de} {jag} {2}<<if findHiddenDest == 
             gActor>>, som {jag} tar<<end>>. ', 
             prep.prep, makeListStr(self.(prop)));
 

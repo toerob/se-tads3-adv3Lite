@@ -756,6 +756,13 @@ class LMentionable: object
          * så att vi inte skriver över ett explicit satt name. */
         local nameWasPreset = propDefined(&name, PropDefDirectly);
 
+        /* Notera om definiteForm var satt direkt på objektet redan innan
+         * initVocab kördes. Om en spelförfattare har satt definiteForm
+         * manuellt (t.ex. för en ovanlig fras som 'soppan på burk') ska vi
+         * inte generera någon shortNameAdjDef åt dem - författarens sträng
+         * ska användas ordagrant av theNameFrom. */
+        local definiteFormWasPreset = propDefined(&definiteForm, PropDefDirectly);
+
         /* Samlar standard- resp. definitiva former för adjektiv i sektion 1
          * som förekommer FÖRE substantivet (t.ex. 'blå+a' i 'blå+a stol+en').
          * Används efter loopen för att bygga name='blå stol' och
@@ -842,8 +849,10 @@ class LMentionable: object
 
         /* Spara adjektivets definitiva form för theNameFrom, t.ex. 'blåa'.
          * theNameFrom kombinerar denna med definiteForm och artikel:
-         * 'den blåa stolen'. */
-        if(adjDefParts.length() > 0)
+         * 'den blåa stolen'. Om definiteForm redan var satt direkt av
+         * författaren, hoppa över detta - författarens definiteForm ska
+         * användas som den är, utan ett auto-genererat adjektivprefix. */
+        if(!definiteFormWasPreset && adjDefParts.length() > 0)
             shortNameAdjDef = adjDefParts.join(' ');
 
         
@@ -986,8 +995,13 @@ class LMentionable: object
 
         // Såvida inte isNeuter tilldelas redan
         if(!isNeuterDefinedAlready && definiteForm) {
-            // Avgör utrum/neutrum baserat på den definitiva formens ändelse
-            local isUterEnding = definiteForm.endsWith('n') || definiteForm.endsWith('na');
+            // Avgör utrum/neutrum baserat på ändelsen av det första ordet i
+            // den definitiva formen (inte hela strängen) - detta gör att
+            // en flerordsfras som 'soppan på burk' fortfarande bedöms
+            // korrekt som utrum utifrån 'soppan', istället för att kolla
+            // ändelsen på 'burk'.
+            local headWord = definiteForm.split(' ')[1];
+            local isUterEnding = headWord.endsWith('n') || headWord.endsWith('na');
             isNeuter = !isUterEnding;
         }
 
@@ -1593,8 +1607,32 @@ class LMentionable: object
     weakWordPat = static new RexPattern(
         '.*<lsquare>weak<rsquare>$')
 
-    /* prepositionslista, som ett regelbundet uttryck ELLER mönster */
-    prepList = 'till|av|från|med|för'
+    /*
+     *   Prepositionslista, som ett regelbundet uttryck ELLER mönster.
+     *
+     *   Motsvarande engelska adv3Lite-lista är 'to|of|from|with|for', och
+     *   fyra av dessa fem har direkta, oproblematiska svenska motsvarigheter:
+     *   till/av/från/med. 'för' är MEDVETET uteslutet här, till skillnad
+     *   från den engelska förlagan.
+     *
+     *   Anledningen är att engelska "for" bara har den betydelse vi vill
+     *   fånga (ett syftes-/mottagarkvalificerare: "medicine for headaches"),
+     *   medan svenska "för" också är det vanligaste ordet för
+     *   förstärkningen "för mycket/för stort" ("too much/too big"). Om
+     *   'för' stod med i listan skulle en kortnamnsfras som 'för tråkiga
+     *   instruktionen' feltolkas: ordet direkt före 'för' skulle bli
+     *   huvudsubstantivet, och 'för tråkiga' (den del av namnet författaren
+     *   faktiskt ville visa) skulle tyst falla bort ur name/definiteForm -
+     *   exakt samma typ av bugg som skulle uppstå om 'på' lades till för
+     *   'soppa på burk'.
+     *
+     *   De legitima "för"-fallen (t.ex. 'instruktioner för användning',
+     *   direkt motsvarande engelska "instructions for use") fungerar
+     *   fortfarande - annotera bara det specifika ordet med "[prep]" i det
+     *   objektets vocab-sträng istället för att lita på den globala listan.
+     *   Se avsnittet om prepositioner i VOCABNOTATION.md för exempel.
+     */
+    prepList = 'till|av|från|med'
 
     /* regelbundet uttryck för att ta bort annoteringar från ett kortnamn */
     deannotatePat =
