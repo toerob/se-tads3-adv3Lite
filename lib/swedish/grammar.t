@@ -2739,7 +2739,7 @@ VerbRule(Dig)
     ([badness 500] 'gräv' | 'gräv' 'i') singleDobj
     : VerbProduction
     action = Dig
-    verbPhrase = 'gräv/gräver (i vad)'
+    verbPhrase = 'gräva/gräver (i vad)'
     missingQ = 'vad vill du gräva i'
     dobjReply = inSingleNoun
 ;
@@ -2748,7 +2748,7 @@ VerbRule(DigWith)
     ('gräv' | 'gräv' 'i') singleDobj 'med' singleIobj
     : VerbProduction
     action = DigWith
-    verbPhrase = 'gräv/gräver (i vad) (med vad)'
+    verbPhrase = 'gräva/gräver (i vad) (med vad)'
     missingQ = 'vad vill du gräva i;vad vill du gräva med'
     dobjReply = inSingleNoun
     iobjReply = withSingleNoun

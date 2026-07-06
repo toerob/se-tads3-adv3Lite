@@ -3398,6 +3398,51 @@ modify wornLister
     showWornInfo = nil
 ;
 
+
+modify lookAroundExitLister
+    showListSeparator(options, curItemNum, totalItems)
+    {
+        if(curItemNum == totalItems - 1)
+            " och ";
+        if(curItemNum < totalItems - 1)
+            ", ";
+    }
+;
+
+modify  lookAroundTerseExitLister
+    showListItem(obj, options, pov, infoTab)
+    {
+         htmlSay('<<aHref(obj.dir_.name, obj.dir_.name, 'Gå ' + obj.dir_.name,
+                 0)>>');
+    }
+    showListSeparator(options, curItemNum, totalItems)
+    {
+        if(curItemNum == totalItems - 1)
+            " och ";
+        if(curItemNum < totalItems - 1)
+            ", ";
+    }
+;
+
+modify explicitExitLister
+    showListSeparator(options, curItemNum, totalItems)
+    {
+        if(curItemNum == totalItems - 1)
+            " eller ";
+        if(curItemNum < totalItems - 1)
+            ", ";
+    }
+    showListItem(obj, options, pov, infoTab)
+    {               
+        htmlSay('<<aHref(obj.dir_.name, obj.dir_.name, 'Gå ' + obj.dir_.name,
+                 0)>>');    
+        if(showDestNames && obj.dest_ && (obj.dest_.visited || obj.dest_.familiar))
+            dmsg(' till <<obj.dest_.destName>>');
+            //DMsg(exit lister dest name, ' to <<obj.dest_.destName>>');
+    }    
+;
+
+
 // conjAdjObj - kör adjustAdjectiveAgreement på valfritt objekt 
 // Användning:  conjAdjObj(obj, 'vilk','en/et/a')
 // Exempel: " (<<container.objInPrep>> <<conjAdjObj(container, 'vilk', 'en/et/a')>> {är} ";
