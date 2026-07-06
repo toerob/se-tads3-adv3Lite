@@ -53,7 +53,11 @@ dörr: Thing 'dörr+en';
 ```
 
 Grammatiskt genus (`isNeuter`) härledas automatiskt från ändelsen:
-ändelserna `t`, `et` → neutrum; `n`, `en`, `an` → utrum.
+
+| Ändelse | Genus |
+|---|---|
+| `t`, `et` | neutrum |
+| `n`, `en`, `an` | utrum |
 
 Minst namnform + bestämdhetstecken bör alltid anges för att genus ska kunna
 härledas korrekt.
@@ -177,16 +181,16 @@ Exempel:
 
 ```tads3
 nyckel: Thing 'nyckel+n till dörren';
-// 'till' finns i prepList → preposition
-// 'nyckel+n' är sista ordet innan prepositionen → substantiv
+// 'till' finns i prepList, så det tolkas som en preposition
+// 'nyckel+n' är sista ordet innan prepositionen, så det blir substantivet:
 //   name='nyckel', definiteForm='nyckeln'
-// 'dörren' kommer efter prepositionen → bara ett sökord, ingår inte i name
-// → du kan skriva "nyckeln" eller "nyckeln till dörren", båda matchar,
-//   men visas alltid bara som "nyckeln"
+// 'dörren' kommer efter prepositionen, så det blir bara ett sökord — ingår inte i name
+// Resultat: du kan skriva "nyckeln" eller "nyckeln till dörren", båda matchar,
+//   men det visas alltid bara som "nyckeln"
 
 hog: Thing 'hög+en med papper';
-// 'med' finns i prepList → preposition
-// 'hög+en' blir substantivet → name='hög', definiteForm='högen'
+// 'med' finns i prepList, så det tolkas som en preposition
+// 'hög+en' blir därmed substantivet: name='hög', definiteForm='högen'
 // 'papper' är bara ett sökord efter prepositionen
 ```
 
@@ -209,10 +213,10 @@ påverka alla andra objekt — annotera ordet direkt med `[prep]` istället:
 bok: Thing 'bok+en på[prep] hylla+n';
 // 'på' är inte med i prepList, men annoteras uttryckligen som preposition
 // här — bara för det här ordet, bara i det här objektet.
-// 'bok+en' blir då sista ordet innan prepositionen → substantiv:
+// 'bok+en' blir då sista ordet innan prepositionen, alltså substantivet:
 //   name='bok', definiteForm='boken'
-// 'hylla+n' hamnar efter prepositionen → bara sökord, ingår inte i name
-// → visas alltid som "boken", men "hylla"/"hyllan" är ändå registrerade
+// 'hylla+n' hamnar efter prepositionen, så det blir bara ett sökord — ingår inte i name
+// Resultat: visas alltid som "boken", men "hylla"/"hyllan" är ändå registrerade
 //   sökord för matchning
 ```
 
@@ -294,7 +298,7 @@ soppburken: Container 'soppa+n på burk+en;;konservburk+en'
 När `definiteForm` sätts direkt genereras inget automatiskt adjektivprefix
 (`shortNameAdjDef`) — `theNameFrom` returnerar då `definiteForm` precis som
 den skrevs, utan `den`/`det`/`de` framför. Genus (`isNeuter`) härleds i så
-fall från **första ordet** i `definiteForm` (här "soppan" → utrum), så det
+fall från **första ordet** i `definiteForm` (här ger "soppan" utrum), så det
 behöver normalt inte sättas manuellt även för flerordsfraser.
 
 **Obs:** sätt inte `theName` direkt i detta syfte — det har ingen effekt.
@@ -316,12 +320,12 @@ sätt `name`/`definiteForm` direkt.
 Jämför de två fallen:
 
 ```tads3
-// Material/kategori → sammansättning fungerar utmärkt, inget 'av' behövs:
+// Material/kategori: sammansättning fungerar utmärkt, inget 'av' behövs
 papperslappsbit: Thing 'gul+a papper:et^s+lapp^s+bit+en';
 // → papper/papperet, papperslapp/papperslappen, papperslappsbit/papperslappsbiten
 // name='gul papperslappsbit', theName='den gula papperslappsbiten'
 
-// Specifik referens (avbildning) → sammansättning duger inte:
+// Specifik referens (avbildning): sammansättning duger inte här
 staty: Thing 'staty+n av kung+en'
     name = 'staty av kungen'
     definiteForm = 'statyn av kungen'
@@ -341,8 +345,13 @@ begränsning gäller `porträttet av drottningen`, `fotografiet av Anna`, `karta
 av ön` — närhelst "av" pekar ut något specifikt snarare än en generisk
 egenskap.
 
-Tumregel: **material/kategori → sammansättning** (`trästol`, `papperslappsbit`).
-**Specifik referens/avbildning → manuell `definiteForm`** (`staty av kungen`).
+Tumregel:
+
+| Situation | Lösning |
+|---|---|
+| Material/kategori | Sammansättning (`trästol`, `papperslappsbit`) |
+| Specifik referens/avbildning | Manuell `definiteForm` (`staty av kungen`) |
+
 I det senare fallet hamnar `staty+n` ändå som huvudsubstantiv i vocab-strängen
 (`av` finns i `prepList`), så utan den manuella överskrivningen hade "av
 kungen" tyst fallit bort som en efterställd, valfri kvalificerare — exakt
@@ -360,7 +369,7 @@ apple: Thing 'äpple+t;;äpplen+a[pl]';
 // plural:   äpplen, äpplena
 
 vindruvor: Thing 'vindruvor+na[pl];;;dem';
-// plural: vindruvor, vindruvorna   (sektion 1 med [pl] → plural=true)
+// plural: vindruvor, vindruvorna   (sektion 1 med [pl] ger plural=true)
 ```
 
 Sätts `[pl]` i sektion 1 tolkas hela objektet som plural och `plural` sätts
@@ -429,8 +438,8 @@ sektion 2–4 påverkas inte.
 | `den` / `det` | `qualified = true` — som `()` men skrivs naturligare för egennamn |
 
 `en` och `ett` behövs normalt inte eftersom genus härleds automatiskt från
-ändelsen (`+n`/`+en`/`+an` → utrum, `+t`/`+et` → neutrum). Använd dem bara
-när ändelsen inte ger tillräcklig information eller du vill vara explicit.
+ändelsen (se tabellen i "Plusnotationen" ovan). Använd dem bara när ändelsen
+inte ger tillräcklig information eller du vill vara explicit.
 
 ```tads3
 vatten: Thing 'lite vatt:en+et';
@@ -447,8 +456,8 @@ gudinna: Actor 'den Stora Gudinnan';
 ```
 
 Behöver kortnamnet faktiskt börja med ett av dessa ord som vanligt ord (inte
-artikelspecificerare), lägg till rätt specifierare dessförinnan:
-`'en en bricka'` → specifieraren `en` konsumeras, kortnamnet blir "en bricka".
+artikelspecificerare), lägg till rätt specifierare dessförinnan: skriver du
+`'en en bricka'` konsumeras specifieraren `en`, och kortnamnet blir "en bricka".
 
 ---
 
