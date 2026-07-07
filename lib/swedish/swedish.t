@@ -6033,11 +6033,13 @@ modify Action
             
             
             /* 
-             *   Börja vår rapport med en öppningsparentes och ordet
-             *   'först'
+             *   Börja vår rapport med en öppningsparentes, 
+             *   Notera att i engelskan börjar detta med ordet 'first',
+             *   men i svenskan låter det bättre att ha 'först' i slutet 
+             *   av meningen istället.
              */
-            //rep = BMsg(implicit action report start, '<.assume> ');
-            rep = bmsg('<.assume> ');
+            //rep = BMsg(implicit action report start, '<.assume>first ');
+            rep = bmsg('<.assume>');
 
             /* 
              *   Gå sedan igenom alla implicita åtgärdsrapporter på den aktuella
@@ -6069,7 +6071,7 @@ modify Action
             
             /* Returnera den färdiga implicita åtgärdsrapporten */
             //return rep + BMsg(implicit action report terminator, '<./assume>\n') + prp;
-            return rep + bmsg('<./assume>\n') + prp;
+            return rep + bmsg(' först<./assume>\n') + prp;
         }
         
         /* 

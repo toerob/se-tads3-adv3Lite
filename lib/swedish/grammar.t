@@ -1573,7 +1573,7 @@ VerbRule(SetDownWhat)
     
 
 VerbRule(Examine)
-    ('undersök' | 'inspektera' | 'x' |'titta' 'på' | 't' 'på') multiDobj
+    ('undersök' | 'inspektera' | 'x' |'titta' 'på' | 't' 'på' | 'se' 'på') multiDobj
     : VerbProduction
     action = Examine
     verbPhrase = 'undersök/undersöker (vad)'
@@ -1581,7 +1581,7 @@ VerbRule(Examine)
 ;
 
 VerbRule(LookX)
-    ('titta'|'t') multiDobj
+    ('titta'|'t' | 'se') multiDobj
     : VerbProduction
     action = Examine
     verbPhrase = 'undersök/undersöker (vad)'
@@ -1595,7 +1595,7 @@ VerbRule(LookX)
 ;
 
 VerbRule(LookAtWhat)
-    ('titta' | 't') 'på'
+    ('titta' | 't' | 'se') 'på'
     : VerbProduction
     action = Examine
     verbPhrase = 'titta/tittar (på vad)'
@@ -1612,7 +1612,7 @@ VerbRule(Read)
 ;
 
 VerbRule(LookIn)
-    ('titta' | 't') ('i' | 'inuti') multiDobj
+    ('titta' | 't' | 'se') ('i' | 'inuti') multiDobj
     : VerbProduction
     action = LookIn
     verbPhrase = 'titta/tittar (i vad)'
@@ -1621,7 +1621,7 @@ VerbRule(LookIn)
 ;
 
 VerbRule(LookInWhat)
-    ('titta' | 't') ('i' | 'inuti') 
+    ('titta' | 't' | 'se') ('i' | 'inuti') 
     : VerbProduction
     action = LookIn
     verbPhrase = 'titta/tittar (i vad)'
@@ -1631,7 +1631,7 @@ VerbRule(LookInWhat)
 ;
 
 VerbRule(Search)
-    'sök' multiDobj
+    'sök' ('igenom'|) multiDobj
     : VerbProduction
     action = Search
     verbPhrase = 'sök/söker (vad)'
@@ -1639,7 +1639,7 @@ VerbRule(Search)
 ;
 
 VerbRule(LookThrough)
-    ('titta' | 't' | 'kika') ('genom' | 'via') multiDobj
+    ('titta' | 't' | 'kika' | 'se') ('genom' | 'via') multiDobj
     : VerbProduction
     action = LookThrough
     verbPhrase = 'titta/tittar (genom vad)'
@@ -1647,7 +1647,7 @@ VerbRule(LookThrough)
 ;
 
 VerbRule(LookThroughWhat)
-    ('titta' | 't' | 'kika') ('genom' | 'via') 
+    ('titta' | 't' | 'kika' | 'se') ('genom' | 'via') 
     : VerbProduction
     action = LookThrough
     verbPhrase = 'titta/tittar (genom vad)'
@@ -1656,7 +1656,7 @@ VerbRule(LookThroughWhat)
 ;
 
 VerbRule(LookUnder)
-    ('sök' | 'titta' | 't') 'under' multiDobj
+    ('sök' | 'titta' | 't' | 'se') 'under' multiDobj
     : VerbProduction
     action = LookUnder
     verbPhrase = 'titta/tittar (under vad)'
