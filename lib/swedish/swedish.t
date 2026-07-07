@@ -2973,6 +2973,7 @@ swedishCustomVocab: CustomVocab
         'krypa/kryper/krypte/krypit',
         'kunna/kan/kunde/kunnat',
         'lägga/lägger/lade/lagt',
+        'låsa/låser/låste/låst',
         'lämna/lämnar/lämnade/lämnat',
         'låna/lånar/lånade/lånat',
         'lära/lär/lärde/lärt',
@@ -2988,10 +2989,7 @@ swedishCustomVocab: CustomVocab
         'mata/matar/matade/matat',
         'missförstå/missförstår/missförstod/missförstått',
         'möta/möter/mötte/mötts',
-        'öppna/öppnar/öppnade/öppnat',
-        'överdriva/överdriver/överdrev/överdrivits',
-        'överhöra/överhör/överhörde/överhörts',
-        'överta/övertar/övertog/övertagit',        
+        'plocka/plockar/plockade/plockat',
         'prata/pratar/pratade/pratat',
         'raka/rakar/rakade/rakad',
         'rida/rider/red/ridit',
@@ -3063,7 +3061,11 @@ swedishCustomVocab: CustomVocab
         'vilseleda/vilseleder/vilseledde/vilselett',
         'visa/visar/visade/visad',
         'visa/visar/visade/visat',    
-        'äta/äter/åt/ätit'    
+        'äta/äter/åt/ätit',
+        'öppna/öppnar/öppnade/öppnat',
+        'överdriva/överdriver/överdrev/överdrivits',
+        'överhöra/överhör/överhörde/överhörts',
+        'överta/övertar/övertog/övertagit'        
     ]
 ;
 
@@ -6099,7 +6101,7 @@ modify Action
         return success ? getVerbPhrase(nil, nil) : 
               //BMsg(implicit action report failure, 'försöker ') 
               //bmsg('försöker')
-              'försöker'
+              'försöker '
                + getVerbPhrase(true, nil);
     }
     
