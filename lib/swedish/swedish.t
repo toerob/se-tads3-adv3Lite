@@ -1498,6 +1498,7 @@ class LMentionable: object
      *   voc istället för den ursprungliga vocab egenskapen. 
      */
     
+    // TODO: replaceVocab hanterar inte smarta sammansatta ord än, fixa.
     replaceVocab(voc)
     {
         /* rensa ut det befintliga namnet */
@@ -2951,7 +2952,7 @@ swedishCustomVocab: CustomVocab
         'göra/gör/gjorde/gjort',
         'gräva/gräver/grävde',
         'ha/har/hade/haft',
-        'hålla/håller/höll/hålliyt',
+        'hålla/håller/höll/hållit',
         'hälsa/hälsar/hälsade/hälsat',
         'hänga/hänger/hängde/hängt',
         'hantera/hanterar/hanterade',        
@@ -3573,10 +3574,10 @@ modify descContentsLister
          *   öppen och säg sedan 'och innehåller'
          */
         if(parent.openStatusReportable == UsePronoun)
-            "{Han parent}{\'s} öppen och innehåller{s/ed} ";  
+            "{Han parent} {är} öppen och inne{håller} ";  
         
         else if(parent.openStatusReportable)
-            "{The subj parent} {är} öppen och innehåller{s/ed} ";  
+            "{Ref subj parent} {är} öppen och inne{håller} ";  
         
         /*  
          *   Annars börja listningen utan att uttryckligen nämna att
@@ -4183,7 +4184,7 @@ modify restoreOptionRestoreAnother
 /* Engelskspråkig tillägg till defaultGround för att ge det lämplig vokabulär */
 
 modify defaultGround
-    vocab = 'mark;;golv'
+    vocab = 'mark+en;;golv+et underlag+et'
 ;
 
 
