@@ -162,7 +162,7 @@ CustomMessages
         Msg(cannot move while attached, '{Ref subj cobj} {kan} inte flyttas medan {he cobj} {är} fäst vid {ref other}. '), 
         Msg(okay plug in, '{Jag} kopplar in {1}. '),
         Msg(debugger not present, 'Debugger inte närvarande. '),
-        Msg(fiat lux, '{Jag} {blev} plötsligt {1} lysande. '), // TODO: fixa
+        Msg(fiat lux, '{Jag} {blir} plötsligt {1} lysande. '), // TODO: fixa
         Msg(no test scripts, 'Det f{i|a}nns inga testskript definierade i detta spel. '),
         Msg(test sequence not found, 'Testsekvensen hittades inte. '),
         Msg(debug test now holding, '{Jag} {håller} nu {1}.\n'),
@@ -865,7 +865,7 @@ CustomMessages
 
         // TODO: testa actorOutOfSubNested.checkPreCondition(obj, allowImplicit)
         //  ORG: DMsg(not out of subnested, '{I} need{s/ed} to be {1} before {i} {can} get {2}. ',loc.objOutOfName, obj.objOutOfName);
-        // Msg(fiat lux, '{Jag} {blev} plötsligt {1} lysande. '), // TODO: fixa, (vad behöver fixas?)
+        // Msg(fiat lux, '{Jag} {blir} plötsligt {1} lysande. '), // TODO: fixa, (vad behöver fixas?)
 
 
         // TODO: svenska till denna svengelska tillsammans med det som står i grammar.t

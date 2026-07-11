@@ -3159,6 +3159,7 @@ VerbRule(PourInto)
     iobjReply = inSingleNoun
 ;
 
+
 VerbRule(PourOnto)
     'häll' multiDobj ('på' | 'uppå') singleIobj
     : VerbProduction
@@ -3817,7 +3818,7 @@ specialActionPreparser: StringPreParser
 #ifdef __DEBUG
 
 VerbRule(Purloin)
-    ('stjäla' | 'pn') singleDobj
+    ('stjäl' | 'purloin' | 'pl') singleDobj
     : VerbProduction
     action = Purloin
     verbPhrase = 'stjäla/stjäl (vad)'
@@ -3826,7 +3827,7 @@ VerbRule(Purloin)
 ;
 
 VerbRule(GoNear)
-    ('gå nära' |'gå' 'nära'| 'gn') singleDobj
+    ('gå nära' |'gå' 'nära'| 'gn' | 'nonear') singleDobj
     : VerbProduction
     action = GoNear
     verbPhrase = 'gå/går nära (vad)'

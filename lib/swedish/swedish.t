@@ -4220,21 +4220,29 @@ askMissingNoun(cmd, role)
 askAmbiguous(cmd, role, names)
 {
     /* 
-     *   För direktobjektet eller aktörsrollen, håll det enkelt och fråga bara "vilken
-     *   menar du".
+     *   För direktobjektet eller aktörsrollen, håll det enkelt och fråga bara
+     *   "Menar du".
      *   
      *   För andra roller, var mer specifik: använd den grundläggande predikat
      *   frågan för rollen, så det är tydligt vilket objekt vi frågar
-     *   om. Ersätt 'vad' med 'vilken' i dessa frågor.  
+     *   om. 
      */
+
+    // OBS: 'which' kan variera mellan 'vilken/vilket/vilka' beroende på objekten 
+    // i svenskan. Då vi saknar uppgift om namnen är utrum/netrum eller plural här 
+    // så försöker vi slippa hantera det på enklaste vis utan att använda ordet
+
     local q;
     if (role is in (DirectObject, ActorRole))
         //q = BMsg(which do you mean, 'Vilken menar du');
         //q = bmsg('vilken menar du');
-        q = 'vilken menar du';
-    else
-        q = nounRoleQuestion(cmd, role)
-        .findReplace('vad', 'vilken', ReplaceOnce);
+        q = 'Menar du'; // Här hoppar vi helt enkelt över Vilken/vilket/vilka
+    else {
+        // 'Vad' är faktiskt mest neutralt. Det får visa sig om det fungerar
+        q = nounRoleQuestion(cmd, role);
+        //.findReplace('vad', 'vilken', ReplaceOnce); 
+    }
+
     
     
     /* 
