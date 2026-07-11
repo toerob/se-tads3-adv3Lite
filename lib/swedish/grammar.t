@@ -103,7 +103,7 @@ grammar defaultVerbPhrase(noun):
     singleDobj
     : VerbProduction
     action = Parser.DefaultAction
-    verbPhrase = 'undersök/undersöker (vad)'
+    verbPhrase = 'undersöka/undersöker (vad)'
     missingQ = 'vad vill du undersöka'
 ;
 
@@ -1558,7 +1558,7 @@ VerbRule(Drop)
     ('släpp' | 'lägg' | 'sätt') ('ner'|) multiDobj
     : VerbProduction
     action = Drop
-    verbPhrase = 'släpp/släpper (vad)'
+    verbPhrase = 'släppa/släpper (vad)'
     missingQ = 'vad vill du släppa'
 ;
 
@@ -1566,7 +1566,7 @@ VerbRule(SetDownWhat)
     'sätt' 'ner'
     : VerbProduction
     action = Drop
-    verbPhrase = 'släpp/släpper (vad)'
+    verbPhrase = 'släppa/släpper (vad)'
     missingQ = 'vad vill du släppa'
     missingRole = DirectObject    
 ;
@@ -1576,7 +1576,7 @@ VerbRule(Examine)
     ('undersök' | 'inspektera' | 'x' |'titta' 'på' | 't' 'på' | 'se' 'på') multiDobj
     : VerbProduction
     action = Examine
-    verbPhrase = 'undersök/undersöker (vad)'
+    verbPhrase = 'undersöka/undersöker (vad)'
     missingQ = 'vad vill du undersöka'
 ;
 
@@ -1584,7 +1584,7 @@ VerbRule(LookX)
     ('titta'|'t' | 'se') multiDobj
     : VerbProduction
     action = Examine
-    verbPhrase = 'undersök/undersöker (vad)'
+    verbPhrase = 'undersöka/undersöker (vad)'
     missingQ = 'vad vill du titta på'
     
     /* 
@@ -1607,7 +1607,7 @@ VerbRule(Read)
     'läs' singleDobj
     : VerbProduction
     action = Read
-    verbPhrase = 'läs/läser (vad)'
+    verbPhrase = 'läsa/läser (vad)'
     missingQ = 'vad vill du läsa'
 ;
 
@@ -1631,10 +1631,10 @@ VerbRule(LookInWhat)
 ;
 
 VerbRule(Search)
-    'sök' ('igenom'|) multiDobj
+    'sök' ('igenom'|'genom'|) multiDobj
     : VerbProduction
     action = Search
-    verbPhrase = 'sök/söker (vad)'
+    verbPhrase = 'söka/söker (vad)'
     missingQ = 'vad vill du söka'
 ;
 
@@ -1716,7 +1716,7 @@ VerbRule(Feel)
     'känn'  multiDobj
     : VerbProduction
     action = Feel
-    verbPhrase = 'känn/känner (vad)'
+    verbPhrase = 'känna/känner (vad)'
     missingQ = 'vad vill du känna'
 ;
 
@@ -1724,7 +1724,7 @@ VerbRule(Touch)
     'rör' multiDobj
     : VerbProduction
     action = Touch
-    verbPhrase = 'rör/rör (vad)'
+    verbPhrase = 'röra/rör (vad)'
     missingQ = 'vad vill du röra'
 ;
 
@@ -1772,7 +1772,7 @@ VerbRule(PutIn)
         ('i' | 'in' | 'i' 'till' | 'inuti' | 'inuti' 'av') singleIobj
     : VerbProduction
     action = PutIn
-    verbPhrase = 'lägg/lägger (vad) (i vad)'
+    verbPhrase = 'lägga/lägger (vad) (i vad)'
     missingQ = 'vad vill du lägga (i det);vad vill du lägga det i'
     iobjReply = inSingleNoun
 ;
@@ -1782,7 +1782,7 @@ VerbRule(PutOn)
     | 'lägg' multiDobj 'ner' 'på' singleIobj
     : VerbProduction
     action = PutOn
-    verbPhrase = 'lägg/lägger (vad) (på vad)'
+    verbPhrase = 'lägga/lägger (vad) (på vad)'
     missingQ = 'vad vill du lägga (på det);vad vill du lägga det på'
     iobjReply = onSingleNoun
 ;
@@ -1791,7 +1791,7 @@ VerbRule(PutUnder)
     ('lägg' | 'placera' | 'sätt') multiDobj 'under' singleIobj
     : VerbProduction
     action = PutUnder
-    verbPhrase = 'lägg/lägger (vad) (under vad)'
+    verbPhrase = 'lägga/lägger (vad) (under vad)'
     missingQ = 'vad vill du lägga (under det);'
              + 'vad vill du lägga det under'
 ;
@@ -1800,7 +1800,7 @@ VerbRule(PutBehind)
     ('lägg' | 'placera' | 'sätt') multiDobj 'bakom' singleIobj
     : VerbProduction
     action = PutBehind
-    verbPhrase = 'lägg/lägger (vad) (bakom vad)'
+    verbPhrase = 'lägga/lägger (vad) (bakom vad)'
     missingQ = 'vad vill du lägga (bakom det);'
     + 'vad vill du lägga det bakom'
 ;
@@ -1809,7 +1809,7 @@ VerbRule(PutWhere)
     [badness 500] ('lägg' | 'placera') multiDobj
     : VerbProduction
     action = PutIn
-    verbPhrase = 'lägg/lägger (vad) (i vad)'
+    verbPhrase = 'lägga/lägger (vad) (i vad)'
     missingQ = 'vad vill du lägga;var vill du lägga det'
 
     missingRole = IndirectObject
@@ -1853,7 +1853,7 @@ VerbRule(Wear)
     | 'sätt'  multiDobj 'på'
     : VerbProduction
     action = Wear
-    verbPhrase = 'bär/bär (vad)'
+    verbPhrase = 'bära/bär (vad)'
     missingQ = 'vad vill du bära'
 ;
 
@@ -1862,7 +1862,7 @@ VerbRule(Doff)
     | 'ta' ('av'|'bort') multiDobj 
     : VerbProduction
     action = Doff
-    verbPhrase = 'ta av/tar av (vad)'
+    verbPhrase = 'ta/tar av (vad)'
     missingQ = 'vad vill du ta av'
 ;
 
@@ -1878,7 +1878,7 @@ VerbRule(Kiss)
     'kyss' singleDobj
     : VerbProduction
     action = Kiss
-    verbPhrase = 'kyss/kyssar (vem)'
+    verbPhrase = 'kyssa/kyssar (vem)'
     missingQ = 'vem vill du kyssa'
     dobjReply = singleNoun
 ;
@@ -2279,14 +2279,14 @@ VerbRule(Think)
     'tänk' | 'fundera' | 'grubbla'
     : VerbProduction
     action = Think
-    verbPhrase = 'tänk/tänker'
+    verbPhrase = 'tänka/tänker'
 ;
 
 VerbRule(ThinkAbout)
     ('tänk' | 'fundera' | 'grubbla') 'om' topicDobj
     : VerbProduction
     action = ThinkAbout
-    verbPhrase = 'tänk/tänker (om vad)'
+    verbPhrase = 'tänka/tänker (om vad)'
     missingQ = 'vad vill du tänka om'
     dobjReply = aboutTopicPhrase
 ;
@@ -2304,7 +2304,7 @@ VerbRule(ThrownDown)
     ('kasta' | 'slänga') 'ner'
     : VerbProduction
     action = Drop
-    verbPhrase = 'släpp/släpper (vad)'
+    verbPhrase = 'släppa/släpper (vad)'
     missingQ = 'vad vill du kasta ner'
     missingRole = DirectObject
 ;
@@ -2366,7 +2366,7 @@ VerbRule(Follow)
     'följ' singleDobj
     : VerbProduction
     action = Follow
-    verbPhrase = 'följ/följer (vem)'
+    verbPhrase = 'följa/följer (vem)'
     missingQ = 'vem vill du följa'
     dobjReply = singleNoun
 ;
@@ -2403,14 +2403,14 @@ VerbRule(InventoryTall)
     ('i' | 'inv' | 'inventering') 'lång'
     : VerbProduction
     action = InventoryTall
-    verbPhrase = 'ta/gör inventering lång'
+    verbPhrase = 'göra/gör inventering lång'
 ;
 
 VerbRule(InventoryWide)
     ('i' | 'inv' | 'inventering') 'bred'
     : VerbProduction
     action = InventoryWide
-    verbPhrase = 'gör/gör inventering bred'
+    verbPhrase = 'göra/gör inventering bred'
 ;   
 
 
@@ -2418,7 +2418,7 @@ VerbRule(InventoryHybrid)
     ('i' | 'inv' | 'inventering') ('hybrid' | 'delad')
     : VerbProduction
     action = InventoryHybrid
-    verbPhrase = 'gör/gör inventering hybrid'
+    verbPhrase = 'göra/gör inventering hybrid'
 ;   
 
 
@@ -2503,14 +2503,14 @@ VerbRule(Restore)
     'återställ'
     : VerbProduction
     action = Restore
-    verbPhrase = 'återställ/återställer'
+    verbPhrase = 'återställa/återställer'
 ;
 
 VerbRule(RestoreString)
     'återställ' quotedStringPhrase->fname_
     : VerbProduction
     action = Restore
-    verbPhrase = 'återställ/återställer'
+    verbPhrase = 'återställa/återställer'
 ;
 
 
@@ -2610,7 +2610,7 @@ VerbRule(ReplayString)
         (quotedStringPhrase->fname_ | )
     : VerbProduction
     action = Replay
-    verbPhrase = 'spela upp/spelar upp kommandoinspelning'
+    verbPhrase = 'spela/spelar upp kommandoinspelning'
 
     /* ställ in lämpliga alternativflaggor */
     scriptOptionFlags = ((quiet_ != nil ? ScriptFileQuiet : 0)
@@ -2655,7 +2655,7 @@ VerbRule(Continue)
     'fortsätt' | 'f'
     : VerbProduction
     action = Continue
-    verbPhrase = 'fortsätt/fortsätter resan'
+    verbPhrase = 'fortsätta/fortsätter resan'
 ;
 
 
@@ -2672,7 +2672,7 @@ VerbRule(Travel)
     (('gå' | 'springa' | 'löp')  singleDir) | singleDir
     : VerbProduction
     action = Travel
-    verbPhrase = 'gå/går {vart)'  
+    verbPhrase = 'gå/går (vart)'  
 ;
 
 /*
@@ -2789,7 +2789,7 @@ VerbRule(Push)
     ('tryck' | 'pressa') multiDobj
     : VerbProduction
     action = Push
-    verbPhrase = 'tryck/trycker (vad)'
+    verbPhrase = 'trycka/trycker (vad)'
     missingQ = 'vad vill du trycka'
 ;
 
@@ -2842,7 +2842,7 @@ VerbRule(Turn)
     ('vrid' | 'vrid' | 'rotera') multiDobj
     : VerbProduction
     action = Turn
-    verbPhrase = 'vrid/vrider (vad)'
+    verbPhrase = 'vrida/vrider (vad)'
     missingQ = 'vad vill du vrida'
 ;
 
@@ -2850,7 +2850,7 @@ VerbRule(TurnWith)
     ('vrid' | 'vrid' | 'rotera') singleDobj 'med' singleIobj
     : VerbProduction
     action = TurnWith
-    verbPhrase = 'vrid/vrider (vad) (med vad)'
+    verbPhrase = 'vrida/vrider (vad) (med vad)'
     missingQ = 'vad vill du vrida;vad vill du vrida det med'
     dobjReply = singleNoun
     iobjReply = withSingleNoun
@@ -2861,7 +2861,7 @@ VerbRule(TurnTo)
         'till' literalIobj
     : VerbProduction
     action = TurnTo
-    verbPhrase = 'vrid/vrider (vad) (till vad)'
+    verbPhrase = 'vrida/vrider (vad) (till vad)'
     missingQ = 'vad vill du vrida;vad vill du vrida det till'
     dobjReply = singleNoun
 ;
@@ -2870,7 +2870,7 @@ VerbRule(Set)
     [badness 500] 'sätt' multiDobj
     : VerbProduction
     action = Set
-    verbPhrase = 'sätt/sätter (vad)'
+    verbPhrase = 'sätta/sätter (vad)'
     missingQ = 'vad vill du sätta'
 ;
 
@@ -2878,7 +2878,7 @@ VerbRule(SetTo)
     'sätt' singleDobj 'till' literalIobj
     : VerbProduction
     action = SetTo
-    verbPhrase = 'sätt/sätter (vad) (till vad)'
+    verbPhrase = 'sätta/sätter (vad) (till vad)'
     missingQ = 'vad vill du sätta;vad vill du sätta det till'
     dobjReply = singleNoun
     
@@ -2888,7 +2888,7 @@ VerbRule(TypeOn)
     'skriv' 'på' singleDobj
     : VerbProduction
     action = TypeOnVague
-    verbPhrase = 'skriv/skriv (på vad)'
+    verbPhrase = 'skriva/skriv (på vad)'
     missingQ = 'vad vill du skriva på'
     dobjReply = onSingleNoun
 ;
@@ -2897,7 +2897,7 @@ VerbRule(TypeLiteralOn)
     'skriv' literalDobj 'på' singleIobj
     : VerbProduction
     action = TypeOn
-    verbPhrase = 'skriv/skriv (vad) (på vad)'
+    verbPhrase = 'skriva/skriv (vad) (på vad)'
     missingQ = 'vad vill du skriva;vad vill du skriva det på'
     iobjReply = onSingleNoun
 ;
@@ -2906,7 +2906,7 @@ VerbRule(TypeLiteralOnWhat)
     [badness 500] 'skriv' literalDobj
     : VerbProduction
     action = Type
-    verbPhrase = 'skriv/skriv (vad) (på vad)'
+    verbPhrase = 'skriva/skriv (vad) (på vad)'
     missingQ = 'vad vill du skriva;vad vill du skriva det på'
 ;
 
@@ -2914,7 +2914,7 @@ VerbRule(TypeVague)
     'skriv'
     : VerbProduction
     action = TypeVague
-    verbPhrase = 'skriv/skriv'
+    verbPhrase = 'skriva/skriv'
     missingQ = 'vad vill du skriva;vad vill du skriva det på'
     priority = 20
 ;
@@ -2934,7 +2934,7 @@ VerbRule(WriteOn)
     'skriv' literalDobj ('på' | 'i') singleIobj
     : VerbProduction
     action = WriteOn
-    verbPhrase = 'skriv/skriv (vad) (på vad)'
+    verbPhrase = 'skriva/skriv (vad) (på vad)'
     missingQ = 'vad vill du skriva;vad vill du skriva det på'
     dobjReply = onSingleNoun
 ;
@@ -2943,7 +2943,7 @@ VerbRule(Write)
     'skriv' literalDobj
     : VerbProduction
     action = Write
-    verbPhrase = 'skriv/skriv (vad) (på vad)'
+    verbPhrase = 'skriva/skriv (vad) (på vad)'
     missingQ = 'vad vill du skriva;vad vill du skriva det på'
     priority = 25
 ;
@@ -2952,7 +2952,7 @@ VerbRule(WriteVague)
     'skriv'
     : VerbProduction
     action = WriteVague
-    verbPhrase = 'skriv/skriv (vad)'
+    verbPhrase = 'skriva/skriv (vad)'
     missingQ = 'vad vill du skriva'
     priority = 30
 ;
@@ -3022,7 +3022,7 @@ VerbRule(Flip)
     [badness 500] 'vänd' multiDobj
     : VerbProduction
     action = Flip
-    verbPhrase = 'vänd/vänder (vad)'
+    verbPhrase = 'vända/vänder (vad)'
     missingQ = 'vad vill du vända'
 ;
 
@@ -3050,7 +3050,7 @@ VerbRule(Light)
     'tänd' multiDobj
     : VerbProduction
     action = Light
-    verbPhrase = 'tänd/tänder (vad)'
+    verbPhrase = 'tända/tänder (vad)'
     missingQ = 'vad vill du tända'
 ;
 
@@ -3066,15 +3066,15 @@ VerbRule(Burn)
     ('bränn' | 'tänd' | 'sätt' 'eld' 'på') multiDobj
     : VerbProduction
     action = Burn
-    verbPhrase = 'bränn/bränner (vad)'
-    missingQ = 'vad vill du bränna'
+    verbPhrase = 'elda/eldar (vad)'
+    missingQ = 'vad vill du elda'
 ;
 
 VerbRule(SetFireToWhat)
     'sätt' 'eld' 'på'
     : VerbProduction
     action = Burn
-    verbPhrase = 'bränn/bränner (vad)'
+    verbPhrase = 'sätta/sätter eld på (vad)'
     missingQ = 'vad vill du sätta eld på'
     missingRole = DirectObject
 ;
@@ -3084,8 +3084,8 @@ VerbRule(BurnWith)
         ('med' | 'från') singleIobj
     : VerbProduction
     action = BurnWith
-    verbPhrase = 'bränn/bränner (vad) (med vad)'
-    missingQ = 'vad vill du bränna;vad vill du bränna det med'
+    verbPhrase = 'elda/eldar (vad) (med vad)'
+    missingQ = 'vad vill du elda;vad vill du elda det med'
     dobjReply = singleNoun
     iobjReply = withSingleNoun
 ;
@@ -3095,7 +3095,7 @@ VerbRule(Extinguish)
     | ('blås' | 'släck') multiDobj 'ut'
     : VerbProduction
     action = Extinguish
-    verbPhrase = 'släck/släcker (vad)'
+    verbPhrase = 'släcka/släcker (vad)'
     missingQ = 'vad vill du släcka'
 ;
 
@@ -3103,7 +3103,7 @@ VerbRule(Break)
     ('bryt' | 'förstöra' | 'förstöra' | 'förstöra' | 'krossa') multiDobj
     : VerbProduction
     action = Break
-    verbPhrase = 'bryt/bryter (vad)'
+    verbPhrase = 'bryta/bryter (vad)'
     missingQ = 'vad vill du bryta'
 ;
 
@@ -3111,7 +3111,7 @@ VerbRule(Cut)
     [badness 500] 'skär' singleDobj
     : VerbProduction
     action = Cut
-    verbPhrase = 'skär/skär (vad) (med vad)'
+    verbPhrase = 'skära/skär (vad) (med vad)'
     missingQ = 'vad vill du skära'
     dobjReply = singleNoun
 ;
@@ -3120,7 +3120,7 @@ VerbRule(CutWith)
     'skär' singleDobj 'med' singleIobj
     : VerbProduction
     action = CutWith
-    verbPhrase = 'skär/skär (vad) (med vad)'
+    verbPhrase = 'skära/skär (vad) (med vad)'
     missingQ = 'vad vill du skära;vad vill du skära det med'
     dobjReply = singleNoun
     iobjReply = withSingleNoun
@@ -3130,7 +3130,7 @@ VerbRule(Eat)
     ('ät' | 'konsumera') multiDobj
     : VerbProduction
     action = Eat
-    verbPhrase = 'ät/äter (vad)'
+    verbPhrase = 'äta/äter (vad)'
     missingQ = 'vad vill du äta'
 ;
 
@@ -3138,7 +3138,7 @@ VerbRule(Drink)
     ('drick' | 'dricka' | 'dricka') multiDobj
     : VerbProduction
     action = Drink
-    verbPhrase = 'drick/dricker (vad)'
+    verbPhrase = 'dricka/dricker (vad)'
     missingQ = 'vad vill du dricka'
 ;
 
@@ -3146,7 +3146,7 @@ VerbRule(Pour)
     'häll' multiDobj
     : VerbProduction
     action = Pour
-    verbPhrase = 'häll/häller (vad)'
+    verbPhrase = 'hälla/häller (vad)'
     missingQ = 'vad vill du hälla'
 ;
 
@@ -3154,7 +3154,7 @@ VerbRule(PourInto)
     'häll' multiDobj ('i' | 'in' | 'i' 'till') singleIobj
     : VerbProduction
     action = PourInto
-    verbPhrase = 'häll/häller (vad) (i vad)'
+    verbPhrase = 'hälla/häller (vad) (i vad)'
     missingQ = 'vad vill du hälla;vad vill du hälla det i'
     iobjReply = inSingleNoun
 ;
@@ -3163,7 +3163,7 @@ VerbRule(PourOnto)
     'häll' multiDobj ('på' | 'uppå') singleIobj
     : VerbProduction
     action = PourOnto
-    verbPhrase = 'häll/häller (vad) (på vad)'
+    verbPhrase = 'hälla/häller (vad) (på vad)'
     missingQ = 'vad vill du hälla;vad vill du hälla det på'
     iobjReply = onSingleNoun
 ;
@@ -3178,11 +3178,11 @@ VerbRule(Climb)
 ;
 
 VerbRule(ClimbUp)
-    ('klättra' | 'gå' | 'gå') 'upp' singleDobj
+    ('klättra' | 'gå' | 'gå') 'upp' ('för'|) singleDobj
     : VerbProduction
     action = ClimbUp
-    verbPhrase = 'klättra/klättrar (upp vad)'
-    missingQ = 'vad vill du klättra upp'
+    verbPhrase = 'klättra/klättrar upp (för vad)'
+    missingQ = 'vad vill du klättra upp för'
     dobjReply = singleNoun
 ;
 
@@ -3219,7 +3219,7 @@ VerbRule(Clean)
     'rengör' multiDobj
     : VerbProduction
     action = Clean
-    verbPhrase = 'rengör/rengör (vad)'
+    verbPhrase = 'rengöra/rengör (vad)'
     missingQ = 'vad vill du rengöra'
 ;
 
@@ -3227,7 +3227,7 @@ VerbRule(CleanWith)
     'rengör' singleDobj 'med' singleIobj
     : VerbProduction
     action = CleanWith
-    verbPhrase = 'rengör/rengör (vad) (med vad)'
+    verbPhrase = 'rengöra/rengör (vad) (med vad)'
     missingQ = 'vad vill du rengöra (med det);'
               + 'vad vill du rengöra det med'
     iobjReply = withSingleNoun
@@ -3238,7 +3238,7 @@ VerbRule(AttachTo)
     : VerbProduction
     action = AttachTo
     iobjReply = toSingleNoun
-    verbPhrase = 'fäst/fäster (vad) (till vad)'
+    verbPhrase = 'fästa/fäster (vad) (till vad)'
     missingQ = 'vad vill du fästa (till det);'
                + 'vad vill du fästa det till'
 ;
@@ -3247,7 +3247,7 @@ VerbRule(Attach)
     ('fäst' | 'anslut') multiDobj
     : VerbProduction
     action = Attach
-    verbPhrase = 'fäst/fäster (vad)'
+    verbPhrase = 'fästa/fäster (vad)'
     missingQ = 'vad vill du fästa'
     
     priority = 40
@@ -3283,7 +3283,7 @@ VerbRule(Close)
     ('stäng' | 'stäng') multiDobj
     : VerbProduction
     action = Close
-    verbPhrase = 'stäng/stänger (vad)'
+    verbPhrase = 'stänga/stänger (vad)'
     missingQ = 'vad vill du stänga'
 ;
 
@@ -3291,7 +3291,7 @@ VerbRule(Lock)
     'lås' multiDobj
     : VerbProduction
     action = Lock
-    verbPhrase = 'lås/låser (vad)'
+    verbPhrase = 'låsa/låser (vad)'
     missingQ = 'vad vill du låsa'
 ;
 
@@ -3299,7 +3299,7 @@ VerbRule(Unlock)
     'lås' 'upp' multiDobj
     : VerbProduction
     action = Unlock
-    verbPhrase = 'lås upp/låser upp (vad)'
+    verbPhrase = 'låsa/låser upp (vad)'
     missingQ = 'vad vill du låsa upp'
 ;
 
@@ -3307,7 +3307,7 @@ VerbRule(LockWith)
     'lås' singleDobj 'med' singleIobj
     : VerbProduction
     action = LockWith
-    verbPhrase = 'lås/låser (vad) (med vad)'
+    verbPhrase = 'låsa/låser (vad) (med vad)'
     missingQ = 'vad vill du låsa;vad vill du låsa det med'
     dobjReply = singleNoun
     iobjReply = withSingleNoun
@@ -3317,7 +3317,7 @@ VerbRule(UnlockWith)
     'lås' 'upp' singleDobj 'med' singleIobj
     : VerbProduction
     action = UnlockWith
-    verbPhrase = 'lås upp/låser upp (vad) (med vad)'
+    verbPhrase = 'låsa/låser upp (vad) (med vad)'
     missingQ = 'vad vill du låsa upp;vad vill du låsa upp {det} med'
     dobjReply = singleNoun
     iobjReply = withSingleNoun
@@ -3328,7 +3328,7 @@ VerbRule(SitOn)
         singleDobj
     : VerbProduction
     action = SitOn
-    verbPhrase = 'sitt/sitter (på vad)'
+    verbPhrase = 'sitta/sitter (på vad)'
     missingQ = 'vad vill du sitta på'
     dobjReply = onSingleNoun
 ;
@@ -3338,7 +3338,7 @@ VerbRule(SitIn)
         singleDobj
     : VerbProduction
     action = SitIn
-    verbPhrase = 'sitt/sitter (på vad)'
+    verbPhrase = 'sitta/sitter (på vad)'
     missingQ = 'vad vill du sitta på'
     dobjReply = inSingleNoun
 ;
@@ -3346,7 +3346,7 @@ VerbRule(SitIn)
 VerbRule(Sit)
     'sitt' ( | 'ner') : VerbProduction
     action = Sit
-    verbPhrase = 'sitt/sitter ner'
+    verbPhrase = 'sitta/sitter ner'
 ;
 
 VerbRule(LieOn)
@@ -3354,7 +3354,7 @@ VerbRule(LieOn)
         singleDobj
     : VerbProduction
     action = LieOn
-    verbPhrase = 'ligg/ligger (på vad)'
+    verbPhrase = 'ligga/ligger (på vad)'
     missingQ = 'vad vill du ligga på'
     dobjReply = onSingleNoun
 ;
@@ -3364,7 +3364,7 @@ VerbRule(LieIn)
         singleDobj
     : VerbProduction
     action = LieIn
-    verbPhrase = 'ligg/ligger (på vad)'
+    verbPhrase = 'ligga/ligger (på vad)'
     missingQ = 'vad vill du ligga på'
     dobjReply = inSingleNoun
 ;
@@ -3373,11 +3373,12 @@ VerbRule(LieIn)
 VerbRule(Lie)
     'ligg' 'ner' : VerbProduction
     action = Lie
-    verbPhrase = 'ligg/ligger ner'
+    verbPhrase = 'ligga/ligger ner'
 ;
 
 VerbRule(StandOn)
-    'stå' ('på' | 'uppå' | 'på' 'till' ) singleDobj
+    ('stå' ('på' | 'uppå') singleDobj)
+    | ('ställ' ('mig'|'dig') ('på'|'uppå') singleDobj)
     : VerbProduction
     action = StandOn
     verbPhrase = 'stå/står (på vad)'
@@ -3386,11 +3387,12 @@ VerbRule(StandOn)
 ;
 
 VerbRule(StandIn)
-    'stå' ('i' | 'in' | 'i' 'till')  singleDobj
+    ('stå' ('i'|'inuti') singleDobj)
+    | ('ställ' ('mig'|'dig') 'i'|'inuti' singleDobj)
     : VerbProduction
     action = StandIn
-    verbPhrase = 'stå/står (på vad)'
-    missingQ = 'vad vill du stå på'
+    verbPhrase = 'stå/står (i vad)'
+    missingQ = 'vad vill du stå i'
     dobjReply = inSingleNoun
 ;
 
@@ -3402,8 +3404,12 @@ VerbRule(Stand)
 ;
 
 VerbRule(GetOutOf)
-    ('ut' 'ur' | 'gå' 'ut' 'ur' | 'klättra' 'ut' 'ur' | 'lämna' | 'gå ut')
-    singleDobj
+    //('ut' 'ur' | 'gå' 'ut' 'ur' | 'klättra' 'ut' 'ur' | 'lämna' | 'gå ut')
+    (
+        ('ut' 'ur')
+        | (('klättra' | 'lämna' | 'kliv' | 'gå') ('ut' 'ur'))
+        | 'gå ut'
+    ) singleDobj
     : VerbProduction
     action = GetOutOf
     verbPhrase = 'gå/går (ut ur vad)'
@@ -3412,7 +3418,7 @@ VerbRule(GetOutOf)
 ;
 
 VerbRule(GetOutOfWhat)
-    ('gå' | 'klättra') 'ut' 'ur'     
+    ('gå' | 'klättra') ('ut' 'ur')
     : VerbProduction
     action = GetOutOf
     verbPhrase = 'gå/går (ut ur vad)'
@@ -3498,7 +3504,7 @@ VerbRule(Fasten)
     ('fäst' | [badness 500] 'spänna' | 'spänna' 'upp') multiDobj
     : VerbProduction
     action = Fasten
-    verbPhrase = 'fäst/fäster (vad)'
+    verbPhrase = 'fästa/fäster (vad)'
     missingQ = 'vad vill du fästa'
 ;
 
@@ -3506,14 +3512,14 @@ VerbRule(FastenTo)
     ('fäst' | 'spänna') multiDobj 'till' singleIobj
     : VerbProduction
     action = FastenTo
-    verbPhrase = 'fäst/fäster (vad) (till vad)'
+    verbPhrase = 'fästa/fäster (vad) (till vad)'
     missingQ = 'vad vill du fästa (till det);'
                + 'vad vill du fästa {det} till'
     iobjReply = toSingleNoun
 ;
 
 VerbRule(Unfasten)
-    ('lossa' | 'spänna upp') multiDobj
+    ('lossa' | ('spänna' 'upp')) multiDobj
     : VerbProduction
     action = Unfasten
     verbPhrase = 'lossa/lossar (vad)'
@@ -3521,52 +3527,54 @@ VerbRule(Unfasten)
 ;
 
 VerbRule(UnfastenFrom)
-    ('lossa' | 'spänna upp') multiDobj 'från' singleIobj
+    ('lossa' | ('spänn' 'upp')) multiDobj 'från' singleIobj
     : VerbProduction
     action = UnfastenFrom
     verbPhrase = 'lossa/lossar (vad) (från vad)'
     missingQ = 'vad vill du lossa;'
-               + 'vad vill du lossa {det} från'
+             + 'vad vill du lossa detta från'
     iobjReply = fromSingleNoun
 ;
 
 VerbRule(PlugInto)
-    'plugga' multiDobj ('i' | 'in' | 'i' 'till') singleIobj
+    'koppla'  ('i'|'in'|) multiDobj ('i' | 'in' | 'i' 'till') singleIobj
     : VerbProduction
     action = PlugInto
-    verbPhrase = 'plugga/pluggar (vad) (i vad)'
-    missingQ = 'vad vill du plugga (i det);'
-             + 'vad vill du plugga {det} i'
+    // 'plug/plugging (what) (into what)'
+    verbPhrase = 'koppla/kopplar in (vad) (i vad)'
+    missingQ = 'vad vill du koppla in;'     //'what do you want to plug (into it);'
+             + 'vad vill du koppla in till' //'what do you want to plug it into'
     iobjReply = inSingleNoun
 ;
 
 VerbRule(PlugIntoWhat)
-    [badness 500] 'plugga' multiDobj
+    [badness 500] 'koppla' multiDobj
     : VerbProduction
     action = PlugInto
-    verbPhrase = 'plugga/pluggar (vad) (i vad)'
-    missingQ = 'vad vill du plugga (i det);'
-              + 'vad vill du plugga {det} i'
+    // 'plug/plugging (what) (into what)'
+    verbPhrase = 'koppla/kopplar in (vad) (i vad)' 
+    missingQ = 'vad vill du koppla in;'      // 'what do you want to plug (into it);'
+              + 'vad vill du koppla in till' // 'what do you want to plug it into'
 
     missingRole = IndirectObject
     iobjReply = inSingleNoun
 ;
 
 VerbRule(PlugIn)
-    'plugga' multiDobj 'i'
-    | 'plugga' 'i' multiDobj
+    'koppla' multiDobj 'i'
+    | 'koppla' 'i' multiDobj
     : VerbProduction
     action = PlugIn
-    verbPhrase = 'plugga/pluggar (vad) i'
-    missingQ = 'vad vill du plugga i'
+    verbPhrase = 'koppla/kopplar i (vad)'
+    missingQ = 'vad vill du koppla i'
 ;
 
 VerbRule(UnplugFrom)
     'koppla' 'ur' multiDobj 'från' singleIobj
     : VerbProduction
     action = UnplugFrom
-    verbPhrase = 'koppla ur/kopplar ur (vad) (från vad)'
-    missingQ = 'vad vill du koppla ur;vad vill du koppla ur {det} från'
+    verbPhrase = 'koppla/kopplar ur (vad) (från vad)'
+    missingQ = 'vad vill du koppla ur;vad vill du koppla ur från'
     iobjReply = fromSingleNoun
 ;
 
@@ -3574,7 +3582,7 @@ VerbRule(Unplug)
     'koppla' 'ur' multiDobj
     : VerbProduction
     action = Unplug
-    verbPhrase = 'koppla ur/kopplar ur (vad)'
+    verbPhrase = 'koppla/kopplar ur (vad)'
     missingQ = 'vad vill du koppla ur'
 ;
 
@@ -3600,7 +3608,7 @@ VerbRule(Unscrew)
     'skruva' 'loss' multiDobj
     : VerbProduction
     action = Unscrew
-    verbPhrase = 'skruva loss/skruvar loss (vad)'
+    verbPhrase = 'skruva/skruvar loss (vad)'
     missingQ = 'vad vill du skruva loss'
 ;
 
@@ -3608,7 +3616,7 @@ VerbRule(UnscrewWith)
     'skruva' 'loss' multiDobj 'med' singleIobj
     : VerbProduction
     action = UnscrewWith
-    verbPhrase = 'skruva loss/skruvar loss (vad) (med vad)'
+    verbPhrase = 'skruva/skruvar loss (vad) (med vad)'
     missingQ = 'vad vill du skruva loss;'
                + 'vad vill du skruva loss {det} med'
     iobjReply = withSingleNoun
@@ -3627,7 +3635,7 @@ VerbRule(PushTravelThrough)
     ('genom' | 'via') singleIobj
     : VerbProduction
     action = PushTravelThrough
-    verbPhrase = 'tryck/trycker (vad) (genom vad)'
+    verbPhrase = 'trycka/trycker (vad) (genom vad)'
     missingQ = 'vad vill du trycka;vad vill du trycka {det} genom'
     dobjReply = singleNoun
     iobjReply = throughSingleNoun
@@ -3638,7 +3646,7 @@ VerbRule(PushTravelEnter)
     ('i' | 'in' | 'i' 'till') singleIobj
     : VerbProduction
     action = PushTravelEnter
-    verbPhrase = 'tryck/trycker (vad) (i vad)'
+    verbPhrase = 'trycka/trycker (vad) (i vad)'
     missingQ = 'vad vill du trycka;vad vill du trycka {det} i'
     dobjReply = singleNoun
     iobjReply = inSingleNoun
@@ -3649,7 +3657,7 @@ VerbRule(PushTravelGetOutOf)
     'ut' ('ur' | ) singleIobj
     : VerbProduction
     action = PushTravelGetOutOf
-    verbPhrase = 'tryck/trycker (vad) (ut ur vad)'
+    verbPhrase = 'trycka/trycker (vad) (ut ur vad)'
     missingQ = 'vad vill du trycka;vad vill du trycka {det} ut ur'
     dobjReply = singleNoun
     iobjReply = outOfSingleNoun
@@ -3661,7 +3669,7 @@ VerbRule(PushTravelClimbUp)
     'upp' singleIobj
     : VerbProduction
     action = PushTravelClimbUp
-    verbPhrase = 'tryck/trycker (vad) (upp vad)'
+    verbPhrase = 'trycka/trycker (vad) (upp vad)'
     missingQ = 'vad vill du trycka;vad vill du trycka {det} upp'
     dobjReply = singleNoun
 ;
@@ -3671,7 +3679,7 @@ VerbRule(PushTravelClimbDown)
     'ner' singleIobj
     : VerbProduction
     action = PushTravelClimbDown
-    verbPhrase = 'tryck/trycker (vad) (ner vad)'
+    verbPhrase = 'trycka/trycker (vad) (ner vad)'
     missingQ = 'vad vill du trycka;vad vill du trycka {det} ner'
     dobjReply = singleNoun
 ;
@@ -3747,14 +3755,14 @@ VerbRule(Brief)
     'kort' | 'kortfattad'
     : VerbProduction
     action = Brief
-    verbPhrase = 'sätt/sätter kort läge'
+    verbPhrase = 'sätta/sätter kort läge'
 ;
 
 VerbRule(Verbose)
     'utförlig' | 'ordrik'
     : VerbProduction
     action = Verbose
-    verbPhrase = 'sätt/sätter utförligt läge'   
+    verbPhrase = 'sätta/sätter utförligt läge'   
 ;
 
     
@@ -3772,31 +3780,33 @@ VerbRule(EnumerateSuggestions)
     verbPhrase = 'växla/växlar enumeration av ämnesförslag'  
 ;
 
+// TODO: testa av hur detta fungerar
 VerbRule(SpecialAction)
     'sp#akt' singleDobj
     :VerbProduction
     action = SpecialAction
-    verbPhrase = 'gör/gör {det} till (vad)'
-    missingQ = 'vad vill du göra {det} till'    
+    verbPhrase = 'göra/gör det till (vad)'
+    missingQ = 'vad vill du göra det till'    
     dobjReply = singleNoun
 ;
 
+// TODO: testa av hur detta fungerar
 VerbRule(SpecialActionMulti)
     'sp#akter' multiDobj
     :VerbProduction
     action = SpecialAction
-    verbPhrase = 'gör/gör {det} till (vad)'
-    missingQ = 'vad vill du göra {det} till'    
+    verbPhrase = 'göra/gör det till (vad)'
+    missingQ = 'vad vill du göra det till'    
 ;
 
-
+// TODO: testa av hur detta fungerar
 specialActionPreparser: StringPreParser
     doParsing(str, which)
     {
         if(str.find('sp#akt'))
         {
             //DMsg(reject spaction input, 'Jag <i>verkligen</i> vägrar att förstå {det} kommandot. ');
-            dmsg('Jag <i>verkligen</i> vägrar att förstå {det} kommandot. ');
+            dmsg('Jag <i>verkligen</i> vägrar att förstå det kommandot. ');
             return nil;                
         }
         return str;
@@ -3819,7 +3829,7 @@ VerbRule(GoNear)
     ('gå nära' |'gå' 'nära'| 'gn') singleDobj
     : VerbProduction
     action = GoNear
-    verbPhrase = 'gå nära/går nära (vad)'
+    verbPhrase = 'gå/går nära (vad)'
     missingQ = 'vad vill du gå nära'
     dobjReply = singleNoun
 ;

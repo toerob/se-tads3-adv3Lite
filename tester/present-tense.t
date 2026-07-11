@@ -2980,6 +2980,10 @@ run {
   });
 };
 
+
+//     cannotPourIntoMsg = BMsg(cannot pour into, '{I} {can\'t} pour {1}
+//        into {that dobj}. ', gDobj.fluidName)
+
 TestUnit 'cannotPourOntoMsg'
 run {
   [
@@ -2997,7 +3001,8 @@ run {
     say(obj.cannotPourOntoMsg);
     assertThat(o.trimWS()).startsWith(expected);
   });
-};
+}
+;
 
 TestUnit 'shouldNotPourIntoMsg'
 run {

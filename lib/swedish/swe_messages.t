@@ -1,6 +1,28 @@
 #charset "utf-8"
 #include "advlite.h"
 
+modify Thing
+
+    /*
+    // TODO: detta måste vara en bugg i ursprungsbiblioteket
+    cannotPourIntoMsg = BMsg(cannot pour into, '{I} {can\'t} pour {1}
+        into {that dobj}. ', gDobj.fluidName)
+    cannotPourOntoMsg = BMsg(cannot pour onto, '{I} {can\'t} pour {1}
+        into {that dobj}. ', gDobj.fluidName)
+    */
+
+    /*
+    // Borde hellre vara: 
+    cannotPourIntoMsg = BMsg(cannot pour into, '{I} {can\'t} pour {1}
+        into {that iobj}. ', gDobj.fluidName)
+    cannotPourOntoMsg = BMsg(cannot pour onto, '{I} {can\'t} pour {1}
+        into {that iobj}. ', gDobj.fluidName)
+    */
+    cannotPourIntoMsg = BMsg(cannot pour into, '{Jag} {kan} inte hälla {1} i {ref iobj}. ', gDobj.fluidName)
+    cannotPourOntoMsg = BMsg(cannot pour onto, '{Jag} {kan} inte hälla {1} på {ref iobj}. ', gDobj.fluidName)
+
+
+;
 
 CustomMessages
     messages = [ 
@@ -138,7 +160,7 @@ CustomMessages
         Msg(nothing specfic in mind, '{Jag} {har} vid det här laget inte bestämt {mig} för vad {jag} ska diskutera med {1}. '),
         Msg(or, ' eller '),
         Msg(cannot move while attached, '{Ref subj cobj} {kan} inte flyttas medan {he cobj} {är} fäst vid {ref other}. '), 
-        Msg(okay plug in, '{Jag} pluggar in {1}. '),
+        Msg(okay plug in, '{Jag} kopplar in {1}. '),
         Msg(debugger not present, 'Debugger inte närvarande. '),
         Msg(fiat lux, '{Jag} {blev} plötsligt {1} lysande. '), // TODO: fixa
         Msg(no test scripts, 'Det f{i|a}nns inga testskript definierade i detta spel. '),
@@ -363,10 +385,10 @@ CustomMessages
         Msg(nothing attached, 'Det f{i|a}nns inget fäst vid {ref iobj}. '),
         Msg(cannot be attached, '{Ref subj dobj} {kan} inte fästas vid {ref iobj}. '),
         Msg(cannot attach to more, '{Jag} {kan} inte fästa {ref dobj} vid något annat medan {he dobj} {är} fäst vid {1}. '),
-        Msg(okay plug, '{Jag} pluggar in {1} i {ref iobj}. ') ,
+        Msg(okay plug, '{Jag} kopplar in {1} i {ref iobj}. ') ,
         Msg(already plugged in, '{Ref subj dobj} {är} redan inkopplad i {1}. '),
         Msg(already plugged in vague, '{Ref subj dobj} {är} redan inkopplad. '),
-        Msg(cannot plug in any more, '{Jag} {kan} inte plugga in mer i {ref iobj}. '),
+        Msg(cannot plug in any more, '{Jag} {kan} inte koppla in mer i {ref iobj}. '),
         Msg(cannot be plugged in, '{Ref subj dobj} {kan} inte plugga in i {ref iobj}. '),
         Msg(okay unplug from, '{Jag} drar ur {1} från {ref iobj}. '),
         Msg(not plugged in, '{Ref subj dobj} {är} inte inkopplad i något. '),
@@ -614,8 +636,8 @@ CustomMessages
         Msg(cannot pour, '{Jag} {kan} inte hälla {1} någonstans. '),
         Msg(cannot pour on self, '{Jag} {kan} inte hälla {ref dobj} på {sigsjälv dobj}. '),
         Msg(cannot pour in self, '{Jag} {kan} inte hälla {ref dobj} i {sigsjälv dobj}. '),
-        Msg(cannot pour into, '{Jag} {kan} inte hälla {1} i {ref dobj}. '),
-        Msg(cannot pour onto, '{Jag} {kan} inte hälla {1} på {ref dobj}. '),
+        Msg(cannot pour into, '{Jag} {kan} inte hälla {1} i {ref iobj}. '),
+        Msg(cannot pour onto, '{Jag} {kan} inte hälla {1} på {ref iobj}. '),
         Msg(should not pour into, 'Det {är} nog bäst att inte hälla {1} i {ref iobj}. '),
         Msg(should not pour onto, 'Det {är} nog bäst att inte hälla {1} på {ref iobj}. '),
         Msg(cannot screw, '{Jag} {kan} inte skruva {ref dobj}. '),
@@ -1201,3 +1223,5 @@ modify Room
 // Msg(duplicate fact name, 'FEL! Försökte skapa duplicerat fakta med namnet \'<<namn_>>\'.'),
 // Msg(short notify status, 'NOTIFY <<isOn ? 'PÅ' : 'AV'>>'),
 // Msg(bad agenda item, '<FONT COLOR=RED><b>VARNING!</b></FONT>: försök att lägga till något i agendan för <<getActor.theName>> som inte är en AgendaItem som tillhör denna Actor.'),
+
+

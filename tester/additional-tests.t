@@ -133,6 +133,8 @@ koket: Room 'Köket';
 ++lasken: Thing 'läsk+en';
 ++dropparna: Thing 'droppar+na[pl];;;dem';
 
++trasan: Thing 'trasa+n';
+
 korgen: Container 'korg+en';
 hyllan: Surface 'hylla+n'; 
 garderoben: OpenableContainer 'garderob+en';
@@ -496,3 +498,37 @@ TestUnit 'Thing.listContents (using openingContentsLister)' run {
     }); 
     assertThat(result).startsWith('När kylen öppnas upptäcker du vin, några droppar och en läsk.');
 };
+
+TestUnit 'Action.implicitAnnouncement(true)' run {
+  [ 
+     [Eat, jordgubbeObjUtrumSingular]
+        -> ['äter jordgubben', 'försöker äta jordgubben']
+
+    ,[PourInto, lasken] -> ['häller läsken', 'försöker hälla läsken']
+    ,[PourInto, lasken] -> ['häller läsken', 'försöker hälla läsken']
+    ,[Clean, lasken] -> ['rengör läsken', 'försöker rengöra läsken']
+
+    ,[CleanWith, lasken, trasan] 
+      -> ['rengör läsken med trasan', 'försöker rengöra läsken med trasan']
+
+
+  ].forEachAssoc(function(actionAndObj, expectedTexts) {
+    mainOutputStream.hideOutput = nil;  
+    gAction = actionAndObj[1].createInstance();
+    gAction.isImplicit = true;
+
+    if(actionAndObj.length >= 2) {
+      gAction.curDobj = actionAndObj[2];
+    }
+    if(actionAndObj.length == 3) {
+      gAction.curIobj = actionAndObj[3];
+    }
+
+    assertThat(gAction.implicitAnnouncement(true))
+      .isEqualTo(expectedTexts[1]);
+    assertThat(gAction.implicitAnnouncement(nil))
+      .isEqualTo(expectedTexts[2]);
+  });
+}
+//only = true
+;

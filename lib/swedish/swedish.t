@@ -4280,6 +4280,7 @@ askAmbiguous(cmd, role, names)
  *   DirectObject), skulle vi returnera "vad vill du öppna". För (AttachTo
  *   IndirectObject), "vad vill du ansluta det till".  
  */
+ // TODO: fixa så man kan skriva {den}, {det} eller {de}
 nounRoleQuestion(cmd, role)
 {
     /* hämta den saknade frågan från verbet och dela upp den i dess delar */
