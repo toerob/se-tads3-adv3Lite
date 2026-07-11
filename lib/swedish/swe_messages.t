@@ -910,6 +910,8 @@ modify Actor
     pcDefaultSayQuip = //BMsg(default pcsayquip,  
         bmsg('<q><<gTopicText.substr(1,1).toUpper()>><<gTopicText.substr(2).toLower()>>,</q> {säger} {jag}. ')   
 
+    postureDesc = 'är' // Detta överrids när posture-extensionen används
+    
     actorSpecialDesc() {
         if(isPlayerChar) {
             return;

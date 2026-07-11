@@ -469,7 +469,8 @@ class LMentionable: object
      *   'i lådan' eller 'på bordet
      */
     objInName = (objInPrep + ' ' + theName)
-    
+
+    objInAName = (objInPrep + ' ' + aName)
     
     /* 
      *   Den prepositionella frasen för något som flyttas inuti detta objekt, t.ex.

@@ -3474,9 +3474,7 @@ VerbRule(BoardWhat)
 
 
 VerbRule(Enter)
-    'gå in' singleDobj  |
-    ('gå' | 'gå' | 'gå' | 'klättra') ( 'i' | 'i' 'till' | 'in' | 'inuti')
-    singleDobj
+    ( ('gå' | 'klättra') ('in'|) ( 'i' | 'in') ) singleDobj
     : VerbProduction
     action = Enter
     verbPhrase = 'gå/går (vad)'
@@ -3485,7 +3483,8 @@ VerbRule(Enter)
 ;
 
 VerbRule(GetInWhat)
-    'gå in' |  (('gå' | 'klättra') ( 'i' | 'i' 'till' | 'in' | 'inuti'))
+    'gå in' 
+    |  (('gå' | 'klättra') ( 'i' | 'i' 'till' | 'in' 'i' | 'inuti'))
     : VerbProduction
     action = Enter
     verbPhrase = 'gå/går (vad)'
