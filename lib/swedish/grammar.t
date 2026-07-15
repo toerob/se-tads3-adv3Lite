@@ -3255,7 +3255,7 @@ VerbRule(Attach)
 ;
 
 VerbRule(DetachFrom)
-    ('lossa' | 'koppla bort') multiDobj 'från' singleIobj
+    ('lossa' | 'koppla' 'bort' | 'ta' 'loss') multiDobj 'från' singleIobj
     : VerbProduction
     action = DetachFrom
     verbPhrase = 'lossa/lossar (vad) (från vad)'
@@ -3265,7 +3265,7 @@ VerbRule(DetachFrom)
 ;
 
 VerbRule(Detach)
-    ('lossa' | 'koppla bort') multiDobj
+    ('lossa' | 'koppla' 'bort' | 'ta' 'loss') multiDobj
     : VerbProduction
     action = Detach
     verbPhrase = 'lossa/lossar (vad)'
