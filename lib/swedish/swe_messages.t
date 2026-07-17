@@ -282,7 +282,7 @@ CustomMessages
         Msg(nothing special, '{Jag} {ser} inget speciellt med {ref 1}. '), 
         Msg(taste nothing, '{Jag} smaka{r|de} inget oväntat.<.p>'),
         Msg(feel nothing, '{Jag} kän{ner|de} inget oväntat.<.p>'),
-        Msg(report take, 'Tag{en/et/na}. | {jag} {tar|tog} {1}. '),
+        Msg(report take, 'Tag{en/et/na}. | {Jag} {tar|tog} {1}. '),
         Msg(too big to carry, '{Ref subj dobj} {är} för stor{t/a} för {mig} att bära. '),
         Msg(cannot carry any more, '{Jag} {kan} inte bära mer än {jag} redan bär. '),
         Msg(report drop, 'Släppt. |{Jag} släpper {1}. '), 
