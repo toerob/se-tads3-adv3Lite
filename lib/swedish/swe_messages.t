@@ -153,9 +153,9 @@ CustomMessages
         Msg(say head after actor, '{Jag} {går} {1} efter {2}. '),
         Msg(state follow, '{Ref follower} följ{er/de} efter {ref pc}. '),
         Msg(nothing to discuss on that topic, '{Jag} {har} inget att diskutera om det ämnet just nu. '), 
-        Msg(waiting for follow, '{Ref subj myactor} väntar på {ref pc} {dummy} att följa {honom myactor} {1}. '),
+        Msg(waiting for follow, '{Ref subj myactor} vänta{r/de} på {ref pc} {dummy} att följa {honom myactor} {1}. '),
         Msg(suggestion list intro, '{Jag} skulle kunna '),
-        Msg(open suggestion list intro, 'Bland annat skulle {jag} kunna '),
+        Msg(open suggestion list intro, '{Jag} skulle bland annat kunna '),
         Msg(nothing in mind, '{Jag} {har} inget i åtanke att diskutera med {1} just nu. '),
         Msg(nothing specfic in mind, '{Jag} {har} vid det här laget inte bestämt {mig} för vad {jag} ska diskutera med {1}. '),
         Msg(or, ' eller '),
@@ -234,7 +234,7 @@ CustomMessages
         Msg(token error, 'Jag förstår inte skiljetecknet {1}'),
         Msg(empty command line, 'Jag ber om ursäkt?'),
         Msg(not understood, 'Jag förstår inte det kommandot.'), 
-        Msg(unknown word, 'Jag kän{ner|de} inte till ordet ""{1}"".'),
+        Msg(unknown word, 'Jag kän{ner|de} inte till ordet "{1}".'),
         Msg(no oops now, 'Tyvärr, jag är inte säker på vad du rättar.'),
         Msg(unmatched actor, '{Jag} {ser} inte {1} här.'),
         Msg(unmatched noun, '{Jag} {ser} inte {2} här.'),
@@ -243,7 +243,7 @@ CustomMessages
         Msg(oops tip, 'Om detta var en oavsiktlig felstavning, så kan du rätta den genom att skriva OOPS
                         följd av det rättade ordet nu. Varje gång spelet pekar ut ett okänt ord, kan du rätta
                         det genom att använda OOPS som ditt nästa kommando.'),
-        Msg(no antecedent, 'Jag är inte säker på vad du menar med ""{1}"".'),
+        Msg(no antecedent, 'Jag är inte säker på vad du menar med "{1}".'),
         Msg(antecedent out of scope, '{Jag} {ser} inte längre det här.'),
         Msg(nothing suitable for all, 'Det f{i|a}nns inget lämpligt för ALLA att hänvisa till. '),
         Msg(not enough nouns, '{Jag} {ser|såg} inte så många {2} här.'), 
@@ -356,7 +356,7 @@ CustomMessages
         Msg(kiss response, '{Ref subj dobj} {gillar} inte att bli kysst. '),
         Msg(cannot attack actor, 'Det verkar knappast vara en bra idé att attackera {ref dobj}. '),
         Msg(should not touch actor, '{Ref subj dobj} {gillar} inte att bli rörd. '),
-        Msg(wait to see, '{Jag} väntar för att se var {he dobj} går. '),
+        Msg(wait to see, '{Jag} vänta{r/de} för att se var {he dobj} går. '),
         Msg(dont know where gone, '{Jag} vet inte var {ref subj dobj} har gått. '),
         Msg(cannot start from here, '{Jag}{\'m} inte där {jag} {kan} börja. '),
         Msg(cannot follow from here, '{Jag} {kan} inte följa {honom dobj} härifrån. '),
@@ -366,7 +366,7 @@ CustomMessages
         Msg(say prefix, 'säg '),
         Msg(ask query, 'fråga {honom interlocutor} '),
         Msg(ask about, 'fråga {honom interlocutor} om '),
-        Msg(tell about, 'berätta {honom interlocutor} om '),
+        Msg(tell about, 'berätta för {honom interlocutor} om '),
         Msg(talk about, 'prata om ') ,
         Msg(give, 'ge {honom interlocutor} '),
         Msg(show, 'visa {honom interlocutor} '),
@@ -1189,6 +1189,27 @@ modify libScore
              turns, points);        
     }
 ;
+
+// TODO: den här behöver göras om i huvudbiblioteket
+modify FollowAgendaItem
+    specialDesc()
+    {
+        local myactor = getActor;
+        local pc = gPlayerChar;       
+        gMessageParams(myactor, pc);
+
+        local nd = nextDirection;        
+        if(nd != nil)
+            //DMsg(waiting for follow, '{The subj myactor} {is} waiting for {the
+            //    pc} {dummy} to follow {him myactor} {1}. ', nd.departureName);
+            dmsg('{Ref subj myactor} vänta{r/de} på {ref pc} {dummy} 
+                att följa {honom myactor} {1}. ',  nd.departureName);
+        else
+            //DMsg(actor is here, '{The subj myactor} {is} {here}. '); 
+            dmsg('{Ref subj myactor} {är} {här}. '); 
+    }
+;
+
 /*
 // TODO: behöver kanske inte inte överridas på det här viset.
 //       Testa av först
