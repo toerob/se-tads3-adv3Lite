@@ -110,7 +110,7 @@ shop: Room 'Lanthandel'
 ;
 
 + cans: Decoration 'burkar+na; noggran:t+na stapla:de+t av[prep]; stapel+n burk+ar; dem' 
-    "Burkarna är noggrant staplade. "    
+    "Burkarna är noggrant staplade. "  
 ;
 
 street: Room 'Huvudgatan'
@@ -2154,5 +2154,5 @@ sally: Actor 'blond+a kvinna+n; li:ten+lla och söt+a; människor+na[pl]; henne'
 tWeather: Topic 'väd:er+ret';
 //tTown: Topic 'this town;;place';
 tTown: Topic 'denna stad+en;;plats+en'; // TODO: testa av denna
-tTroubles: Topic 'bekym:mer+ren;;;dem';
+tTroubles: Topic 'problem+en;;bekym:mer+ren;dem';
 
