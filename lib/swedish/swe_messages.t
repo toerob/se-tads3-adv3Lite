@@ -324,7 +324,7 @@ CustomMessages
         Msg(push travel traversal, '{Jag} <<if matchPullOnly>> drar {ref dobj} {1}. '),
         Msg(push travel somewhere, '{Jag} <<if matchPullOnly>> drar {ref dobj} {1}. '),
         Msg(purloin, '{Jag} plötsligt {hittar} {mig själv} hållande {1}. '),
-        Msg(gonear, '{Jag} {är} översatt i ett ögonblick...<.p>'),
+        Msg(gonear, '{Jag} förflytta{s|des} i ett ögonblick...<.p>'),
         Msg(okay unlock with, '{Jag} {låser} upp {ref dobj} med {ref iobj}. '),
         Msg(okay lock with, '{Jag} {låser} {ref dobj} med {ref iobj}. '),
         Msg(npc opens door, '{Ref subj traveler} {öppnar} {ref obj}. '),
