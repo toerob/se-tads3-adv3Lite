@@ -344,27 +344,34 @@ grammar pronounPhrase(itself): 'sig' : PronounProduction
 ;
 
 grammar pronounPhrase(themselves):
-    'sig' | 'sig själva' : PronounProduction
+    'sig' | ('sig' 'själva'): PronounProduction
     pronoun = Themselves
 ;
 
-grammar pronounPhrase(himself): 'sig själv' : PronounProduction
+//grammar pronounPhrase(himself): 'sig' 'själv' : PronounProduction
+//    pronoun = Himself
+//;
+grammar pronounPhrase(himself): ('honom'|'han') ('själv'|) : PronounProduction
     pronoun = Himself
 ;
 
-grammar pronounPhrase(herself): 'sig själv' : PronounProduction
+//grammar pronounPhrase(herself): 'sig' 'själv' : PronounProduction
+//    pronoun = Herself
+//;
+
+grammar pronounPhrase(herself): ('henne'|'hon') ('själv'|) : PronounProduction
     pronoun = Herself
 ;
 
 grammar pronounPhrase(you):
-    'du' | 'dig själv' | 'er själva' : PronounProduction
+    'du' | ('dig' 'själv') | ('er' 'själva') : PronounProduction
     pronoun = You
 ;
-grammar pronounPhrase(me): 'mig' | 'mig själv' : PronounProduction
+grammar pronounPhrase(me): 'mig' | ('mig' 'själv') : PronounProduction
     pronoun = Me
 ;
 
-grammar pronounPhrase(us): 'oss' | 'oss själva'
+grammar pronounPhrase(us): 'oss' | ('oss' 'själva')
     : PronounProduction
     pronoun = Us
 ;
@@ -484,7 +491,7 @@ grammar locationPrep(in):
 ;
 
 grammar locationPrep(on):
-    'på' | 'uppå' | 'på' 'toppen' 'av'
+    ('på' | 'uppå')  'toppen' 'av'
     : LocationPrepProduction
 
     locType = On
@@ -1382,10 +1389,10 @@ grammar oopsCommand(main):
 ;
 
 grammar oopsPhrase(main):
-    'oops' miscWordList->toks_
-    | 'oops' ',' miscWordList->toks_
-    | 'o' miscWordList->toks_
-    | 'o' ',' miscWordList->toks_
+    'hoppsan' miscWordList->toks_
+    | 'hoppsan' ',' miscWordList->toks_
+    | 'oj' miscWordList->toks_
+    | 'oj' ',' miscWordList->toks_
     : OopsProduction
 ;
 
@@ -1955,12 +1962,14 @@ VerbRule(AuxQuery)
  *   att grammatiken definierad omedelbart ovan kan matchas.
  */
 
+// TODO: det här är helt onödigt, bara engelskan behöver detta
+/*
 queryPreParser: StringPreParser
     doParsing(str, which)
     {
         local s = str.toLower();
-        
-        /* Först, kontrollera att detta ser ut som en fråga */
+
+        // Först, kontrollera att detta ser ut som en fråga
         if(s.startsWith('f ') || s.startsWith('fråga ') || s.substr(1, 3) is in
            ('vem', 'vad', 'var', 'varför', 'hur'))
         {
@@ -1970,11 +1979,10 @@ queryPreParser: StringPreParser
                        
         
         }
-
-    
         return str;
     }
 ;
+*/
 
 VerbRule(AskFor)
     ('f' | 'fråga') singleDobj 'för' topicIobj
@@ -2566,49 +2574,52 @@ VerbRule(ScriptString)
 ;
 
 VerbRule(ScriptOff)
-    'skript' 'av' | 'avskript'
+    'skript' 'av' 
+    | 'avskript'
     : VerbProduction
     action = ScriptOff 
     verbPhrase = 'sluta/slutar skriptning'
 ;
 
 VerbRule(Record)
-    'spela in' | 'spela in' 'på'
+    'spela' 'in' 
+    | 'spela' 'in' 'på'
     : VerbProduction
     action = Record
     verbPhrase = 'starta/startar kommandoinspelning'
 ;
 
 VerbRule(RecordString)
-    'spela in' quotedStringPhrase->fname_
+    'spela' 'in' quotedStringPhrase->fname_
     : VerbProduction
     action = Record
     verbPhrase = 'starta/startar kommandoinspelning'
 ;
 
 VerbRule(RecordEvents)
-    'spela in' 'händelser' | 'spela in' 'händelser' 'på'
+    'spela' 'in' 'händelser' 
+    | 'spela' 'in' 'händelser' 'på'
     : VerbProduction
     action = RecordEvents
     verbPhrase = 'starta/startar händelseinspelning'
 ;
 
 VerbRule(RecordEventsString)
-    'spela in' 'händelser' quotedStringPhrase->fname_
+    'spela' 'in' 'händelser' quotedStringPhrase->fname_
     : VerbProduction
     action = RecordEvents
     verbPhrase = 'starta/startar kommandoinspelning'
 ;
 
 VerbRule(RecordOff)
-    'spela in' 'av'
+    'spela' 'in' 'av'
     : VerbProduction
     action = RecordOff
     verbPhrase = 'sluta/slutar kommandoinspelning'
 ;
 
 VerbRule(ReplayString)
-    'spela upp' ('tyst'->quiet_ | 'nonstop'->nonstop_ | )
+    'spela' 'upp' ('tyst'->quiet_ | 'nonstop'->nonstop_ | )
         (quotedStringPhrase->fname_ | )
     : VerbProduction
     action = Replay
