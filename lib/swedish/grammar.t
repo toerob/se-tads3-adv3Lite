@@ -1957,60 +1957,37 @@ VerbRule(AuxQuery)
     qtype = 'ifall'
 ;
 
-/* 
- *   För frågor, omvandla en apostrof-s form till den underliggande qtype plus är så
- *   att grammatiken definierad omedelbart ovan kan matchas.
- */
-
-// TODO: det här är helt onödigt, bara engelskan behöver detta
-/*
-queryPreParser: StringPreParser
-    doParsing(str, which)
-    {
-        local s = str.toLower();
-
-        // Först, kontrollera att detta ser ut som en fråga
-        if(s.startsWith('f ') || s.startsWith('fråga ') || s.substr(1, 3) is in
-           ('vem', 'vad', 'var', 'varför', 'hur'))
-        {
-            str = s.findReplace(['vad\'s','vem\'s', 'var\'s', 'varför\'s',
-                'när\'s', 'hur\'s'], ['vad är', 'vem är', 'var är', 'varför
-                    är', 'när är', 'hur är'], ReplaceOnce);        
-                       
-        
-        }
-        return str;
-    }
-;
-*/
 
 VerbRule(AskFor)
-    ('f' | 'fråga') singleDobj 'för' topicIobj
-    | ('f' | 'fråga') 'för' topicIobj 'från' singleDobj
+    'be' singleDobj ('om'|'efter') topicIobj
+    | ('f' | 'fråga') singleDobj 'efter' topicIobj
+    | ('f' | 'fråga') 'efter' topicIobj 'från' singleDobj
     : VerbProduction
     action = AskFor
-    verbPhrase = 'fråga/frågar (vem) (för vad)'
-    missingQ = 'vem vill du fråga;vad vill du fråga det för'
+    verbPhrase = 'be/ber (vem) (om vad)'
+    missingQ = 'vem vill du be om;vad vill du be om'
     dobjReply = singleNoun
     iobjReply = forSingleNoun
 ;
 
 VerbRule(AskWhomFor)
-    ('f' | 'fråga') 'för' topicIobj
+    ('be' ('om'|'efter')) topicIobj
+    |('f' | 'fråga') 'efter' topicIobj
     : VerbProduction
     action = AskFor
-    verbPhrase = 'fråga/frågar (vem) (för vad)'
-    missingQ = 'vem vill du fråga;vad vill du fråga det för'
+    verbPhrase = 'be/ber (vem) (om vad)'
+    missingQ = 'vem vill du be om;vad vill du be om'
     iobjReply = topicPhrase
     priority = 25
 ;
 
 VerbRule(AskForImplicit)
-    ('f' | 'fråga')  'för' topicIobj
+    ('be' ('om'|'efter')) topicIobj
+    |('f' | 'fråga') 'efter' topicIobj
     : VerbProduction
     action = AskForImplicit
-    verbPhrase = 'fråga/frågar (vem) (för vad)'
-    missingQ = 'vem vill du fråga;vad vill du fråga det för'
+    verbPhrase = 'be/ber (om vad)'
+    missingQ = 'vad vill du be om'
     iobjReply = topicPhrase
     priority = 60
 ;
@@ -2040,7 +2017,7 @@ VerbRule(AskAboutImplicit)
 ;
 
 VerbRule(AskAboutWhat)
-    [badness 500] 'fråga' singleDobj
+    [badness 500] 'fråga' | 'be' singleDobj
     : VerbProduction
     action = AskAbout
     verbPhrase = 'fråga/frågar (vem) (om vad)'
