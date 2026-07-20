@@ -1417,8 +1417,8 @@ DefineLangDir(up, 'upp' | 'u', 'tillbaka', 'uppåt');
 DefineLangDir(down, 'ner' | 'n', 'tillbaka', 'neråt');
 DefineLangDir(in, 'in', 'tillbaka', 'inåt');
 DefineLangDir(out, 'ut', 'tillbaka', 'utåt');
-DefineLangDir(port, 'babord' | 'b', 'tillbaka till', 'till babord');
-DefineLangDir(starboard, 'styrbord' | 'sb', 'tillbaka till', 'till styrbord');
+DefineLangDir(port, 'babord' | 'babords', 'tillbaka till', 'till babord');
+DefineLangDir(starboard, 'styrbord' | 'styrbords', 'tillbaka till', 'till styrbord');
 DefineLangDir(aft, 'akterut', 'tillbaka', 'akterut');
 DefineLangDir(fore, 'förut' | 'f' | 'framåt' ,  'tillbaka', 'förut');
 //
@@ -2014,7 +2014,7 @@ VerbRule(AskAbout)
     : VerbProduction
     action = AskAbout
     verbPhrase = 'fråga/frågar (vem) (om vad)'
-    missingQ = 'vem vill du fråga;vad vill du fråga {det} om'
+    missingQ = 'vem vill du fråga;vad vill du fråga om'
     dobjReply = singleNoun
     iobjReply = aboutTopicPhrase
 ;
@@ -2022,10 +2022,11 @@ VerbRule(AskAbout)
 
 VerbRule(AskAboutImplicit)
     ('f' | ('fråga' | 'säga' 'mig') ('om')) topicIobj
+    | 'f' topicIobj
     : VerbProduction
     action = AskAboutImplicit
     verbPhrase = 'fråga/frågar (vem) (om vad)'
-    missingQ = 'vem vill du fråga;vad vill du fråga {det} om'
+    missingQ = 'vem vill du fråga;vad vill du fråga om'
     iobjReply = aboutTopicPhrase
     priority = 45
 ;
@@ -2035,7 +2036,7 @@ VerbRule(AskAboutWhat)
     : VerbProduction
     action = AskAbout
     verbPhrase = 'fråga/frågar (vem) (om vad)'
-    missingQ = 'vem vill du fråga;vad vill du fråga {det} om'
+    missingQ = 'vem vill du fråga;vad vill du fråga om'
 
     missingRole = IndirectObject
     iobjReply = aboutTopicPhrase
@@ -2045,21 +2046,22 @@ VerbRule(AskAboutWhat)
 
 
 VerbRule(TellAbout)
-    ('berätta'|'säg') singleDobj 'om' topicIobj
+    ('b'|'berätta'|'säg') singleDobj 'om' topicIobj
     : VerbProduction
     action = TellAbout
     verbPhrase = 'säga/säger (vem) (om vad)'
-    missingQ = 'vem vill du säga;vad vill du säga {det} om'
+    missingQ = 'vem vill du säga;vad vill du säga om'
     dobjReply = singleNoun
     iobjReply = aboutTopicPhrase
 ;
 
 VerbRule(TellAboutImplicit)
-     ('berätta'|'säg') 'om' topicIobj
+     ('b'|'berätta'|'säg') 'om' topicIobj
+     | 'b' topicIobj
     : VerbProduction
     action = TellAboutImplicit
     verbPhrase = 'säga/säger (vem) (om vad)'
-    missingQ = 'vem vill du säga;vad vill du säga {det} om'
+    missingQ = 'vem vill du säga;vad vill du säga om'
     iobjReply = aboutTopicPhrase
 ;
 
@@ -2068,7 +2070,7 @@ VerbRule(TellAboutWhat)
     : VerbProduction
     action = TellAbout
     verbPhrase = 'säga/säger (vem) (om vad)'
-    missingQ = 'vem vill du säga;vad vill du säga {det} om'
+    missingQ = 'vem vill du säga;vad vill du säga om'
 
     missingRole = IndirectObject
     dobjReply = singleNoun
@@ -2091,7 +2093,7 @@ VerbRule(TalkAbout)
     : VerbProduction
     action = TalkAbout
     verbPhrase = 'prata/pratar (med vem) (om vad)'
-    missingQ = 'med vem vill du prata;vad vill du prata med {det} om'
+    missingQ = 'med vem vill du prata;vad vill du prata med om'
     dobjReply = toSingleNoun
     iobjReply = aboutTopicPhrase
 ;
@@ -2110,7 +2112,7 @@ VerbRule(AskVague)
     : VerbProduction
     action = AskAbout
     verbPhrase = 'fråga/frågar (vem)'
-    missingQ = 'vem vill du fråga;vad vill du fråga {det} om'
+    missingQ = 'vem vill du fråga;vad vill du fråga om'
     dobjReply = singleNoun
     iobjReply = topicPhrase
 ;
@@ -2120,7 +2122,7 @@ VerbRule(TellVague)
     : VerbProduction
     action = TellAbout
     verbPhrase = 'säga/säger (vem)'
-    missingQ = 'vem vill du säga;vad vill du säga {det} om'
+    missingQ = 'vem vill du säga;vad vill du säga om'
     priority = 40
     dobjReply = singleNoun
     iobjReply = topicPhrase    
@@ -2543,7 +2545,7 @@ VerbRule(Credits)
 ;
 
 VerbRule(About)
-    'om'
+    'om' ('spelet'|)
     : VerbProduction
     action = About
     verbPhrase = 'visa/visar information om berättelsen'
