@@ -717,8 +717,9 @@ class LMentionable: object
                 break;
             */
 
-            case 'lite':
+            case 'lite':            
             case 'några':
+            case 'viss':
                 /* markera detta som ett mass substantiv */
                 massNoun = true;
                 break;
@@ -2938,6 +2939,7 @@ swedishCustomVocab: CustomVocab
         'finnas/finns/fanns/funnits',
         'få/får/fick/fått',
         'fälla/fäller/fällde/fällt',
+        'fästa/fäster/fäste/fäst',
         'falla/faller/föll/fallit',        
         'fånga/fångar/fångade/fångat',
         'flyga/flyger/flög/flugit',        
@@ -3024,6 +3026,7 @@ swedishCustomVocab: CustomVocab
         'slita/sliter/slet/slitit',
         'slunga/slungar/slungade/slungat',
         'sluta/slutar/slutade/slutat',
+        'släcka/släcker/släckte/släckt',        
         'smälta/smälter/smälte/smält',
         'smyga/smyger/smög/smugit',
         'snurra/snurrar/snurrade/snurrat',
@@ -3064,7 +3067,6 @@ swedishCustomVocab: CustomVocab
         'veta/vet/visste/vetat',        
         'vilja/vill/ville/velat',
         'vilseleda/vilseleder/vilseledde/vilselett',
-        'visa/visar/visade/visad',
         'visa/visar/visade/visat',    
         'äta/äter/åt/ätit',
         'öppna/öppnar/öppnade/öppnat',

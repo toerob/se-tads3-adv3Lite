@@ -1302,9 +1302,9 @@ TestUnit 'keyNotNeededMsg' run {
 TestUnit 'indirectLockableMsg' run {
   [ 
     // TODO: testa om versal behövs i början
-      [spelare1aPerspektiv, appletObjNeutrumSingular]    ->'äpplet verkar använda någon annan typ av låsmekanism.'
-    , [spelare2aPerspektiv, jordgubbeObjUtrumSingular]   ->'jordgubben verkar använda någon annan typ av låsmekanism.'
-    , [spelare3ePerspektiv, vindruvorObjNeutrumPlural]   ->'vindruvorna verkar använda någon annan typ av låsmekanism.'
+      [spelare1aPerspektiv, appletObjNeutrumSingular]    ->'äpplet verkade använda någon annan typ av låsmekanism.'
+    , [spelare2aPerspektiv, jordgubbeObjUtrumSingular]   ->'jordgubben verkade använda någon annan typ av låsmekanism.'
+    , [spelare3ePerspektiv, vindruvorObjNeutrumPlural]   ->'vindruvorna verkade använda någon annan typ av låsmekanism.'
 
   ].forEachAssoc(function(actorAndObj, expected) {
     mainOutputStream.capturedOutputBuffer = new StringBuffer();    
@@ -2347,9 +2347,9 @@ TestUnit 'cannotThrowToSelfMsg' run {
 
 TestUnit 'throwFallsShortMsg' run {
   [
-      [spelare1aPerspektiv, appletObjNeutrumSingular]    ->'Äpplet landar långt ifrån'
-    , [spelare2aPerspektiv, jordgubbeObjUtrumSingular]   ->'Jordgubben landar långt ifrån'
-    , [spelare3ePerspektiv, vindruvorObjNeutrumPlural]   ->'Vindruvorna landar långt ifrån'
+      [spelare1aPerspektiv, appletObjNeutrumSingular]    ->'Äpplet landade långt ifrån'
+    , [spelare2aPerspektiv, jordgubbeObjUtrumSingular]   ->'Jordgubben landade långt ifrån'
+    , [spelare3ePerspektiv, vindruvorObjNeutrumPlural]   ->'Vindruvorna landade långt ifrån'
 
   ].forEachAssoc(function(actorAndObj, expected) {
     mainOutputStream.capturedOutputBuffer = new StringBuffer();
@@ -3449,9 +3449,9 @@ TestUnit 'cannotShowToSelfMsg' run {
 
 TestUnit 'notTalkingToAnyoneMsg' run {
   [
-      [spelare1aPerspektiv, appletObjNeutrumSingular]    ->'Jag pratar inte med någon.'
-    , [spelare2aPerspektiv, jordgubbeObjUtrumSingular]   ->'Du pratar inte med någon.'
-    , [spelare3ePerspektiv, vindruvorObjNeutrumPlural]   ->'Bob pratar inte med någon.'
+      [spelare1aPerspektiv, appletObjNeutrumSingular]    ->'Jag pratade inte med någon.'
+    , [spelare2aPerspektiv, jordgubbeObjUtrumSingular]   ->'Du pratade inte med någon.'
+    , [spelare3ePerspektiv, vindruvorObjNeutrumPlural]   ->'Bob pratade inte med någon.'
 
   ].forEachAssoc(function(actorAndObj, expected) {
     mainOutputStream.capturedOutputBuffer = new StringBuffer();
