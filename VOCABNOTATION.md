@@ -52,7 +52,7 @@ dörr: Thing 'dörr+en';
 // → dörr, dörren    (utrum)
 ```
 
-Grammatiskt genus (`isNeuter`) härledas automatiskt från ändelsen:
+Grammatiskt genus (`isNeuter`) härleds automatiskt från ändelsen:
 
 | Ändelse | Genus |
 |---|---|
