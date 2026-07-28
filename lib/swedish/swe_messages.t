@@ -977,6 +977,11 @@ modify SpecialVerb
 
 // TODO: too much overriding
 modify Thing 
+
+    // Dessa meddelanden används direkt utan nyckel så måste överridas
+    notAPlausibleKeyMsg = '\^<<theName>> kommer helt uppenbart inte fungera med <<gVerifyDobj.theName>>. '
+    keyDoesntFitMsg = '\^<<theName>> passar inte <<gVerifyDobj.theName>>. '
+
     revealOnMove()
     {
         local moveReport = '';
