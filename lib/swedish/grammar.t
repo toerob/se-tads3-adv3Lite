@@ -2487,14 +2487,14 @@ VerbRule(SaveString)
 ;
 
 VerbRule(Restore)
-    'återställ'
+    'återställ'|'ladda'
     : VerbProduction
     action = Restore
     verbPhrase = 'återställa/återställer'
 ;
 
 VerbRule(RestoreString)
-    'återställ' quotedStringPhrase->fname_
+    'återställ'|'ladda' quotedStringPhrase->fname_
     : VerbProduction
     action = Restore
     verbPhrase = 'återställa/återställer'
@@ -2502,7 +2502,7 @@ VerbRule(RestoreString)
 
 
 VerbRule(Restart)
-    'starta' 'om'
+    ('starta' 'om') | 'omstarta' | 'omstart'
     : VerbProduction
     action = Restart
     verbPhrase = 'starta/startar om'
