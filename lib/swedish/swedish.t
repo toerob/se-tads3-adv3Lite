@@ -2193,11 +2193,14 @@ class LState: object
  */
 LitUnlit: State
     stateProp = &isLit
-    adjectives = [[nil, ['släckt']], [true, ['tänd']]]
+    adjectives = [[nil, ['släckt','släckta']], [true, ['tänd','tända']]]
     appliesTo(obj) { return obj.isLightable || obj.isLit; }
     //additionalInfo = [[true, ' ({ger} ljus)']]
-    additionalInfo = [[true, ' (som {avger} ljus)']]
-    //additionalInfo = [[true, ' (avgivandes ljus)']]
+    
+    // NOTE: {|} fungerar ej överallt eftersom detta inte alltid expanderas
+    // T ex vid 'report put on' då den visas som en del i annan text.
+    // Använder tSel istället, nyttja på fler ställen om det krävs
+    additionalInfo = [[true, ' (som av<<tSel('ger','gav')>> ljus)']] 
 ;
 
 /*
@@ -2206,7 +2209,7 @@ LitUnlit: State
  */
 OpenClosed: State
     stateProp = &isOpen
-    adjectives = [[nil, ['stängd']], [true, ['öppen']]]
+    adjectives = [[nil, ['stängd', 'stängda']], [true, ['öppen','öppna']]]
     appliesTo(obj) { return obj.isOpenable; }
 ;
 
@@ -2950,8 +2953,8 @@ swedishCustomVocab: CustomVocab
         'förlora/förlorar/förlorade/förlorat',
         'förstöra/förstör/förstörde/förstört',
         'frysa/fryser/frös/frusit',
-        'gå/går/gick/gått',
         'ge/ger/gav/givit',
+        'gå/går/gick/gått',
         'gilla/gillar/gillade/gillat',
         'glida/glider/glid',
         'gömma/gömmer/gömde/gömd',

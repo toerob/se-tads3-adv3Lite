@@ -1133,53 +1133,53 @@ grammar disambigListItem(possessive):
 #define defOrdinal(str, val) object ordinalWord=#@str ordinalVal=val
 
 defOrdinal(former, 1);
-defOrdinal(first, 1);
-defOrdinal(second, 2);
-defOrdinal(third, 3);
-defOrdinal(fourth, 4);
-defOrdinal(fifth, 5);
-defOrdinal(sixth, 6);
-defOrdinal(seventh, 7);
-defOrdinal(eighth, 8);
-defOrdinal(ninth, 9);
-defOrdinal(tenth, 10);
-defOrdinal(eleventh, 11);
-defOrdinal(twelfth, 12);
-defOrdinal(thirteenth, 13);
-defOrdinal(fourteenth, 14);
-defOrdinal(fifteenth, 15);
-defOrdinal(sixteenth, 16);
-defOrdinal(seventeenth, 17);
-defOrdinal(eighteenth, 18);
-defOrdinal(nineteenth, 19);
-defOrdinal(twentieth, 20);
-defOrdinal(1st, 1);
-defOrdinal(2nd, 2);
-defOrdinal(3rd, 3);
-defOrdinal(4th, 4);
-defOrdinal(5th, 5);
-defOrdinal(6th, 6);
-defOrdinal(7th, 7);
-defOrdinal(8th, 8);
-defOrdinal(9th, 9);
-defOrdinal(10th, 10);
-defOrdinal(11th, 11);
-defOrdinal(12th, 12);
-defOrdinal(13th, 13);
-defOrdinal(14th, 14);
-defOrdinal(15th, 15);
-defOrdinal(16th, 16);
-defOrdinal(17th, 17);
-defOrdinal(18th, 18);
-defOrdinal(19th, 19);
-defOrdinal(20th, 20);
+defOrdinal(första, 1);
+defOrdinal(andra, 2);
+defOrdinal(tredje, 3);
+defOrdinal(fjärde, 4);
+defOrdinal(femte, 5);
+defOrdinal(sjätte, 6);
+defOrdinal(sjunde, 7);
+defOrdinal(åttonde, 8);
+defOrdinal(nionde, 9);
+defOrdinal(tionde, 10);
+defOrdinal(elfte, 11);
+defOrdinal(tolfte, 12);
+defOrdinal(trettonde, 13);
+defOrdinal(fjortonde, 14);
+defOrdinal(femtonde, 15);
+defOrdinal(sextonde, 16);
+defOrdinal(sjuttonde, 17);
+defOrdinal(artonde, 18);
+defOrdinal(nittonde, 19);
+defOrdinal(tjugonde, 20);
+defOrdinal(1a, 1);
+defOrdinal(2a, 2);
+defOrdinal(3e, 3);
+defOrdinal(4e, 4);
+defOrdinal(5e, 5);
+defOrdinal(6e, 6);
+defOrdinal(7e, 7);
+defOrdinal(8e, 8);
+defOrdinal(9e, 9);
+defOrdinal(10e, 10);
+defOrdinal(11e, 11);
+defOrdinal(12e, 12);
+defOrdinal(13e, 13);
+defOrdinal(14e, 14);
+defOrdinal(15e, 15);
+defOrdinal(16e, 16);
+defOrdinal(17e, 17);
+defOrdinal(18e, 18);
+defOrdinal(19e, 19);
+defOrdinal(20e, 20);
 
 /*
  *   det speciella 'sista' ordningsordet - värdet -1 är speciellt för att indikera det
  *   sista objektet i en lista
  */
-defOrdinal(last, -1);
-defOrdinal(latter, -1);
+defOrdinal(sista, -1);
+defOrdinal(senare, -1);
 
 
 grammar numberObjPhrase(main): numberPhrase->num_ : NumberNounProduction
@@ -1427,8 +1427,7 @@ DefineLangDir(out, 'ut', 'tillbaka', 'utåt');
 DefineLangDir(port, 'babord' | 'babords', 'tillbaka till', 'till babord');
 DefineLangDir(starboard, 'styrbord' | 'styrbords', 'tillbaka till', 'till styrbord');
 DefineLangDir(aft, 'akterut', 'tillbaka', 'akterut');
-DefineLangDir(fore, 'förut' | 'f' | 'framåt' ,  'tillbaka', 'förut');
-//
+DefineLangDir(fore, 'förut' | 'föröverut' | 'f' | 'framåt' ,  'tillbaka', 'till fören');
 
 /* ------------------------------------------------------------------------ */
 /*
@@ -1786,7 +1785,8 @@ VerbRule(PutIn)
 
 VerbRule(PutOn)
     (('lägg' | 'placera' | 'släpp' | 'sätt') multiDobj ('på' | 'uppå') singleIobj)
-    | 'lägg' multiDobj 'ner' 'på' singleIobj
+    | ('lägg' | 'ställ') ('ner'|) multiDobj 'på' singleIobj
+    //| ('lägg' | 'ställ') multiDobj 'ner' 'på' singleIobj
     : VerbProduction
     action = PutOn
     verbPhrase = 'lägga/lägger (vad) (på vad)'
