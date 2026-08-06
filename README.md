@@ -64,13 +64,14 @@ apple: Thing 'äpple+t;stor+a röd+a;frukt+en';
 Kortfattat:
 
 - `+` markerar var ändelsen börjar — genererar grundform och bestämd form,
-  och härleder grammatiskt genus automatiskt.
+  och härleder grammatiskt genus automatiskt. Flera `+` i samma ord markerar ordets möjliga sammansättningsdelar, där sista fortfarande markerar ändelsen. T ex: `sol+stråle+n`.
 - `^s` används för foge-s (`tranbär^s+juice+n` → tranbär, tranbären,
   tranbärsjuice, tranbärsjuicen).
 - `:` anger en alternativ obestämd form eller byter genus på en
-  sammansättningsdel.
+  sammansättningsdel. T ex: `sol:en+ljus+et`.
 - `|` slår ihop ord till ett sammansatt ord utan att skapa upp
   delkomponenterna som egna sökord.
+  T ex: `byrå|låda+n`.
 - Vocab-strängen är uppdelad i fyra semikolon-separerade sektioner: namn,
   adjektiv, substantiv och pronomen — till skillnad från adv3 där `/` och `*`
   används.
