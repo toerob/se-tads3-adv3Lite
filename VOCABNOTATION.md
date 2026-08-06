@@ -433,6 +433,7 @@ sektion 2–4 påverkas inte.
 | `en` | `isNeuter = nil` (utrum) — sällan nödvändigt, ändelsen räcker oftast |
 | `ett` | `isNeuter = true` (neutrum) — sällan nödvändigt, ändelsen räcker oftast |
 | `lite` | `massNoun = true` — oräknebart ämnesord ("lite vatten") |
+| `viss` | `massNoun = true` — oräknebart ämnesord ("viss olja") |
 | `några` | `massNoun = true` — oräknebart ämnesord, mer naturligt för plurala ämnesord |
 | `()` | `qualified = true` — objektet tar aldrig obestämd artikel |
 | `den` / `det` | `qualified = true` — som `()` men skrivs naturligare för egennamn |
