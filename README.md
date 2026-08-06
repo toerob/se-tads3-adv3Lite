@@ -68,7 +68,8 @@ Kortfattat:
 - `^s` används för foge-s (`tranbär^s+juice+n` → tranbär, tranbären,
   tranbärsjuice, tranbärsjuicen).
 - `:` anger en alternativ obestämd form eller byter genus på en
-  sammansättningsdel. T ex: `sol:en+ljus+et`.
+  sammansättningsdel. T ex: `fönst:er+ret`
+  eller `sol:en+ljus+et`. 
 - `|` slår ihop ord till ett sammansatt ord utan att skapa upp
   delkomponenterna som egna sökord.
   T ex: `byrå|låda+n`.
