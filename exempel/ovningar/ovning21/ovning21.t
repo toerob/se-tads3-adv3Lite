@@ -1068,7 +1068,7 @@ xyz: MultiLoc, Decoration 'träd och buskar;;träd+en buskar+na snår+en; dem'
     och omsorgsfullt skötts under åren. Du kan bara hoppas att de inte skadas 
     av översvämningsvattnet om och när floden går över sina bräddar. "
 
-    definiteForm = 'träden och buskarna'
+    theName = 'träden och buskarna'
 
     locationList = [parkRegion]
     

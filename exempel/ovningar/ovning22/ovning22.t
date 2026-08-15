@@ -763,7 +763,7 @@ storageCompartment: Room 'Förvaringsfack'
 
 ++ Decoration 'utrustning+en;delar+na prep[av];;dem' "<<notImportantMsg>>"
     name = 'delar av utrustning'
-    definiteForm = 'delarna av utrustningen'
+    theName = 'delarna av utrustningen'
 
     notImportantMsg = (livingQuarters.seen ? 'Det finns inget annat du behöver
         här just nu.' : 'När du har bedömt skadan vet du vad du behöver för 
@@ -829,7 +829,7 @@ storageCompartment: Room 'Förvaringsfack'
     också tillräckligt bra för att skapa en lufttät tätning så att fartyget kan 
     trycksättas på nytt. "
     name = 'rulle med skrovreparationstyg'
-    definiteForm = 'rullen med skrovreparationstyg'
+    theName = 'rullen med skrovreparationstyg'
 
 
     isHidden = true
@@ -1193,7 +1193,7 @@ livingQuarters: Room 'Bostadsutrymme'
 + gapingHole: Component 'hål+et;gapande;gap+et' 
     "Den är runt på ett ungefär och cirka en meter i diameter."
     name = 'gapande hål'
-    definiteForm = 'gapande hålet'
+    theName = 'gapande hålet'
     
     /* 
      *   Make ATTACH FABRIC TO HOLE equivalent to ATTACH FABRIC TO STARBOARD 

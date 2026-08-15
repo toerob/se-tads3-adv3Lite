@@ -8,22 +8,22 @@ modify DefaultWall vocab = 'vägg+en;;väggar+na[pl]';
 
 replace defaultCeiling:Ceiling 'tak+et';
 
-replace defaultNorthWall: DefaultWall 'nordlig+a *; norra (n)' 
+replace defaultNorthWall: DefaultWall 'norr+a *; norra (n)' 
   name = 'nordlig vägg'
-  definiteForm = 'nordliga väggen'
+  theName = 'norra väggen'
 ;
 
-replace defaultEastWall: DefaultWall 'östra *; (ö) (o)'
+replace defaultEastWall: DefaultWall 'öst:er+ra *; östra (ö) (o)'
   name = 'öster vägg'
-  definiteForm = 'östra väggen'
+  theName = 'östra väggen'
 ;
 
-replace defaultSouthWall: DefaultWall 'södra *; (s)'
+replace defaultSouthWall: DefaultWall 'söd:er+ra *; södra (s)'
   name = 'söder vägg'
-  definiteForm = 'södra väggen'
+  theName = 'södra väggen'
 ;
 
-replace defaultWestWall: DefaultWall 'västra *; (v)'
+replace defaultWestWall: DefaultWall 'väst:er+ra *; västra (v)'
   name = 'väster vägg'
-  definiteForm = 'västra väggen'
+  theName = 'västra väggen'
 ;

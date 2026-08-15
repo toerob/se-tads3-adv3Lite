@@ -58,8 +58,11 @@ class LMentionable: object
      */
     theName = (ifPronoun(&name, theNameFrom(name)))
 
-    /* Bestämt namn, objektivt fall. */
-    theObjName = (ifPronoun(&objName, theNameFrom(name)))
+    /* Bestämt namn, objektivt fall. Bygger på theName (inte theNameFrom(name)
+     * direkt) så att en direkt satt theName på objektet också återspeglas
+     * här - annars skulle en okvalificerad substantivform brytas mot en
+     * eventuell manuellt satt theName. */
+    theObjName = (ifPronoun(&objName, theName))
 
     /*
      *   Hämta den objektiva formen av namnet. Den vanliga 'name' egenskapen
@@ -1681,12 +1684,19 @@ class LMentionable: object
         local loc = distinguishers.indexOf(locationDistinguisher) != nil;
         local cont = distinguishers.indexOf(contentsDistinguisher) != nil;
 
-        /* 
+        /*
          *   börja med kärnnamnet: detta är antingen basnamnet eller
          *   disambiguation namnet, beroende på om det finns en
-         *   disambigNameDistinguisher i listan 
+         *   disambigNameDistinguisher i listan
          */
         ret = (dis ? disambigName : name);
+
+        /* Spara det ursprungliga, omodifierade namnet. Om ingen distinguisher
+         * nedan lägger till en kvalificerare (tillståndsadjektiv, possessiv,
+         * innehåll, plats) är ret fortfarande samma sträng härifrån när vi
+         * når artikelsteget, och vi kan då slå upp författarens direkt satta
+         * theName ordagrant istället för att bygga om den bestämda formen. */
+        local baseRet = ret;
 
         /* lägg till eventuella tillståndsadjektiv */
         foreach (local d in distinguishers)
@@ -1734,7 +1744,21 @@ class LMentionable: object
         if (article == Indefinite)
             ret = (poss ? aNameFromPoss(ret) : aNameFrom(ret));
         else if (article == Definite && !poss)
-            ret = theNameFrom(ret);
+        {
+            /* Om spelförfattaren har satt theName direkt på objektet, och
+             * ingen distinguisher ovan har lagt till en kvalificerare till
+             * namnet (dvs vi bygger fortfarande den vanliga, okvalificerade
+             * bestämda formen), använd författarens theName ordagrant -
+             * precis som definiteForm används ordagrant när den är satt
+             * direkt. Finns en disambiguation-kvalificerare (dis) eller
+             * någon annan kvalificerare låter vi theNameFrom bygga namnet
+             * som vanligt, eftersom en statisk theName inte kan veta hur
+             * den ska kombineras med sådana tillägg. */
+            if (!dis && ret == baseRet && propDefined(&theName, PropDefDirectly))
+                ret = theName;
+            else
+                ret = theNameFrom(ret);
+        }
 
         /* returnera resultatet */
         return ret;
@@ -3407,7 +3431,7 @@ modify lookLister
 modify inventoryLister
     showListPrefix(lst, pl, paraCnt)
     {
-        "<<if paraCnt == 0>>{Jag}<<else>>, och<<end>> bär på ";
+        "<<if paraCnt == 0>>{Jag}<<else>>, och<<end>> {bär} på ";
     }
     
     showListSuffix(lst, pl, paraCnt)
@@ -3428,7 +3452,7 @@ modify inventoryLister
 modify wornLister
     showListPrefix(lst, pl, paraCnt)
     {
-        "{Jag} bär ";
+        "{Jag} {bär} ";
     }
     
     showListSuffix(lst, pl, paraCnt)

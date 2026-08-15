@@ -222,7 +222,7 @@ bok: Thing 'bok+en på[prep] hylla+n';
 
 Notera skillnaden mot `soppa på burk`: där ska "på burk" vara en del av det
 vanliga visningsnamnet (inte bara en disambiguerande kvalificerare), så där
-används istället en direkt satt `definiteForm` (se nästa avsnitt) snarare än
+används istället en direkt satt `theName` (se nästa avsnitt) snarare än
 `[prep]`-annotering.
 
 ### Varför 'för' inte är med i prepList
@@ -258,7 +258,7 @@ tyst falla bort ur `name`. Med `för` borttaget ur `prepList` tolkas `för` och
 (`theName` blir dock `'den tråkiga instruktionen'` — `för` saknar egen
 `+`-notation och bidrar därför inte till `shortNameAdjDef`, precis som vilket
 annat oböjligt adjektiv utan `+`-notation som helst i sektion 1. Behövs `för`
-även i den bestämda formen, sätt `definiteForm` direkt enligt nästa avsnitt.)
+även i den bestämda formen, sätt `theName` direkt enligt nästa avsnitt.)
 
 De legitima "for"-fallen fungerar fortfarande precis som förut — annotera bara
 `för` med `[prep]` i det specifika objektets vocab-sträng:
@@ -274,40 +274,43 @@ Kort sagt: `för` som **syfte/mottagare** ("for use", "for headaches") kräver n
 boring") fungerar automatiskt utan någon annotering alls, eftersom det inte
 längre riskerar att tolkas som en preposition.
 
-### Manuell definiteForm för ovanliga fraser
+### Manuell theName för ovanliga fraser
 
 Notationen ovan täcker "adjektiv + substantiv". Den täcker **inte** ett
 substantiv följt av en oföränderlig prepositionsfras som alltid ska synas i
 namnet, t.ex. "soppa på burk" (bestämd form: "soppan på burk"). Ord efter
 substantivet i sektion 1 tolkas som en efterställd, valfri kvalificerare
-(jämför "nyckel till dörren") och räknas därför inte in i `name`/`definiteForm`
-annat än av en slump.
+(jämför "nyckel till dörren") och räknas därför inte in i `name` annat än av
+en slump.
 
-Sätt istället `definiteForm` direkt på objektet:
+Sätt istället `theName` direkt på objektet:
 
 ```tads3
 soppburken: Container 'soppa+n på burk+en;;konservburk+en'
-    definiteForm = 'soppan på burk'
+    theName = 'soppan på burk'
 ;
-// name       = 'soppa på burk'   (byggs som vanligt av vocab-strängen)
-// definiteForm = 'soppan på burk' (satt direkt, används ordagrant)
-// theName    = 'soppan på burk'  (inget artikelprefix läggs till)
-// aName      = 'en soppa på burk'
+// name    = 'soppa på burk'   (byggs som vanligt av vocab-strängen)
+// theName = 'soppan på burk'  (satt direkt, används ordagrant)
+// aName   = 'en soppa på burk'
 ```
 
-När `definiteForm` sätts direkt genereras inget automatiskt adjektivprefix
-(`shortNameAdjDef`) — `theNameFrom` returnerar då `definiteForm` precis som
-den skrevs, utan `den`/`det`/`de` framför. Genus (`isNeuter`) härleds i så
-fall från **första ordet** i `definiteForm` (här ger "soppan" utrum), så det
-behöver normalt inte sättas manuellt även för flerordsfraser.
+När `theName` sätts direkt används strängen precis som den skrevs — inget
+automatiskt artikelprefix (`den`/`det`/`de`) och inget adjektivprefix
+(`shortNameAdjDef`) läggs till. Genus (`isNeuter`) härleds ändå automatiskt
+som vanligt, från grundordets ändelse i vocab-strängen (här `soppa+n` →
+utrum), så det behöver normalt inte sättas manuellt bara för att `theName`
+override:as.
 
-**Obs:** sätt inte `theName` direkt i detta syfte — det har ingen effekt.
-Parsern bygger objektreferenser (t.ex. standardmeddelandet "Du ser inget
-speciellt med ...") via `distinguishedName()`, som anropar `theNameFrom(name)`
-direkt och aldrig läser `theName`-egenskapen. Hävstången för att styra hur ett
-objekt refereras till bestämt är alltså `definiteForm`, inte `theName`.
+`distinguishedName()` — som parsern använder för att bygga objektreferenser,
+t.ex. standardmeddelandet "Du ser inget speciellt med ..." — läser av en
+direkt satt `theName` i normalfallet (ingen disambiguering eller annan
+kvalificerare inblandad). Så fort en distinguisher måste lägga till något
+(disambiguation-namn, tillståndsadjektiv, possessiv-, plats- eller
+innehållskvalificerare) byggs den bestämda formen istället som vanligt från
+`name`, eftersom en statisk `theName`-sträng inte kan veta hur den ska
+kombineras med sådana tillägg.
 
-### Sammansättning eller manuell definiteForm — vilket ska man välja?
+### Sammansättning eller manuell theName — vilket ska man välja?
 
 `soppa på burk` är ett exempel på en **oföränderlig kvalificerare** som hör till
 objektets identitet ("den här typen av soppa"). Men ibland vill man länka två
@@ -315,7 +318,7 @@ substantiv med `av` av en helt annan anledning: för att peka ut en **specifik
 referent** — vem/vad något föreställer, inte vilken typ eller vilket material
 det är gjort av. Då räcker det inte att bara skriva om vocab-strängen med
 sammansättningsnotation (`+`/`^s`/`:`), och lösningen blir densamma som ovan:
-sätt `name`/`definiteForm` direkt.
+sätt `name`/`theName` direkt.
 
 Jämför de två fallen:
 
@@ -328,12 +331,11 @@ papperslappsbit: Thing 'gul+a papper:et^s+lapp^s+bit+en';
 // Specifik referens (avbildning): sammansättning duger inte här
 staty: Thing 'staty+n av kung+en'
     name = 'staty av kungen'
-    definiteForm = 'statyn av kungen'
+    theName = 'statyn av kungen'
 ;
-// name         = 'staty av kungen'
-// definiteForm = 'statyn av kungen'
-// theName      = 'statyn av kungen'
-// aName        = 'en staty av kungen'
+// name    = 'staty av kungen'
+// theName = 'statyn av kungen'
+// aName   = 'en staty av kungen'
 ```
 
 Varför fungerar inte sammansättning för `staty av kungen`? `kungastaty` skulle
@@ -350,7 +352,7 @@ Tumregel:
 | Situation | Lösning |
 |---|---|
 | Material/kategori | Sammansättning (`trästol`, `papperslappsbit`) |
-| Specifik referens/avbildning | Manuell `definiteForm` (`staty av kungen`) |
+| Specifik referens/avbildning | Manuell `theName` (`staty av kungen`) |
 
 I det senare fallet hamnar `staty+n` ändå som huvudsubstantiv i vocab-strängen
 (`av` finns i `prepList`), så utan den manuella överskrivningen hade "av

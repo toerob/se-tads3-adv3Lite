@@ -591,7 +591,7 @@ class SugarCube: Food 'sockerbit+en'
 
 //TODO: can of soup;;tin
 + soupCan: Container 'soppa+n på burk+en;;konservburk+en'
-    definiteForm = 'soppan på burk'
+    theName = 'soppan på burk'
     isOpen = nil    
     
     dobjFor(OpenWith)
