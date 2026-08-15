@@ -5033,6 +5033,19 @@ swedishMessageParams: MessageParams
             }
         }
         ],
+        // Dubblett av ref, för att underlätta vid översättningar
+        [ 'the', function(ctx, params) {
+            if (params[2] == 'subj') {
+                return cmdInfo(ctx, params[3], &theName, vSubject);
+            } else if (params[2].endsWith('s')) {
+                //return cmdInfo(ctx, params[2].left(-2), &possAdj, vObject);
+                return cmdInfo(ctx, params[2].left(-1), &possAdj, vObject);
+            } else {
+                return cmdInfo(ctx, params[2], &theObjName, vAmbig);
+            }
+        }
+        ],
+
 
         /* Motsvarar 'name' i den engelska versionen */
         ['namn', function(ctx, params) {
@@ -5069,7 +5082,6 @@ swedishMessageParams: MessageParams
             } else {
                 return cmdInfo(ctx, params[2], &aName, vAmbig);
             }
-        
         }
         ],
     
@@ -5175,6 +5187,10 @@ swedishMessageParams: MessageParams
         /* {är}, {ärinte} */
         [ 'är', conjugateBe ],
         [ 'ärinte', conjugateIsnt ],
+
+        // Dubblett av 'är' - underlätta vid översättningar
+        [ 'is', conjugateBe ],
+
 
         /* {var}, {varinte} */
         [ 'var', conjugateWas ],

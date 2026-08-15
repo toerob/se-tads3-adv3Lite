@@ -58,7 +58,7 @@ grammar firstCommandPhrase(withActor):
 ;
 
 grammar firstCommandPhrase(askTellActorTo):
-    ('fråga' | 'säga' | 'f' | 's') singleNounOnly->actor_
+    ('be' | 'beordra' | ('säg' 'till')) singleNounOnly->actor_
     'att' commandPhrase->cmd_
     : CommandProduction
 
@@ -109,7 +109,7 @@ grammar defaultVerbPhrase(noun):
 
 grammar actorBadCommandPhrase(main):
     singleNounOnly->actor_ ',' miscWordList
-    | ('fråga' | 'säga' | 'f' | 's') singleNounOnly->actor_ 'att' miscWordList
+    | ('fråga' | 'be' | 'beordra') singleNounOnly->actor_ 'att' miscWordList
     : Production
 ;
 
@@ -127,10 +127,10 @@ grammar commandOnlyConjunction(sentenceEnding):
 ;
 
 grammar commandOnlyConjunction(nonSentenceEnding):
-    'sedan'
-    | 'och' 'sedan'
-    | ',' 'sedan'
-    | ',' 'och' 'sedan'
+    ('sen' | 'sedan')
+    | 'och' ('sen' | 'sedan')
+    | ',' ('sen' | 'sedan')
+    | ',' 'och' ('sen' | 'sedan')
     | ';'
     : Production
 ;
@@ -1618,11 +1618,11 @@ VerbRule(Read)
 ;
 
 VerbRule(LookIn)
-    ('titta' | 't' | 'se') ('i' | 'inuti') multiDobj
+    ('titta' | 't' | 'se') ('in'|) ('i' | 'inuti') multiDobj
     : VerbProduction
     action = LookIn
-    verbPhrase = 'titta/tittar (i vad)'
-    missingQ = 'vad vill du titta i'   
+    verbPhrase = 'titta/tittar in (i vad)'
+    missingQ = 'vad vill du titta in i'   
     priority = 60
 ;
 
@@ -2031,11 +2031,11 @@ VerbRule(AskAboutWhat)
 
 
 VerbRule(TellAbout)
-    ('b'|'berätta'|'säg') singleDobj 'om' topicIobj
+    ('b'|'berätta'|'säg') 'för' singleDobj 'om' topicIobj
     : VerbProduction
     action = TellAbout
-    verbPhrase = 'säga/säger (vem) (om vad)'
-    missingQ = 'vem vill du säga;vad vill du säga om'
+    verbPhrase = 'berätta/berättar för (vem) (om vad)'
+    missingQ = 'vem vill du berätta för;vad vill du berätta om'
     dobjReply = singleNoun
     iobjReply = aboutTopicPhrase
 ;
@@ -2045,17 +2045,17 @@ VerbRule(TellAboutImplicit)
      | 'b' topicIobj
     : VerbProduction
     action = TellAboutImplicit
-    verbPhrase = 'säga/säger (vem) (om vad)'
-    missingQ = 'vem vill du säga;vad vill du säga om'
+    verbPhrase = 'berätta/berättar för (vem) (om vad)'
+    missingQ = 'vem vill du berätta för;vad vill du berätta om'
     iobjReply = aboutTopicPhrase
 ;
 
 VerbRule(TellAboutWhat)
-    [badness 500] 'säga' singleDobj
+    [badness 500] 'berätta' singleDobj
     : VerbProduction
     action = TellAbout
-    verbPhrase = 'säga/säger (vem) (om vad)'
-    missingQ = 'vem vill du säga;vad vill du säga om'
+    verbPhrase = 'berätta/berättar för (vem) (om vad)'
+    missingQ = 'vem vill du berätta för;vad vill du berätta om'
 
     missingRole = IndirectObject
     dobjReply = singleNoun
@@ -2065,11 +2065,11 @@ VerbRule(TellAboutWhat)
 ;
 
 VerbRule(TellTo)
-    'säga' singleDobj 'att' literalIobj
+    'be' | ('säg' 'till') singleDobj 'att' literalIobj
     : VerbProduction
     action = TellTo
-    verbPhrase = 'säga/säger (vem) (att vad)'
-    missingQ = 'vem vill du säga;vad vill du säga {det} att göra'
+    verbPhrase = 'be/ber (vem) (att vad)'
+    missingQ = 'bem vill du be om;vad vill du be om att få gjort'
     iobjReply = literalPhrase
 ;
 
@@ -2103,11 +2103,11 @@ VerbRule(AskVague)
 ;
 
 VerbRule(TellVague)
-    ('säga'|'s') singleDobj topicIobj
+    ('berätta'|'b') 'för' singleDobj topicIobj
     : VerbProduction
     action = TellAbout
-    verbPhrase = 'säga/säger (vem)'
-    missingQ = 'vem vill du säga;vad vill du säga om'
+    verbPhrase = 'berätta/berättar för (vem)'
+    missingQ = 'vem vill du berätta för;vad vill du berätta om'
     priority = 40
     dobjReply = singleNoun
     iobjReply = topicPhrase    
@@ -2130,7 +2130,7 @@ VerbRule(Topics)
 ;
 
 VerbRule(Hello)
-    ('säga' | ) ('hej' | 'hallå' | 'hej')
+    ('säg' | ) ('hej' | 'hallå')
     : VerbProduction
     action = Hello
     verbPhrase = 'säga/säger hej'
@@ -2139,14 +2139,14 @@ VerbRule(Hello)
 ;
 
 VerbRule(Goodbye)
-    ('säga' | ()) ('hejdå' | 'adjö' | 'farväl' | 'hej då')
+    ('säg' | ()) ('hejdå' | 'adjö' | 'farväl' | ('hej' 'då'))
     : VerbProduction
     action = Goodbye
     verbPhrase = 'säga/säger hejdå'
 ;
 
 VerbRule(Yes)
-    'ja' | ('säga' 'ja') | 'acceptera'
+    'ja' | ('säg' 'ja') | 'acceptera'
     : VerbProduction
     action = SayYes
     verbPhrase = 'säga/säger ja'
@@ -2171,7 +2171,7 @@ VerbRule(Yell)
 ;
 
 VerbRule(GiveTo)
-    ('ge' | 'erbjud') multiDobj 'till' singleIobj
+    (('ge' ('bort'|) )| 'erbjud') multiDobj 'till' singleIobj
     : VerbProduction
     action = GiveTo
     verbPhrase = 'ge/ger (vad) (till vem)'
@@ -2192,7 +2192,7 @@ VerbRule(GiveToType2)
 ;
 
 VerbRule(GiveToImplicit)
-    ('ge' | 'erbjuda') multiDobj
+    ('ge' | 'erbjud') multiDobj
     : VerbProduction
     action = GiveToImplicit
     verbPhrase = 'ge/ger (vad) (till vem)'
@@ -2243,7 +2243,7 @@ VerbRule(Say)
 ;
 
 VerbRule(SayTo)
-    'säga' ('att' |) topicIobj 'till' singleDobj
+    'säg' ('att' |) topicIobj ('till'|'för') singleDobj
     : VerbProduction
     action = SayTo
     verbPhrase = 'säga/säger (vad) (till vem)'
@@ -2253,7 +2253,7 @@ VerbRule(SayTo)
 ;
 
 VerbRule(TellThat)
-    'säga' singleDobj 'att' topicIobj
+    'säg' singleDobj 'att' topicIobj
     : VerbProduction
     action = SayTo
     verbPhrase = 'säga/säger (vad) (till vem)'
@@ -2270,11 +2270,11 @@ VerbRule(Think)
 ;
 
 VerbRule(ThinkAbout)
-    ('tänk' | 'fundera' | 'grubbla') 'om' topicDobj
+    ('tänk' | 'fundera' | 'grubbla') ('på'|'om') topicDobj
     : VerbProduction
     action = ThinkAbout
-    verbPhrase = 'tänka/tänker (om vad)'
-    missingQ = 'vad vill du tänka om'
+    verbPhrase = 'tänka/tänker (på vad)'
+    missingQ = 'vad vill du tänka på'
     dobjReply = aboutTopicPhrase
 ;
     
@@ -2631,7 +2631,7 @@ VerbRule(GoToMode)
 ;
 
 VerbRule(GoTo)
-    ('gå' 'till' | 'gå' 'till' | 'gå till')
+    'gå' 'till'
     singleDobj
     : VerbProduction
     action = GoTo
@@ -2697,7 +2697,7 @@ VerbRule(Out)
 ;
 
 VerbRule(GoThrough)
-    ('gå' | 'gå' ) ('genom' | 'via')
+    ('gå' | 'färdas' ) ('genom' | 'via')
         singleDobj
     : VerbProduction
     action = GoThrough
@@ -2707,7 +2707,7 @@ VerbRule(GoThrough)
 ;
 
 VerbRule(GoAlong)
-    ('gå' | 'gå' ) ('längs')
+    ('gå' | 'färdas' ) ('längs')
         singleDobj
     : VerbProduction
     action = GoAlong
@@ -3169,7 +3169,7 @@ VerbRule(Climb)
 ;
 
 VerbRule(ClimbUp)
-    ('klättra' | 'gå' | 'gå') 'upp' ('för'|) singleDobj
+    ('klättra' | 'gå' | 'färdas') 'upp' ('för'|) singleDobj
     : VerbProduction
     action = ClimbUp
     verbPhrase = 'klättra/klättrar upp (för vad)'
@@ -3188,7 +3188,7 @@ VerbRule(ClimbUpWhat)
 ;
 
 VerbRule(ClimbDown)
-    ('klättra' | 'gå' | 'gå') 'ner' singleDobj
+    ('klättra' | 'gå' | 'färdas') 'ner' singleDobj
     : VerbProduction
     action = ClimbDown
     verbPhrase = 'klättra/klättrar (ner vad)'
@@ -3197,7 +3197,7 @@ VerbRule(ClimbDown)
 ;
 
 VerbRule(ClimbDownWhat)
-    ('klättra' | 'gå' | 'gå') 'ner'
+    ('klättra' | 'gå' | 'färdas') 'ner'
     : VerbProduction
     action = ClimbDown
     verbPhrase = 'klättra/klättrar (ner vad)'
@@ -3420,7 +3420,7 @@ VerbRule(GetOutOfWhat)
 
 
 VerbRule(GetOff)
-    'gå' ('av' | 'av' 'av' | 'ner' 'från') singleDobj
+    ('gå'|'kliv') ('av' | ('av'|'ner') 'från') singleDobj
     : VerbProduction
     action = GetOff
     verbPhrase = 'gå/går (av vad)'
