@@ -118,21 +118,20 @@ DefineSystemAction(Instructions)
      */
     conversationVerbs =
     [
-        'ASK WIZARD ABOUT WAND',
-        'ASK WIZARD FOR POTION',
-        'ASK WIZARD HOW TO FLY',
-        'TELL WIZARD ABOUT DUSTY TOME',
-        'TALK ABOUT THE WEATHER',
-        'SAY YOU\'RE AFRAID',
-        'SHOW SCROLL TO WIZARD',
-        'GIVE WAND TO WIZARD',
-        'YES (or NO)'
+        'FRÅGA TROLLKARLEN OM TROLLSTAV',
+        'FRÅGA TROLLKARLEN OM DRICKTRYCK',
+        'FRÅGA TROLLKARLEN HUR MAN FLYGER',
+        'BERÄTTA FÖR TROLLKARLEN OM DEN DAMMIGA STORA BOKEN',
+        'PRATA OM VÄDRET',
+        'SÄG ATT DU ÄR RÄDD',
+        'VISA SKRIFTRULLE FÖR TROLLKARLEN',
+        'GE TROLLSTAVEN TILL TROLLKARLEN',
+        'JA (eller NEJ)'
     ]
 
     /* conversation verb abbreviations */
-    conversationAbbr = "\n\tASK ABOUT (topic) can be abbreviated
-                        to A (topic)
-                        \n\tTELL ABOUT (topic) can be entered as T (topic)"
+    conversationAbbr = "\n\tFRÅGA OM (ämne) kan förkortas till F (ämne)
+                        \n\tBERÄTTA OM (ämne) kan skrivas som B (ämne)"
 
     /*
      *   Truncation length. If the game's parser allows words to be
@@ -215,6 +214,7 @@ DefineSystemAction(Instructions)
      */
     conversationInstructions()
     {
+        /*
         "You can talk to other characters by asking or
         telling them about things in the story.  For example, you might
         ASK WIZARD ABOUT WAND or TELL GUARD ABOUT ALARM.  You should
@@ -235,49 +235,85 @@ DefineSystemAction(Instructions)
         ASK ABOUT to A, and TELL ABOUT to T.  For example, once you&rsquo;re
         talking to the wizard, you can abbreviate ASK WIZARD ABOUT AMULET
         to simply A AMULET.  This addresses the question to the same
-        character as in the last ASK or TELL. ";
+        character as in the last ASK or TELL. 
+        */
+
+        "Du kan prata med andra karaktärer genom att fråga eller 
+        berätta för dem om saker i berättelsen. Till exempel kan du
+        FRÅGA TROLLKARLEN OM TROLLSTAV eller BERÄTTA FÖR VAKTEN OM 
+        ALARM. Du bör normalt använda formuleringarna FRÅGA OM eller 
+        BERÄTTA OM; berättelsen kommer i allmänhet inte att kunna 
+        förstå andra format, så du behöver inte oroa dig för att 
+        komma på komplicerade frågor som <q>fråga vakten hur man 
+        öppnar fönstret.</q>, såvida inte spelet uttryckligen 
+        erbjuder en sådan fråga som ett förslag. I de flesta fall 
+        får du bäst resultat genom att fråga om specifika föremål 
+        eller andra karaktärer du har stött på i berättelsen, snarare 
+        än om abstrakta ämnen som MENINGEN MED LIVET; men om något i 
+        berättelsen får dig att tro att du <i>borde</i> fråga om ett 
+        visst abstrakt ämne, skadar det inte att försöka. 
+
+        \bOm du frågar om eller berättar för samma person om flera 
+        ämnen i följd kan du spara en del skrivarbete genom att 
+        förkorta FRÅGA OM till A och BERÄTTA OM till T. Till exempel, 
+        när du pratar med trollkarlen kan du förkorta FRÅGA TROLLKARLEN 
+        OM AMULETTEN till helt enkelt F AMULETTEN. Detta riktar frågan 
+        till samma karaktär som i den gjords i senaste FRÅGA eller BERÄTTA.";
 
         if(defined(ActorState) && firstObj(ActorState, ObjInstances) != nil)
-          "\bTo greet another character, type TALK TO (Person).  This
-          tries to get the other character&rsquo;s attention and start a
-          conversation.  TALK TO is always optional, since you can start
-          in with ASK or TELL directly if you prefer. ";
+            "\bFör att hälsa på en annan karaktär, skriv PRATA MED (Person). 
+            Detta försöker få den andra karaktärens uppmärksamhet och sedan 
+            starta en konversation. PRATA MED är alltid valfritt, eftersom 
+            du även kan börja med FRÅGA eller BERÄTTA direkt om du föredrar 
+            det. ";
 
-        if(defined(SpecialTopic) && firstObj(SpecialTopic, ObjInstances) !=
-          nil)
-          "\bThe story might occasionally suggest some special conversation
-          commands, like this:
+        if(defined(SpecialTopic) && firstObj(SpecialTopic, ObjInstances) != nil)
+            "\bBerättelsen kan ibland föreslå några speciella konversationskommandon, 
+            som detta:
 
-          \b\t(You could apologize, or explain about the aliens, or ask how to
-          fly.)
+            \b(Du kan be om ursäkt, eller förklara utomjordingarna, eller fråga hur man flyger.)
 
-          \bIf you like, you can use one of the suggestions just by
-          typing in the special phrasing shown.  You can usually
-          abbreviate these to the first few words when they&rsquo;re long.
+            \bOm du vill kan du använda ett av förslagen genom att bara skriva in den speciella 
+            fraseringen som visas. Du kan vanligtvis förkorta dessa till de första orden när de 
+            är långa.
 
-          \b\t&gt;APOLOGIZE
-          \n\t&gt;EXPLAIN ABOUT ALIENS
-          \n\t&gt;ASK HOW TO FLY
+            \b\t&gt;BE OM URSÄKT
+            \b\t&gt;FÖRKLARA UTOMJORDINGARNA
+            \b\t&gt;FRÅGA HUR MAN FLYGER
 
-          \bSpecial suggestions like this often only work right at the moment
-          they&rsquo;re offered, so you don&rsquo;t have to worry about
-          memorizing them, or trying them at other random times in the story.
-          They&rsquo;re not new commands for you to learn; they&rsquo;re just
-          extra options you have at specific times, and the story will always
-          let you know when they&rsquo;re available.  When the story offers
-          suggestions like this, they don&rsquo;t limit what you can do; you
-          can still type any ordinary command instead of one of the
-          suggestions. ";
+            \bSpecialförslag som detta fungerar ofta bara just i det ögonblick de erbjuds, så du 
+            behöver inte oroa dig för att memorera dem eller prova dem vid andra slumpmässiga 
+            tillfällen i berättelsen.
+            De är inte nya kommandon du behöver lära dig; de är bara ytterligare alternativ 
+            tillgängliga vid specifika tillfällen, och berättelsen kommer alltid att meddela 
+            dig när de är tillgängliga. När berättelsen erbjuder förslag som detta, kommer det 
+            inte begränsa vad du kan göra; du kan fortfarande skriva vilket vanligt kommando som 
+            helst istället för ett av förslagen. ";
 
-        if(defined(ActorTopicEntry) && firstObj(ActorTopicEntry, ObjInstances) 
-          != nil)
-          "\bIf you&rsquo;re not sure what to discuss, you can type TOPICS any
-          time you&rsquo;re talking to someone.  This will show you a list of
-          things that your character might be interested in discussing
-          with the other person.  The TOPICS command usually won&rsquo;t list
-          everything that you can discuss, so feel free to explore other
-          topics even if they&rsquo;re not listed. ";
+        if(defined(ActorTopicEntry) && firstObj(ActorTopicEntry, ObjInstances) != nil)
+            "\bOm du är osäker på vad du ska diskutera kan du skriva ÄMNEN när som helst 
+            när du pratar med någon. Detta visar en lista över saker som din karaktär kan 
+            vara intresserad av att diskutera med den andra personen. Kommandot ÄMNEN 
+            listar vanligtvis inte allt som ni kan diskutera, så utforska gärna andra 
+            ämnen även om de inte finns med i listan. ";
 
+        "\bDu kan också interagera med andra karaktärer med hjälp av fysiska föremål. Till exempel 
+        så kan du ge något till en annan karaktär, så som i: GE PENGAR TILL BUTIKSBITRÄDE, eller 
+        visa ett föremål till någon, så som i VISA AVGUDABILD FÖR PROFESSORN. Du kan också slåss 
+        mot andra karaktärer, som i ATTACKERA TROLL MED SVÄRD eller KASTA YXA PÅ DVÄRG.
+
+        \bI vissa fall kan du be en karaktär att göra något för dig. Du gör detta genom att 
+        skriva karaktärens namn, sedan ett kommatecken och sedan det kommando du vill att 
+        karaktären ska utföra, med samma formulering som du skulle använda för ett kommando 
+        till din egen karaktär. Till exempel:
+
+        \b\t&gt;ROBOT, GÅ NORR
+
+        \bBetänk dock på att det inte finns någon garanti för att andra karaktärer alltid 
+        kommer att lyda dina order. De flesta karaktärer har sina egna tankar och kommer inte 
+        automatiskt att göra vad du än ber om. ";
+
+        /*
         "\bYou can also interact with other characters using physical
         objects.  For example, you might be able to give something to
         another character, as in GIVE MONEY TO CLERK, or show an object
@@ -296,7 +332,7 @@ DefineSystemAction(Instructions)
         \bKeep in mind, though, that there&rsquo;s no guarantee that other
         characters will always obey your orders.  Most characters have
         minds of their own and won&rsquo;t automatically do whatever you
-        ask. ";
+        ask. ";*/
     }
 
     /* execute the command */
@@ -320,7 +356,7 @@ DefineSystemAction(Instructions)
         topInstructionsMenu.display();
 
         /* show an acknowledgment */
-        "Done. ";
+        "Klart. ";
     }
     
 #else /* INSTRUCTIONS_MENU */
@@ -337,10 +373,10 @@ DefineSystemAction(Instructions)
         startedScript = nil;
         
         /* show the introductory message */
-        "The story is about to show a full set of instructions,
-        designed especially for people who aren&rsquo;t already familiar
-        with interactive fiction.  The instructions are lengthy";
-
+        "Berättelsen kommer snart att visa en fullständig 
+        uppsättning instruktioner, utformade speciellt för 
+        personer som inte redan är bekanta med interaktiv 
+        fiktion. Instruktionerna är långa";
         /*
          *   Check to see if we're already scripting.  If we aren't, offer
          *   to save the instructions to a file. 
@@ -353,17 +389,16 @@ DefineSystemAction(Instructions)
              *   they're not already logging; ask if they'd like to start
              *   doing so 
              */
-            ", so you might want to capture them to a file (so that
-            you can print them out, for example).  Would you like to
-            proceed?
-            \n(<<aHref('yes', 'Y')>> is affirmative, or type
-            <<aHref('script', 'SCRIPT')>> to capture to a file) &gt; ";
+            ", så du kan vilja spara ner dem till en fil (så att du kan 
+            skriva ut dem, till exempel). Vill du fortsätta?
+            \n(<<aHref('ja', 'J')>> för att bekräfta, eller skriv 
+            <<aHref('skript', 'SKRIPT')>> för att spara till en fil) &gt; ";
 
             /* ask for input */
             str = inputManager.getInputLine(nil);
 
             /* if they want to capture them to a file, set up scripting */
-            if (rexMatch('<nocase><space>*s(c(r(i(pt?)?)?)?)?<space>*', str)
+            if (rexMatch('<nocase><space>*s(k(r(i(pt?)?)?)?)?<space>*', str)
                 == str.length())
             {
                 /* try setting up a scripting file */
@@ -376,9 +411,9 @@ DefineSystemAction(Instructions)
                 /* note that we've started a script file */
                 startedScript = true;
             }
-            else if (rexMatch('<nocase><space>*y.*', str) != str.length())
+            else if (rexMatch('<nocase><space>*j.*', str) != str.length())
             {
-                "Canceled. ";
+                "Avbrutet. ";
                 return;
             }
         }
@@ -388,13 +423,13 @@ DefineSystemAction(Instructions)
              *   they're already logging; just confirm that they want to
              *   see the instructions 
              */
-            "; would you like to proceed?
-            \n(Y is affirmative) &gt; ";
+            "; vill du fortsätta?
+            \n(J för att bekräfta) &gt; ";
 
             /* stop if they don't want to proceed */
             if (!yesOrNo())
             {
-                "Canceled. ";
+                "Avbrutet. ";
                 return;
             }
         }
@@ -426,80 +461,82 @@ DefineSystemAction(Instructions)
     /* Entering Commands chapter */
     showCommandsChapter()
     {
-        "\b<b>Entering Commands</b>\b
-        You&rsquo;ve probably already noticed that you interact with the story
-        by typing a command whenever you see the <q>prompt,</q> which
-        usually looks like this:
+        "\b<b>Skriva in Kommandon</b>\b
+        Du har förmodligen redan märkt att du interagerar med berättelsen genom
+        att skriva ett kommando när du ser <q>prompten</q>, som vanligtvis ser 
+        ut så här:
         \b";
 
         ">";
 
-        "\bKnowing this much, you&rsquo;re probably thinking one of two things:
-        <q>Great, I can type absolutely anything I want, in plain English,
-        and the story will do my bidding,</q> or <q>Great, now I have to
-        figure out yet another heinously complex command language for
-        a computer program; I think I&rsquo;ll go play Minesweeper.</q>
-        Well, neither extreme is quite true.
+        "\bMed tanke på detta kommer du förmodligen fram till en av två saker:
+        <q>Toppen, jag kan skriva precis vad jag vill, på enkel engelska,
+        och berättelsen kommer att göra precis vad jag vill,</q> eller 
+        <q>Toppen, nu måste jag lista ut ännu ett otroligt komplext 
+        kommandospråk för ett datorprogram; jag väljer att spela Minesweeper 
+        istället.</q> Nja, ingen av dessa extremerna är riktigt sanna.
 
-        \bIn actual play, you&rsquo;ll only need a fairly small set of
-        commands, and the commands are mostly in ordinary English, so
-        there&rsquo;s not very much you&rsquo;ll have to learn or remember.
-        Even though that command prompt can look intimidating, don&rsquo;t
-        let it scare you off &mdash; there are just a few simple things you
-        have to know.
+        \bI själva spelet behöver du bara en ganska liten uppsättning 
+        kommandon, och kommandona är mestadels på vanlig engelska, så det är 
+        inte så mycket du behöver lära dig eller komma ihåg.
+        Även om kommandotolken kan verka skrämmande, låt den inte skrämma dig 
+        &mdash; det finns bara några enkla saker du behöver känna till.
 
-        \bFirst, you&rsquo;ll almost never have to refer to anything that
-        isn&rsquo;t directly mentioned in the story; this is a story, after
-        all, not a guessing game where you have to think of everything that
-        goes together with some random object.  For example, if
-        you&rsquo;re wearing a jacket, you might assume that the jacket has
-        pockets, or buttons, or a zipper &mdash; but if the story never
-        mentions those things, you shouldn&rsquo;t have to worry about them.
+        \bFör det första behöver du nästan aldrig referera till något som 
+        inte nämns direkt i berättelsen; det här är trots allt en berättelse, 
+        inte en gissningslek där du måste tänka på allt som hör ihop med 
+        något slumpmässigt föremål. Om du till exempel har på dig en jacka 
+        kan du utgå från att jackan har fickor, knappar eller dragkedja 
+        &mdash; men om berättelsen aldrig nämner dessa saker bör du inte 
+        behöva oroa dig för dem.
 
-        \bSecond, you won&rsquo;t have to think of every conceivable action
-        you could perform.  The point of the game isn&rsquo;t to make you
-        guess at verbs.  Instead, you&rsquo;ll only have to use a relatively
-        small number of simple, ordinary actions.  To give you an idea
-        of what we mean, here are some of the commands you can use:";
+        \bFör det andra behöver du inte tänka på alla tänkbara handlingar 
+        du kan utföra. Poängen med spelet är inte att få dig att gissa 
+        rätt slags verb. Istället behöver du bara använda ett relativt 
+        litet antal enkla, vanliga handlingar. För att ge dig en 
+        uppfattning om vad vi menar, kommer här ett urval av kommandon 
+        du kan tänkas använda:";
         
         "\b
-        \n\t LOOK AROUND
-        \n\t INVENTORY
-        \n\t GO NORTH (or EAST, SOUTHWEST, and so on, or UP, DOWN, IN, OUT)
-        \n\t WAIT
-        \n\t TAKE THE BOX
-        \n\t DROP THE DISK
-        \n\t LOOK AT THE DISK
-        \n\t READ THE BOOK
-        \n\t OPEN BOX
-        \n\t CLOSE BOX
-        \n\t LOOK IN THE BOX
-        \n\t LOOK THROUGH WINDOW
-        \n\t PUT FLOPPY DISK INTO BOX
-        \n\t PUT BOX ON TABLE
-        \n\t WEAR THE CONICAL HAT
-        \n\t TAKE OFF HAT
-        \n\t TURN ON LANTERN
-        \n\t LIGHT MATCH
-        \n\t LIGHT CANDLE WITH MATCH
-        \n\t PUSH BUTTON
-        \n\t PULL LEVER
-        \n\t TURN KNOB
-        \n\t TURN DIAL TO 11
-        \n\t EAT COOKIE
-        \n\t DRINK MILK
-        \n\t THROW PIE AT CLOWN
-        \n\t ATTACK TROLL WITH SWORD
-        \n\t UNLOCK DOOR WITH KEY
-        \n\t LOCK DOOR WITH KEY
-        \n\t CLIMB THE LADDER
-        \n\t GET IN THE CAR
-        \n\t SIT ON THE CHAIR
-        \n\t STAND ON THE TABLE
-        \n\t STAND IN FLOWER BED
-        \n\t LIE ON THE BED
-        \n\t TYPE HELLO ON COMPUTER
-        \n\t LOOK UP BOB IN PHONE BOOK";
+
+
+        \n\t SE DIG OMKRING 
+        \n\t INVENTERING 
+        \n\t GÅ NORR (eller ÖST, SYDVÄST, och så vidare, eller UPP, NER, IN, UT) 
+        \n\t VÄNTA 
+        \n\t TA LÅDA 
+        \n\t SLÄPP SKIVAN 
+        \n\t TITTA PÅ SKIVAN 
+        \n\t LÄS BOKEN 
+        \n\t ÖPPNA LÅDA 
+        \n\t STÄNG LÅDA 
+        \n\t TITTA I LÅDA 
+        \n\t TITTA GENOM FÖNSTRET 
+        \n\t LÄGG DISKETTEN I LÅDA 
+        \n\t LÄGG LÅDAN PÅ BORDET 
+        \n\t BÄR DEN KONISKA HATTEN 
+        \n\t TA AV HATTEN 
+        \n\t TÄND LYKTAN 
+        \n\t TÄND TÄNDSTICKA 
+        \n\t TÄND LJUSET MED TÄNDSTICKA 
+        \n\t TRYCK PÅ KNAPPEN 
+        \n\t DRA I SPAKEN 
+        \n\t VRID KNAPP 
+        \n\t VRID RATTEN TILL 11 
+        \n\t ÄT KAKA 
+        \n\t DRICK MJÖLK 
+        \n\t KASTA PAJ PÅ CLOWNEN 
+        \n\t ATTACKERA TROLLET MED SVÄRDET 
+        \n\t LÅS UPP DÖRREN MED NYCKEL 
+        \n\t LÅS DÖRREN MED NYCKEL 
+        \n\t KLÄTTRA UPP FÖR STEGEN 
+        \n\t KLIV IN I BILEN 
+        \n\t SITT PÅ STOLEN 
+        \n\t STÅ PÅ BORDET 
+        \n\t STÅ I RABATTEN 
+        \n\t LIGG PÅ SÄNGEN 
+        \n\t SKRIV HEJ PÅ DATORN 
+        \n\t SLÅ UPP BOB I TELEFONBOKEN";
 
         /* show the conversation-related verbs */
         foreach (local cur in conversationVerbs)
@@ -514,64 +551,63 @@ DefineSystemAction(Instructions)
          *   there might be some other verbs to find 
          */
         if (allRequiredVerbsDisclosed)
-            "\bThat&rsquo;s it &mdash; every verb and every command phrasing
-            you need to complete the story is shown above.
-            If you ever get stuck and feel like the story is expecting
-            you to think of something completely out of the blue, remember
-            this: whatever it is you have to do, you can do it with one
-            or more of the commands shown above. 
-            Don&rsquo;t ever worry that you have to start trying lots of
-            random commands to hit upon the magic phrasing, because
-            everything you need is shown plainly above. ";
-        else
-            "\bMost of the verbs you&rsquo;ll need to complete the story are
-            shown above; there might be a few additional commands you&rsquo;ll
-            need from time to time as well, but they&rsquo;ll follow the same
-            simple format as the commands above.";
+            "\bDet är allt &mdash; varje verb och varje kommandofrasering 
+            du behöver för att slutföra berättelsen visas ovan.
 
-        "\bA few of these commands deserve some more explanation.
-        LOOK AROUND (which you abbreviate to LOOK, or even just L)
-        shows the description of the current location.  You can use
-        this if you want to refresh your memory of your character&rsquo;s
-        surroundings.  INVENTORY (or just I) shows a list of everything
-        your character is carrying. WAIT (or Z) just lets a little
-        time pass in the story.";
+            Om du någonsin kör fast och känner att berättelsen förväntar 
+            dig att du ska tänka på något helt oväntat, kom ihåg detta: 
+            vad det än är du måste göra kan du göra det med ett eller flera 
+            av kommandona som visas ovan. Oroa dig aldrig för att du måste 
+            börja prova massor av slumpmässiga kommandon för att hitta den 
+            magiska ordföljden, för allt du behöver visas tydligt ovan. ";
+        else
+            "\bDe flesta verben du behöver för att slutföra berättelsen 
+            visas ovan; det kan finnas några ytterligare kommandon du behöver 
+            då och då också, men de följer samma enkla format som kommandona 
+            ovan. ";
+
+        "\bNågra av dessa kommandon förtjänar lite mer förklaring. TITTA DIG 
+        OMKRING (som du kan förkorta till TITTA, eller bara T) visar 
+        beskrivningen av den aktuella platsen. Du kan använda detta om du 
+        vill förfriska ditt minne om din karaktärs omgivningar. 
+        INVENTERING (eller bara INV/I) visar en lista över allt din karaktär 
+        bär på. VÄNTA (eller Z) gör bara att det går lite tid i berättelsen. ";
     }
 
     /* Abbreviations chapter */
     showAbbrevChapter()
     {
-        "\b<b>Abbreviations</b>
-        \bYou&rsquo;ll probably use a few commands quite a lot, so to save
-        typing, you can abbreviate some of the most frequently-used
-        commands:
+
+        "\b<b>Förkortningar</b>
+        \bDu kommer förmodligen att använda några kommandon ganska ofta, 
+        så för att spara skrivtid kan du förkorta några av de mest använda 
+        kommandona:
 
         \b
-        \n\t LOOK AROUND can be shortened to LOOK, or merely L
-        \n\t INVENTORY can be simply I
-        \n\t GO NORTH can be written NORTH, or even just N (likewise E, W, S,
-            NE, SE, NW, SW, U for UP and D for DOWN)
-        \n\t LOOK AT THE DISK can be entered as EXAMINE DISK or simply X DISK
-        \n\t WAIT can be shortened to Z
+        \n\t TITTA RUNT kan förkortas till TITTA, eller bara T
+        \n\t INVENTERING kan helt enkelt skrivas som I
+        \n\t GÅ NORRUT kan skrivas NORR, eller till och med bara N (likaså E, W, S, 
+        NÖ/NO, SÖ/SO, NV, SV, U för UPP och N för NED/NER) 
+        \n\t TITTA PÅ SKIVA kan anges som UNDERSÖK SKIVA eller helt enkelt X SKIVA 
+        \n\t VÄNTA kan förkortas till Z
         <<conversationAbbr>>
 
-        \b<b>A Few More Command Details</b>
-        \bWhen you&rsquo;re entering commands, you can use capital or small
-        letters in any mixture.  You can use words such as THE and A
-        when they&rsquo;re appropriate, but you can omit them if you
-        prefer. ";
+        \b<b>Lite mer information om kommandon</b>
+        \bNär du skriver in kommandon kan du använda versaler eller små 
+        bokstäver i valfri blandning. Du kan använda ord som DEN och EN/ETT/DE 
+        när de är lämpliga, men du kan utelämna dem också om du föredrar det. ";
 
         if (truncationLength != nil)
         {
-            "You can abbreviate any word to its first <<
-            spellNumber(truncationLength)>> letters, but if you choose not
-            to abbreviate, the story will pay attention to
-            everything you actually type; this means, for example, that you
-            can abbreviate SUPERCALIFRAGILISTICEXPIALIDOCIOUS to <<
+            "Du kan förkorta vilket ord som helst till dess första <<
+            spellNumber(truncationLength)>> bokstäver, men om du väljer att 
+            inte förkorta, kommer berättelsen att uppmärksamma allt du 
+            faktiskt skriver; det betyder till exempel att du kan förkorta 
+            SUPERCALIFRAGILISTICEXPIALIDOCIOUS <<
             'SUPERCALIFRAGILISTICEXPIALIDOCIOUS'.substr(1, truncationLength)
-            >> or <<
+            >> eller <<
             'SUPERCALIFRAGILISTICEXPIALIDOCIOUS'.substr(1, truncationLength+2)
-            >>, but not to <<
+            >>, men inte till <<
             'SUPERCALIFRAGILISTICEXPIALIDOCIOUS'.substr(1, truncationLength)
             >>SDF. ";
         }
@@ -580,98 +616,94 @@ DefineSystemAction(Instructions)
     /* Travel chapter */
     showTravelChapter()
     {
-        "\b<b>Travel</b>
-        \bAt any given time in the story, your character is in a
-        <q>location.</q>  The story describes the location when your
-        character first enters, and again any time you type LOOK.
-        Each location usually has a short name that&rsquo;s displayed just
-        before its full description; the name is useful when drawing a map,
-        and the short name can help jog your memory as you&rsquo;re finding
-        your way around.
+        "\b<b>Förflyttning</b>
+        \bFör varje given tidpunkt i berättelsen befinner sig din karaktär 
+        på en <q>plats.</q> Berättelsen beskriver platsen när din karaktär 
+        först kommer in, och för varje gång du skriver TITTA.
 
-        \bEach location is a separate room, or a large outdoor area,
-        or the like.  (Sometimes a single physical room is so large that
-        it comprises several locations in the game, but that&rsquo;s fairly
-        rare.)  For the most part, going to a location is as specific
-        as you have to get about travel; once your character is in a
-        location, the character can usually see and reach everything
-        within the location, so you don&rsquo;t have to worry about where
-        exactly your character is standing within the room.  Once in
-        a while, you might find that something is out of reach, perhaps
-        because it&rsquo;s on a high shelf or on the other side of a moat; in
-        these cases, it&rsquo;s sometimes useful to be more specific about
-        your character&rsquo;s location, such as by standing on something
-        (STAND ON TABLE, for example).
+        \bVarje plats har vanligtvis ett kort namn som visas precis före dess 
+        fullständiga beskrivning; namnet är användbart när du ritar en karta,
+        och det korta namnet kan hjälpa dig att komma ihåg när du letar dig 
+        fram.
 
-        \bTraveling from one location to another is usually done using
-        a direction command: GO NORTH, GO NORTHEAST, GO UP, and so on.
-        (You can abbreviate the cardinal and vertical directions to one
-        letter each &mdash; N, S, E, W, U, D &mdash; and the diagonal
-        directions to two: NE, NW, SE, SW.)  The story should always
-        tell you the directions that you can go when it describes a
-        location, so you should never have to try all the unmentioned
-        directions to see if they go anywhere.
+        \bVarje plats är ett separat rum, eller ett stort utomhusområde,
+        eller liknande. (Ibland är ett enda fysiskt rum så stort att det
+        omfattar flera platser i spelet, men det är ganska sällsynt.) Att gå 
+        till en plats, är för det mesta, så specifikt som det går 
+        när det avser förflyttning; när din karaktär väl är på en plats 
+        kan karaktären vanligtvis se och nå allt inom platsen, så du behöver 
+        inte fundera på var/hur din karaktär står i rummet. Ibland kanske
+        du upptäcker att något är utom räckhåll, kanske för att det står 
+        på en hög hylla eller på andra sidan av en vallgrav; i dessa fall är 
+        det ibland bra att vara mer specifik om din karaktärs plats, till 
+        exempel genom att stå på något (STÅ PÅ BORD, till exempel).
 
-        \bIn most cases, backtracking (by reversing the direction you
-        took from one location to another) will take you back to where you
-        started, although some passages might have turns.
+        \bAtt resa från en plats till en annan görs vanligtvis med hjälp av ett 
+        riktningskommando: GÅ NORR, GÅ NORDÖST, GÅ UPP, och så vidare.
+        (Du kan förkorta väderstrecket och vertikalriktningen till en bokstav 
+        vardera &mdash; N, S, Ö, V, U, D &mdash; och diagonalriktningen till 
+        två: NO/NÖ, NV, SÖ/SO, SV.) Berättelsen bör alltid berätta vilka 
+        riktningar du kan gå när den beskriver en plats, så du borde aldrig 
+        behöva prova alla de omnämnda riktningarna för att se om de leder 
+        någonstans.
 
-        \bMost of the time, when the story describes a door or passageway,
-        you won&rsquo;t need to open the door to go through the passage, as
-        the story will do this for you.  Only when the story specifically
-        states that a door is blocking your way will you usually have to
-        deal with the door explicitly.
-        
-        
-        <<if defined(pcRouteFinder)>>\bAnother way you can travel from place to
-        place is by using the command GO TO SOMEWHERE: for example GO TO KITCHEN
-        or GO TO GEORGE, where KITCHEN is a room you have already visited or
-        GEORGE is someone (or something) you have already seen. This will take
-        you on the first step of the way to the kitchen, or to the room where
-        you last saw George. To continue on your journey after the first step
-        you can use the command CONTINUE, which can be abbreviated to C. You can
-        also enter several commands in between, e.g. GO TO KITCHEN, SEARCH DESK,
-        TAKE NOTEBOOK, READ NOTEBOOK, CONTINUE.\b
-        In some games the player character may start out in a place that&rsquo;s
-        already familiar to him or her (e.g. his or her house or home town), in
-        which case you may be able to navigate to some locations using GO TO
-        without having previously explored that part of the map.
+        \bI de flesta fall tar en tillbakagång (genom att vända den riktning 
+        du tog från en plats till en annan) dig tillbaka till dit du började, 
+        även om vissa passager kan ha svängar.
+
+        \bFör det mesta, när berättelsen beskriver en dörr eller passage, 
+        behöver du inte öppna dörren för att gå igenom passagen, eftersom 
+        berättelsen gör detta åt dig. Först när berättelsen specifikt anger 
+        att en dörr blockerar din väg kommer du vanligtvis behöva hantera 
+        dörren uttryckligen.
+
+        <<if defined(pcRouteFinder)>>\bEtt annat sätt att resa från plats till
+        plats är att använda kommandot GÅ TILL NÅGONSTANS: till exempel GÅ TILL
+        KÖKET eller GÅ TILL GEORGE, där KÖKET är ett rum du redan har besökt 
+        eller GEORGE är någon (eller något) du redan har sett. Detta tar dig på
+        första steget på vägen till köket, eller till rummet där du senast såg 
+        George. För att fortsätta din resa efter det första steget kan du 
+        använda kommandot FORTSÄTT, vilket kan förkortas till F. Du kan också 
+        ange flera kommandon däremellan, t.ex. GÅ TILL KÖKET, SÖK SKRIVBORD, 
+        TA ANTECKNINGSBOK, LÄS ANTECKNINGSBOK, FORTSÄTT.\b
+        I vissa spel kan spelarkaraktären börja på en plats som redan är bekant
+        för honom eller henne (t.ex. hans eller hennes hus eller hemstad), i 
+        detta fall kan du möjligen navigera till vissa platser med hjälp av 
+        GÅ TILL utan att tidigare ha utforskat den delen av kartan.
         <<end>> ";
     }
 
     /* Objects chapter */
     showObjectsChapter()
     {
-        "\b<b>Manipulating Objects</b>
-        \bYou might find objects in the story that your character can
-        carry or otherwise manipulate.  If you want to carry something,
-        type TAKE and the object&rsquo;s name: TAKE BOOK.  If you want to
-        drop something your character is carrying, DROP it.
+        "\b<b>Manipulera föremål</b>
+        \bDu kan hitta föremål i berättelsen som din karaktär kan bära eller på
+         annat sätt manipulera. Om du vill bära något, skriv TA och föremålets 
+         namn: TA BOK. Om du vill släppa något som din karaktär bär, SLÄPP det.
 
-        \bYou usually won&rsquo;t have to be very specific about exactly
-        how your character is supposed to carry or hold something, so you
-        shouldn&rsquo;t have to worry about which hand is holding which item
-        or anything like that.  It might sometimes be useful to put one
-        object inside or on top of another, though; for example, PUT BOOK
-        IN SHOPPING BAG or PUT VASE ON TABLE.  If your character&rsquo;s
-        hands get full, it might help to put some items being carried
-        into a container, much as in real life you can carry more stuff
-        if it&rsquo;s in a bag or a box.
+        \bDu behöver vanligtvis inte vara särskilt specifik om exakt hur din 
+        karaktär ska bära eller hålla något, så du borde inte behöva oroa dig 
+        för vilken hand som håller vilket föremål eller något liknande. Det kan
+        ibland vara bra att lägga ett föremål inuti eller ovanpå ett annat, 
+        till exempel LÄGG BOKEN I KASSEN eller LÄGG VASEN PÅ BORDET. Om din 
+        karaktärs händer blir fulla kan det hjälpa att lägga några föremål som
+        bärs i en behållare, ungefär som du i verkliga livet kan bära fler 
+        saker om det är i en väska eller en låda.
 
-        \bYou can often get a lot of extra information (and sometimes 
-        vital clues) by examining objects, which you can do with the LOOK
-        AT command (or, equivalently, EXAMINE, which you can abbreviate
-        to simply X, as in X PAINTING).  Most experienced players get
-        in the habit of examining everything in a new location right
-        away. ";
+        \bDu kan ofta få mycket extra information (och ibland viktiga 
+        ledtrådar) genom att undersöka objekt, vilket du kan göra med kommandot
+        SE/TITTA PÅ (eller motsvarande UNDERSÖK, vilket du kan förkorta till 
+        helt enkelt X, som i X PAINTING). De flesta erfarna spelare får som 
+        vana att undersöka allt på en ny plats direkt. ";
+
     }
 
     /* show the Conversation chapter */
     showConversationChapter()
     {
-        "\b<b>Interacting with Other Characters</b>
-        \bYour character may encounter other people or creatures in the
-        story.  You can sometimes interact with these characters.\b";
+        "\b<b>Interagera med andra karaktärer</b>
+        \bDin karaktär kan stöta på andra människor eller varelser i 
+        berättelsen. Du kan ibland interagera med dessa karaktärer.\b";
 
         /* show the customizable conversation instructions */
         conversationInstructions;
@@ -680,301 +712,307 @@ DefineSystemAction(Instructions)
     /* Time chapter */
     showTimeChapter()
     {
-        "\b<b>Time</b>";
-        
-        
-        "\bTime passes in the story only in response to commands you type.  This
-        means that nothing happens while the story is waiting for you to type
-        something.  Each command takes about the same amount of time in the
-        story.  If you specifically want to let some extra time pass within the
-        story, because you think something is about to happen, you can type WAIT
-        (or just Z). ";
-        
+        "\b<b>Tid</b>";
+
+        "\bTiden går i berättelsen bara som svar på kommandon du skriver. Detta
+        innebär att ingenting händer medan berättelsen väntar på att du ska 
+        skriva något. Varje kommando tar ungefär lika lång tid i berättelsen. 
+        Om du specifikt vill låta lite extra tid gå inom berättelsen, eftersom 
+        du tror att något är på väg att hända, kan du skriva VÄNTA
+        (eller bara Z). ";        
     }
 
     /* Saving, Restoring, and Undo chapter */
     showSaveRestoreChapter()
     {
-        "\b<b>Saving and Restoring</b>
-        \bYou can save a snapshot of your current position in the story
-        at any time, so that you can later restore the story to the
-        same position.  The snapshot will be saved to a file on your
-        computer&rsquo;s disk, and you can save as many different snapshots
-        as you&rsquo;d like (to the extent you have space on your disk,
-        anyway).\b";
+        "\b<b>Spara och återställa</b>
+        \bDu kan spara en ögonblicksbild av din nuvarande position i 
+        berättelsen när som helst, så att du senare kan återställa 
+        berättelsen till samma position. Ögonblicksbilden sparas i en
+        fil på din dators hårddisk, och du kan spara så många olika 
+        ögonblicksbilder som du vill (i den mån du har utrymme på din 
+        hårddisk, i alla fall).\b";
 
         switch (crueltyLevel)
         {
         case 0:
-            "In this story, your character will never be killed, and
-            you&rsquo;ll never find yourself in a situation where
-            it&rsquo;s impossible to complete the story.  Whatever happens
-            to your character, you&rsquo;ll always be able to find a way
-            to complete the story. So, unlike in many text games, you
-            don&rsquo;t have to worry about saving positions to protect
-            yourself against getting stuck in impossible situations.  Of
-            course, you can still save as often as you&rsquo;d like, to
-            suspend your session and return to it later, or to save
-            positions that you think you might want to revisit.";
+            "I den här berättelsen kommer din karaktär aldrig att dödas, 
+            och du kommer aldrig att hamna i en situation där det är omöjligt
+            att slutföra berättelsen. Vad som än händer med din karaktär 
+            kommer du alltid att kunna hitta ett sätt att slutföra 
+            berättelsen. Så, till skillnad från i många andra textspel, behöver
+            du inte oroa dig för att spara positioner för att skydda dig själv 
+            mot att fastna i omöjliga situationer. Naturligtvis kan du 
+            fortfarande spara så ofta du vill, för att pausa din session och
+            återgå till den senare, eller för att spara positioner som du tror
+            att du kanske vill återvända till. ";
             break;
 
         case 1:
         case 2:
-            "It might be possible for your character to be killed in
-            the story, or for you to find your character in an impossible
-            situation where you won&rsquo;t be able to complete the story.
-            So, you should be sure to save your position
-            <<crueltyLevel == 1 ? 'from time to time' : 'frequently'>>
-            so that you won&rsquo;t have to go back too far if this should
-            happen. ";
+            "Det kan vara möjligt att din karaktär dödas i berättelsen, eller 
+            att du hamnar i en omöjlig situation där du inte kommer att kunna 
+            slutföra berättelsen.
+
+            Så du bör se till att spara din position
+            <<crueltyLevel == 1 ? 'då och då' : 'ofta'>>
+            så att du inte behöver gå tillbaka för långt om detta skulle 
+            hända. ";
 
             if (crueltyLevel == 2)
-                "(You should make a point of keeping all of your old saved
-                positions, too, because you might not always realize
-                immediately when a situation has become impossible.
-                You might find at times that you need to go back further
-                than just the last position that you <i>thought</i>
-                was safe.)";
-
+                "(Du bör se till att behålla alla dina gamla sparade positioner
+                också, eftersom du kanske inte alltid inser omedelbart när en 
+                situation har blivit omöjlig. Du kan ibland upptäcka att du 
+                behöver gå tillbaka längre än bara den sista positionen som du
+                <i>trodde</i> var säker.)";
             break;
         }
 
-        "\bTo save your position, type SAVE at the command prompt.
-        The story will ask you for the name of a disk file to use to store
-        snapshot.  You&rsquo;ll have to specify a filename suitable for
-        your computer system, and the disk will need enough free space
-        to store the file; you&rsquo;ll be told if there&rsquo;s any problem
-        saving the file.  You should use a filename that doesn&rsquo;t already
-        exist on your machine, because the new file will overwrite any
-        existing file with the same name.
+        "\bFör att spara din position, skriv SPARA i kommandotolken.
+        Berättelsen kommer att fråga dig efter namnet på en fil som ska 
+        användas för att lagra ögonblicksbilden. Du måste ange ett filnamn som
+        är lämpligt för ditt datorsystem, och disken behöver tillräckligt med 
+        ledigt utrymme för att lagra filen. Du kommer få veta om det blir något 
+        problem med att spara filen. Du bör använda ett filnamn som inte redan
+        finns på din dator, eftersom den nya filen kommer att skriva över alla
+        befintliga filer med samma namn.
 
-        \bYou can restore a previously saved position by typing RESTORE
-        at any prompt.  The story will ask you for the name of the file
-        to restore.  After the computer reads the file, everything in
-        the story will be exactly as it was when you saved that file.";
+        \bDu kan återställa en tidigare sparad position genom att skriva 
+        ÅTERSTÄLL vid valfri prompt. Berättelsen kommer att fråga dig efter 
+        namnet på filen som ska återställas. När datorn har läst filen kommer
+        allt i berättelsen att vara exakt som det var när du sparade filen.
 
-        "\b<b>Undo</b>
-        \bEven if you haven&rsquo;t saved your position recently, you can
-        usually take back your last few commands with the UNDO command.
-        Each time you type UNDO, the story reverses the effect of one command,
-        restoring the story as it was before you typed that command.  UNDO
-        is limited to taking back the last few commands, so this isn&rsquo;t
-        a substitute for SAVE/RESTORE, but it&rsquo;s very handy if you
-        find your character unexpectedly in a dangerous situation, or you
-        make a mistake you want to take back.";
+        \b<b>Ångra</b>
+        \bÄven om du inte har sparat din position nyligen kan du vanligtvis 
+        återställa dina senaste kommandon med ÅNGRA-kommandot.
+        Varje gång du skriver [ÅNGRA], upphäver berättelsen effekten av 
+        ett kommando, och återställer berättelsen som den var innan du 
+        skrev det kommandot. ÅNGRA är begränsad till att återställa de senaste 
+        kommandona, så detta är inte en ersättning för SPARA/ÅTERSTÄLL, men det 
+        är väldigt praktiskt om du oväntat befinner dig i en farlig situation, 
+        eller om du gör ett misstag som du vill återställa från. ";
     }
 
     /* Other Special Commands chapter */
     showSpecialCmdChapter()
     {
-        "\b<b>Some Other Special Commands</b>
-        \bThe story understands a few other special commands that
-        you might find useful.
+        "\b<b>Några andra specialkommandon</b>
+        \bBerättelsen förstår några andra specialkommandon som du kan
+        ha nytta av.
 
-        \bAGAIN (or just G): Repeats the last command.  (If your last input
-        line had several commands, only the last single command on the line
-        is repeated.)
-        \bINVENTORY (or just I): Shows what your character is carrying.
-        \bLOOK (or just L): Shows the full description of your
-        character&rsquo;s current location.";
+        \bIGEN (eller bara G): Upprepar det senaste kommandot. (Om din
+        senaste inmatningsrad innehöll flera kommandon är det bara det
+        sista enskilda kommandot på raden som upprepas.)
+        \bINVENTERING (eller bara I): Visar vad din karaktär bär på.
+        \bTITTA (eller bara T): Visar den fullständiga beskrivningen
+        av din karaktärs nuvarande plats.";
 
         /* if the exit lister module is active, mention the EXITS command */
         if (gExitLister != nil)
-            "\bEXITS: Shows the list of obvious exits from the current
-            location.
-            \bEXITS ON/OFF/STATUS/LOOK: Controls the way the game
-            displays exit lists.  EXITS ON puts a list of
-            exits in the status line and also lists exits in each room
-            description.  EXITS OFF turns off both of these listings.
-            EXITS STATUS turns on just the status line exit list, and
-            EXITS ROOM turns on only the room description lists.";
-        
-        "\bOOPS: Corrects a single misspelled word in a command, without
-        retyping the entire command.  You can only use OOPS immediately
-        after the story tells you it didn&rsquo;t recognize a word in your
-        previous command.  Type OOPS followed by the corrected word.
-        \bQUIT (or just Q): Terminates the story.
-        \bRESTART: Starts the story over from the beginning.
-        \bRESTORE: Restores a position previously saved with SAVE.
-        \bSAVE: Saves the current position in a disk file.
-        \bSCRIPT: Starts making a transcript of your story session,
-        saving all of the displayed text to a disk file, so that you
-        can peruse it later or print it out.
-        \bSCRIPT OFF: Ends a transcript that you started with SCRIPT. 
-        \bUNDO: Takes back the last command."
+            "\bUTGÅNGAR: Visar en lista över de tydliga utgångarna
+            från den aktuella platsen.
+            \bUTGÅNGAR PÅ/AV/STATUS/TITTA: Styr hur berättelsen visar
+            listor över utgångar. UTGÅNGAR PÅ lägger till en lista
+            över utgångar i statusraden och listar även utgångar i
+            varje platsbeskrivning. UTGÅNGAR AV stänger av båda dessa
+            listor. UTGÅNGAR STATUS slår bara på listan i statusraden,
+            och UTGÅNGAR TITTA slår bara på listorna i
+            platsbeskrivningarna.";
+
+        "\bHOPPSAN (eller bara OJ): Rättar ett enda felstavat ord i ett
+        kommando, utan att du behöver skriva om hela kommandot. Du kan
+        bara använda HOPPSAN direkt efter att berättelsen har talat om
+        för dig att den inte kände igen ett ord i ditt föregående
+        kommando. Skriv HOPPSAN följt av det rättade ordet.
+        \bAVSLUTA (eller bara Q): Avslutar berättelsen.
+        \bBÖRJA OM: Startar om berättelsen från början.
+        \bÅTERSTÄLL: Återställer en position som tidigare sparats med
+        SPARA.
+        \bSPARA: Sparar den aktuella positionen i en fil.
+        \bSKRIPT: Börjar göra en avskrift av din spelsession, genom
+        att spara all visad text till en fil, så att du kan läsa
+        igenom den senare eller skriva ut den.
+        \bSKRIPT AV: Avslutar en avskrift som du startade med SKRIPT.
+        \bÅNGRA: Tar tillbaka det senaste kommandot."
         ;
     }
     
     /* Unknown Words chapter */
     showUnknownWordsChapter()
     {
-        "\b<b>Unknown Words</b>
-        \bThe story doesn&rsquo;t pretend to know every word in the English
-        language.  The story might even occasionally use words in its
-        own descriptions that it doesn&rsquo;t understand in commands.  If
-        you type a command with a word the story doesn&rsquo;t know, the
-        story will tell you which word it didn&rsquo;t recognize.  If the
-        story doesn&rsquo;t know a word for something it described, and
-        it doesn&rsquo;t know any synonyms for that thing, you can probably
-        assume that the object is just there as a detail of the setting,
-        and isn&rsquo;t important to the story. ";
+        "\b<b>Okända ord</b>
+        \bBerättelsen låtsas inte känna till varje ord i det svenska
+        språket. Berättelsen kan till och med ibland använda ord i
+        sina egna beskrivningar som den inte förstår i kommandon. Om
+        du skriver ett kommando med ett ord som berättelsen inte
+        känner till, kommer berättelsen att tala om för dig vilket ord
+        den inte kände igen. Om berättelsen inte känner till ett ord
+        för något den har beskrivit, och den inte känner till några
+        synonymer för den saken, kan du förmodligen anta att föremålet
+        bara finns där som en detalj i miljön, och inte är viktigt för
+        berättelsen. ";
     }
 
     /* Ambiguous Commands chapter */
     showAmbiguousCmdChapter()
     {
-        "\b<b>Ambiguous Commands</b>
-        \bIf you type a command that leaves out some important information,
-        the story will try its best to figure out what you mean.  Whenever
-        it&rsquo;s reasonably obvious from context what you mean, the story
-        will make an assumption about the missing information and proceed
-        with the command.  The story will point out what it&rsquo;s assuming
-        in these cases, to avoid any confusion from a mismatch between the
-        story&rsquo;s assumptions and yours.  For example:
+        "\b<b>Tvetydiga kommandon</b>
+        \bOm du skriver ett kommando som saknar viss viktig information,
+        kommer berättelsen att göra sitt bästa för att lista ut vad du
+        menar. När det är rimligt uppenbart av sammanhanget vad du
+        menar, gör berättelsen ett antagande om den saknade
+        informationen och fortsätter med kommandot. Berättelsen
+        kommer att påpeka vad den antar i dessa fall, för att undvika
+        förvirring från en missmatchning mellan berättelsens antaganden
+        och dina. Till exempel:
 
         \b
-        \n\t &gt;TIE THE ROPE
-        \n\t (to the hook)
-        \n\t The rope is now tied to the hook.  The end of the
-        \n\t rope nearly reaches the floor of the pit below.
-        
-        \bIf the command is ambiguous enough that the story can&rsquo;t
-        safely make an assumption, you&rsquo;ll be asked for more
-        information.  You can answer these questions by typing the
-        missing information.
+        \n\t &gt;FÄST REPET
+        \n\t (till kroken)
+        \n\t Repet är nu fäst vid kroken. Änden av
+        \n\t repet når nästan ner till golvet i gropen nedanför.
+
+        \bOm kommandot är tillräckligt tvetydigt för att berättelsen
+        inte säkert kan göra ett antagande, kommer du att bli
+        tillfrågad om mer information. Du kan svara på dessa frågor
+        genom att skriva den saknade informationen.
 
         \b
-        \n\t &gt;UNLOCK THE DOOR
-        \n\t What do you want to unlock it with?
+        \n\t &gt;LÅS UPP DÖRREN
+        \n\t Vad vill du låsa upp den med?
         \b
-        \n\t &gt;KEY
-        \n\t Which key do you mean, the gold key, or the silver key?
+        \n\t &gt;NYCKEL
+        \n\t Vilken nyckel menar du, guldnyckeln eller silvernyckeln?
         \b
-        \n\t &gt;GOLD
-        \n\t Unlocked.
+        \n\t &gt;GULD
+        \n\t Upplåst.
 
-        \bIf the story asks you one of these questions, and you decide
-        that you don&rsquo;t want to proceed with the original command after
-        all, you can just type in a brand new command instead of answering
-        the question.";
+        \bOm berättelsen ställer en av dessa frågor till dig, och du
+        bestämmer dig för att du trots allt inte vill fortsätta med
+        det ursprungliga kommandot, kan du bara skriva in ett helt
+        nytt kommando istället för att svara på frågan.";
     }
 
     /* Advance Command Formats chapter */
     showAdvancedCmdChapter()
     {
-        "\b<b>Advanced Command Formats</b>
-        \bOnce you get comfortable with entering commands, you might
-        be interested to know about some more complex command formats
-        that the story will accept.  These advanced commands are all
-        completely optional, because you can always do the same things
-        with the simpler formats we&rsquo;ve talked about so far, but
-        experienced players often like the advanced formats because
-        they can save you a little typing.
+        "\b<b>Avancerade kommandoformat</b>
+        \bNär du väl känner dig bekväm med att skriva in kommandon
+        kanske du är intresserad av att veta om några mer komplexa
+        kommandoformat som berättelsen accepterar. Dessa avancerade
+        kommandon är alla helt valfria, eftersom du alltid kan göra
+        samma saker med de enklare formaten vi har talat om hittills,
+        men erfarna spelare gillar ofta de avancerade formaten eftersom
+        de kan spara lite skrivarbete.
 
-        \b<b>Using Multiple Objects at Once</b>
-        \bIn most commands, you can operate on multiple objects in
-        a single command.  Use the word AND, or a comma, to separate
-        one object from another:
-
-        \b
-        \n\t TAKE THE BOX, THE FLOPPY DISK, AND THE ROPE
-        \n\t PUT DISK AND ROPE IN BOX
-        \n\t DROP BOX AND ROPE
-        
-        \bYou can use the words ALL and EVERYTHING to refer to everything
-        applicable to your command, and you can use EXCEPT or BUT
-        (right after the word ALL) to exclude specific objects:
+        \b<b>Att använda flera föremål samtidigt</b>
+        \bI de flesta kommandon kan du arbeta med flera föremål i ett
+        och samma kommando. Använd ordet OCH, eller ett kommatecken,
+        för att skilja ett föremål från ett annat:
 
         \b
-        \n\t TAKE ALL
-        \n\t PUT ALL BUT DISK AND ROPE INTO BOX
-        \n\t TAKE EVERYTHING OUT OF THE BOX
-        \n\t TAKE ALL OFF SHELF
+        \n\t TA LÅDAN, DISKETTEN OCH REPET
+        \n\t LÄGG DISKETT OCH REP I LÅDAN
+        \n\t SLÄPP LÅDAN OCH REPET
 
-        \bALL refers to everything that makes sense for your command,
-        excluding things inside other objects matching the ALL.  For example,
-        if you&rsquo;re carrying a box and a rope, and the box contains
-        a floppy disk, typing DROP ALL will drop the box and the rope,
-        and the floppy will remain in the box.
-
-        \b<b><q>It</q> and <q>Them</q></b>
-        \bYou can use IT and THEM to refer to the last object or objects
-        that you used in a command:
+        \bDu kan använda orden ALLA och ALLT för att syfta på allt som
+        är tillämpligt för ditt kommando, och du kan använda UTOM eller
+        FÖRUTOM (direkt efter ordet ALLA) för att utesluta specifika
+        föremål:
 
         \b
-        \n\t TAKE THE BOX
-        \n\t OPEN IT
-        \n\t TAKE THE DISK AND THE ROPE
-        \n\t PUT THEM IN THE BOX
+        \n\t TA ALLT
+        \n\t LÄGG ALLA UTOM DISKETT OCH REP I LÅDAN
+        \n\t TA ALLT UR LÅDAN
+        \n\t TA ALLT FRÅN HYLLAN
 
-        \b<b>Multiple Commands At Once</b>
-        \bYou can put multiple commands on a single input line by
-        separating the commands with periods or the word THEN, or
-        with a comma or AND.  For example:
+        \bALLA/ALLT syftar på allt som är rimligt för ditt kommando,
+        förutom sådant som finns inuti andra föremål som också matchar
+        ALLA/ALLT. Om du till exempel bär på en låda och ett rep, och
+        lådan innehåller en diskett, kommer SLÄPP ALLT att släppa
+        lådan och repet, medan disketten stannar kvar i lådan.
+
+        \b<b><q>Den/Det</q> och <q>Dem</q></b>
+        \bDu kan använda DEN, DET eller DEM för att syfta på det senaste
+        föremålet eller de senaste föremålen som du använde i ett
+        kommando:
 
         \b
-        \n\t TAKE THE DISK AND PUT IT IN THE BOX
-        \n\t TAKE BOX. OPEN IT.
-        \n\t UNLOCK THE DOOR WITH THE KEY. OPEN IT, THEN GO NORTH.
+        \n\t TA LÅDAN
+        \n\t ÖPPNA DEN
+        \n\t TA DISKETTEN OCH REPET
+        \n\t LÄGG DEM I LÅDAN
 
-        \b If the story doesn&rsquo;t understand one of the commands, it will
-        tell you what it couldn&rsquo;t understand, and ignore everything after
-        that on the line.";
+        \b<b>Flera kommandon på en gång</b>
+        \bDu kan skriva flera kommandon på en enda inmatningsrad genom
+        att skilja kommandona åt med punkter eller ordet SEDAN, eller
+        med ett kommatecken eller OCH. Till exempel:
+
+        \b
+        \n\t TA DISKETTEN OCH LÄGG DEN I LÅDAN
+        \n\t TA LÅDAN. ÖPPNA DEN.
+        \n\t LÅS UPP DÖRREN MED NYCKELN. ÖPPNA DEN, SEDAN GÅ NORR.
+
+        \b Om berättelsen inte förstår ett av kommandona, kommer den
+        att tala om för dig vad den inte kunde förstå, och ignorera
+        allt efter det på raden.";
     }
 
     /* General Tips chapter */
     showTipsChapter()
     {
-        "\b<b>A Few Tips</b>
-        \bNow that you know the technical details of entering commands,
-        you might be interested in some strategy pointers.  Here are
-        a few techniques that experienced interactive fiction players use
-        when approaching a story.
+        "\b<b>Några tips</b>
+        \bNu när du känner till de tekniska detaljerna för att skriva
+        in kommandon, kanske du är intresserad av lite strategiska tips.
+        Här är några tekniker som erfarna spelare av interaktiv fiktion
+        använder när de närmar sig en berättelse.
 
-        \bEXAMINE everything, especially when you enter a new location
-        for the first time.  Looking at objects will often reveal details
-        that aren&rsquo;t mentioned in the broader description of the location.
-        If examining an object mentions detailed parts of the object,
-        examine them as well.
+        \bUNDERSÖK allt, särskilt när du kommer till en ny plats för
+        första gången. Att titta på föremål avslöjar ofta detaljer som
+        inte nämns i platsens övergripande beskrivning. Om en
+        undersökning av ett föremål nämner detaljerade delar av
+        föremålet, undersök dem också.
 
-        \bMake a map, if the story has more than a few locations.  When
-        you encounter a new location for the first time, note all of its
-        exits; this will make it easy to see at a glance if there are any
-        exits you haven&rsquo;t explored yet.  If you get stuck, you can scan
-        your map for any unexplored areas, where you might find what
-        you&rsquo;re looking for.
+        \bRita en karta, om berättelsen har fler än ett fåtal platser.
+        När du kommer till en ny plats för första gången, notera alla
+        dess utgångar; detta gör det enkelt att med en snabb blick se
+        om det finns utgångar du inte har utforskat än. Om du kör fast
+        kan du gå igenom din karta efter outforskade områden, där du
+        kanske hittar det du letar efter.
 
-        \bIf the story doesn&rsquo;t recognize a word or any of its synonyms,
-        the object you&rsquo;re trying to manipulate probably isn&rsquo;t
-        important to the story.  If you try manipulating something, and the
-        story responds with something like <q>that isn&rsquo;t important,</q>
-        you can probably just ignore the object; it&rsquo;s most likely just
-        there as scenery, to make the setting more detailed.
+        \bOm berättelsen inte känner igen ett ord eller någon av dess
+        synonymer, är föremålet du försöker manipulera förmodligen
+        inte viktigt för berättelsen. Om du försöker manipulera något,
+        och berättelsen svarar med något i stil med <q>det är inte
+        viktigt,</q> kan du förmodligen bara ignorera föremålet; det
+        finns troligen bara där som miljö, för att göra platsen mer
+        detaljerad.
 
-        \bIf you&rsquo;re trying to accomplish something, and nothing you do
-        seems to work, pay attention to what&rsquo;s going wrong.  If
-        everything you try is met with utter dismissal (<q>nothing
-        happens</q> or <q>that&rsquo;s not something you can open</q>), you
-        might simply be on the wrong track; step back and think about other
-        ways of approaching the problem.  If the response is something more
-        specific, it might be a clue. <q>The guard says <q>you can&rsquo;t
-        open that here!</q>\ and snatches the box from your hands</q> &mdash;
-        this might indicate that you have to get the guard to leave, or
-        that you should take the box somewhere else before you open it,
-        for example.
+        \bOm du försöker åstadkomma något, och inget du gör verkar
+        fungera, var uppmärksam på vad som går fel. Om allt du
+        försöker möts av total avvisning (<q>inget händer</q> eller
+        <q>det är inte något du kan öppna</q>), kan du helt enkelt
+        vara på fel spår; ta ett steg tillbaka och tänk på andra sätt
+        att angripa problemet på. Om svaret är något mer specifikt kan
+        det vara en ledtråd. <q>Vakten säger <q>du kan inte öppna det
+        här!</q>\ och rycker lådan ur dina händer</q> &mdash; det kan
+        till exempel tyda på att du måste få vakten att lämna platsen,
+        eller att du borde ta med dig lådan någon annanstans innan du
+        öppnar den.
 
-        \bIf you get completely stuck, you might try setting aside the
-        current puzzle and working on a different problem for a while.
-        You might even want to save your position and take a break from
-        the game.  The solution to the problem that&rsquo;s been
-        thwarting your progress might come to you in a flash of insight
-        when you least expect it, and those moments of insight can be
-        incredibly rewarding.  Some stories are best appreciated when
-        played over a period of days, weeks, or even months; if you&rsquo;re
-        enjoying the story, why rush through it?
+        \bOm du kör helt fast kan du prova att lägga det aktuella
+        pusslet åt sidan och arbeta med ett annat problem ett tag. Du
+        kanske till och med vill spara din position och ta en paus
+        från spelet. Lösningen på problemet som har hindrat dina
+        framsteg kan komma till dig i en plötslig insikt när du minst
+        anar det, och sådana ögonblick av insikt kan vara otroligt
+        givande. Vissa berättelser uppskattas bäst när de spelas under
+        en period av dagar, veckor, eller till och med månader; om du
+        njuter av berättelsen, varför skynda igenom den?
 
-        \bFinally, if all else fails, you can try asking for help.  A
-        great place to go for hints is the Interactive Fiction Community Forum at
+        \bSlutligen, om allt annat misslyckas, kan du försöka be om
+        hjälp. Ett bra ställe att gå till för ledtrådar är Interactive
+        Fiction Community Forum på
         <a href='https://intfiction.org'>https://intfiction.org</a>. ";
 
         "\n";
@@ -991,10 +1029,10 @@ DefineSystemAction(Instructions)
  *   define the INSTRUCTIONS command's grammar 
  */
 VerbRule(instructions) 
-    'instructions' 
+    'instruktioner' 
     : VerbProduction
     action = Instructions
-    verbPhrase = 'show/showing instructions'
+    verbPhrase = 'visa/visar instruktioner'
 ;
 
 
@@ -1040,50 +1078,49 @@ InstructionsMenu template 'title' ->chapterProp;
  *   This can also be used as a sub-menu of any other menu, simply by
  *   inserting this menu into a parent menu's 'contents' list.  
  */
-topInstructionsMenu: MenuItem 'How to Play Interactive Fiction';
+topInstructionsMenu: MenuItem 'Hur spelar man Interaktiv Fiktion';
 
 /* the chapter menus */
 + MenuLongTopicItem
     isChapterMenu = true
-    title = 'Introduction'
+    title = 'Introduktion'
     heading = nil
     menuContents()
     {
-        "\b<b>Introduction</b>
-        \bWelcome!  If you&rsquo;ve never played Interactive Fiction
-        before, these instructions are designed to help you
-        get started.  If you already know how to play this kind
-        of game, you can probably skip the full instructions, but
-        you might want to type ABOUT at the command prompt for a
-        summary of the special features of this story.
-        \b
-        To make the instructions easier to navigate, they&rsquo;re
-        broken up into chapters. ";
+        "\b<b>Introduktion</b>
+        \bVälkommen! Om du aldrig har spelat Interaktiv Fiktion förut 
+        är dessa instruktioner utformade för att hjälpa dig att komma 
+        igång. Om du redan vet hur man spelar den här typen av spel 
+        kan du förmodligen hoppa över de fullständiga instruktionerna, 
+        men du kan vilja skriva OM i kommandotolken för en 
+        sammanfattning av de speciella funktionerna i just den här 
+        berättelsen.
+        \bFör att göra instruktionerna enklare att navigera är de 
+        uppdelade i kapitel. ";
 
         if (curKeyList != nil && curKeyList.length() > 0)
-            "At the end of each chapter, just press
-            <b><<curKeyList[M_SEL][1].toUpper()>></b> to proceed to
-            the next chapter, or <b><<curKeyList[M_PREV][1].toUpper()>></b>
-            to return to the chapter list. ";
+            "I slutet av varje kapitel, tryck bara på
+            <b><<curKeyList[M_SEL][1].toUpper()>></b> för att gå vidare till nästa kapitel, eller <b><<curKeyList[M_PREV][1].toUpper()>></b>
+            för att återgå till kapitellistan. ";
         else
-            "To flip through the chapters, click on the links or
-            use the Left/Right arrow keys. ";
+            "För att bläddra igenom kapitlen, klicka på länkarna
+            eller använd vänster-/högerpilarna. ";
     }
 ;
 
-+ InstructionsMenu 'Entering Commands' ->(&showCommandsChapter);
-+ InstructionsMenu 'Command Abbreviations' ->(&showAbbrevChapter);
-+ InstructionsMenu 'Travel' ->(&showTravelChapter);
-+ InstructionsMenu 'Manipulating Objects' ->(&showObjectsChapter);
-+ InstructionsMenu 'Interacting with Other Characters'
++ InstructionsMenu 'Skriva in Kommandon' ->(&showCommandsChapter);
++ InstructionsMenu 'Kommandoförkortningar' ->(&showAbbrevChapter);
++ InstructionsMenu 'Förflyttning' ->(&showTravelChapter);
++ InstructionsMenu 'Manipulera Ting' ->(&showObjectsChapter);
++ InstructionsMenu 'Interagera med Andra Karaktärer'
     ->(&showConversationChapter);
-+ InstructionsMenu 'Time' ->(&showTimeChapter);
-+ InstructionsMenu 'Saving and Restoring' ->(&showSaveRestoreChapter);
-+ InstructionsMenu 'Other Special Commands' ->(&showSpecialCmdChapter);
-+ InstructionsMenu 'Unknown Words' ->(&showUnknownWordsChapter);
-+ InstructionsMenu 'Ambiguous Commands' ->(&showAmbiguousCmdChapter);
-+ InstructionsMenu 'Advanced Command Formats' ->(&showAdvancedCmdChapter);
-+ InstructionsMenu 'A Few Tips' ->(&showTipsChapter);
++ InstructionsMenu 'Tid' ->(&showTimeChapter);
++ InstructionsMenu 'Spara och Återställa' ->(&showSaveRestoreChapter);
++ InstructionsMenu 'Andra specialkommandon' ->(&showSpecialCmdChapter);
++ InstructionsMenu 'Okända ord' ->(&showUnknownWordsChapter);
++ InstructionsMenu 'Tvetydiga kommandon' ->(&showAmbiguousCmdChapter);
++ InstructionsMenu 'Avancerade kommandoformat' ->(&showAdvancedCmdChapter);
++ InstructionsMenu 'Några tips' ->(&showTipsChapter);
 
 #endif /* INSTRUCTIONS_MENU */
 

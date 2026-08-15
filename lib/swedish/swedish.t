@@ -4144,7 +4144,7 @@ modify finishOptionRestore
 
 modify finishOptionRestart
     desc = '''<<aHrefAlt('restart', 'RESTART', 'RE<b>S</b>TART',
-            'Starta om berättelsen från början')>> berättelsen'''
+            'Börja om berättelsen från början')>> berättelsen'''
     responseKeyword = 'restart'
     responseChar = 's'
 ;
@@ -4179,7 +4179,7 @@ modify finishOptionAmusing
 
 modify restoreOptionStartOver
     desc = '''<<aHrefAlt('start', 'START', '<b>S</b>TART',
-            'Starta från början')>> spelet från början'''
+            'Börja från början')>> spelet från början'''
     responseKeyword = 'start'
     responseChar = 's'
 ;

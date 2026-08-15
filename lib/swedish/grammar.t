@@ -2502,10 +2502,10 @@ VerbRule(RestoreString)
 
 
 VerbRule(Restart)
-    ('starta' 'om') | 'omstarta' | 'omstart'
+    (('börja'|'starta') 'om') | 'omstarta' | 'omstart'
     : VerbProduction
     action = Restart
-    verbPhrase = 'starta/startar om'
+    verbPhrase = 'börja/börjar om'
 ;
 
 VerbRule(Undo)
