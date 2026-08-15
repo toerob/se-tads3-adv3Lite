@@ -2016,8 +2016,9 @@ VerbRule(AskAboutImplicit)
     priority = 45
 ;
 
+// TODO: 'be' ensamt kraschar
 VerbRule(AskAboutWhat)
-    [badness 500] 'fråga' | 'be' singleDobj
+    [badness 500] ('fråga' | 'be') singleDobj
     : VerbProduction
     action = AskAbout
     verbPhrase = 'fråga/frågar (vem) (om vad)'

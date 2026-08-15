@@ -436,7 +436,8 @@ sektion 2–4 påverkas inte.
 | `ett` | `isNeuter = true` (neutrum) — sällan nödvändigt, ändelsen räcker oftast |
 | `lite` | `massNoun = true` — oräknebart ämnesord ("lite vatten") |
 | `viss` | `massNoun = true` — oräknebart ämnesord ("viss olja") |
-| `några` | `massNoun = true` — oräknebart ämnesord, mer naturligt för plurala ämnesord |
+| `något` | `massNoun = true`, `isNeuter = true` — oräknebart ämnesord i neutrum ("något vatten") |
+| `någon` | `massNoun = true`, `isNeuter = nil` — oräknebart ämnesord i utrum ("någon olja") |
 | `()` | `qualified = true` — objektet tar aldrig obestämd artikel |
 | `den` / `det` | `qualified = true` — som `()` men skrivs naturligare för egennamn |
 
@@ -448,8 +449,11 @@ inte ger tillräcklig information eller du vill vara explicit.
 vatten: Thing 'lite vatt:en+et';
 // → massNoun = true, substantiv: vatten, vattnet
 
-korn: Thing 'några korn+en';
-// → massNoun = true, substantiv: korn, kornen
+mjol: Thing 'något mjöl+et';
+// → massNoun = true, isNeuter = true, substantiv: mjöl, mjölet
+
+olja: Thing 'någon olja+n';
+// → massNoun = true, isNeuter = nil, substantiv: olja, oljan
 
 sokrates: Actor '() Sokrates';
 // → qualified = true, visas aldrig som "en Sokrates"

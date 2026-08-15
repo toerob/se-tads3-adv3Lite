@@ -979,8 +979,33 @@ modify SpecialVerb
 modify Thing 
 
     // Dessa meddelanden används direkt utan nyckel så måste överridas
-    notAPlausibleKeyMsg = '\^<<theName>> kommer helt uppenbart inte fungera med <<gVerifyDobj.theName>>. '
-    keyDoesntFitMsg = '\^<<theName>> passar inte <<gVerifyDobj.theName>>. '
+    // notAPlausibleKeyMsg = '\^<<theName>> kommer helt uppenbart inte fungera med <<gVerifyDobj.theName>>. '
+    // keyDoesntFitMsg = '\^<<theName>> passar inte <<gVerifyDobj.theName>>. '
+
+    // Kruxet är bara att överridningen inte fungerar när implausible-macrot används, så vi är tvungen att
+    // överrida allt istället.
+    iobjFor(UnlockWith)
+    {
+        preCond = [objHeld]
+        verify() {
+            inherited;
+            if(gVerifyDobj && isPossibleKeyFor(gVerifyDobj))
+                logical;
+            else
+                implausible('\^<<theName>> kommer helt uppenbart inte fungera med <<gVerifyDobj.theName>>. ');            
+        }   
+    }
+
+    iobjFor(LockWith) {
+        preCond = [objHeld]
+        verify() {
+            inherited;
+            if(gVerifyDobj && isPossibleKeyFor(gVerifyDobj))
+                logical;
+            else
+                implausible('\^<<theName>> passar inte <<gVerifyDobj.theName>>. ');            
+        }
+    }
 
     revealOnMove()
     {

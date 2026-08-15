@@ -511,17 +511,20 @@ class LMentionable: object
      *   delen. Det är också okej att inkludera en tom del: om du har extra substantiv
      *   att lista, men inga adjektiv, kan du säga 'kort namn;;substantiv'.
      *
-     *   'Artikeln' är valfri. Detta kan vara en av 'en', 'ett', 'några', eller
-     *   '()'. Om det är 'en' eller 'ett', och detta skiljer sig från vad vi skulle
-     *   automatiskt generera baserat på det första ordet i kortnamnet, vi
-     *   automatiskt lägga till det första ordet i listan över specialfall för
-     *   a/an ord. Om det är 'några', ställer vi automatiskt in massNoun=true för
-     *   objektet. Om det är '-', ställer vi in qualified=true ('()' betyder att
-     *   namnet inte tar någon artikel alls).
+     *   'Artikeln' är valfri. Detta kan vara en av 'en', 'ett', 'någon', 'något',
+     *   'lite', 'viss', eller '()'. Om det är 'en' eller 'ett', och detta skiljer
+     *   sig från vad vi skulle automatiskt generera baserat på det första ordet i
+     *   kortnamnet, vi automatiskt lägga till det första ordet i listan över
+     *   specialfall för a/an ord. Om det är 'någon', 'något', 'lite' eller 'viss',
+     *   ställer vi automatiskt in massNoun=true för objektet ('någon'/'något'
+     *   sätter dessutom isNeuter, precis som 'en'/'ett'). Om det är '-', ställer
+     *   vi in qualified=true ('()' betyder att namnet inte tar någon artikel
+     *   alls).
      *
-     *   Observera att om du vill använda 'en', 'ett', 'några', eller '()' som det första
-     *   ordet i det faktiska kortnamnet, behöver du bara lägga till den önskade
-     *   artikeln framför det: 'en en bricka från ett scrabble set'.
+     *   Observera att om du vill använda 'en', 'ett', 'någon', 'något', 'lite',
+     *   'viss', eller '()' som det första ordet i det faktiska kortnamnet,
+     *   behöver du bara lägga till den önskade artikeln framför det: 'en en
+     *   bricka från ett scrabble set'.
      *
      *   Kortnamnet ger namnet som vi visar när parsern behöver visa
      *   objektet i en lista, en tillkännagivande, etc.
@@ -678,73 +681,125 @@ class LMentionable: object
         /* dela upp namnet i enskilda ord */
         local wlst = shortName.split(' '), wlen = wlst.length();
 
+        //tadsSay(wlst + '\n');
+
+        /* Samlar standard- resp. definitiva former för adjektiv i sektion 1
+         * som förekommer FÖRE substantivet (t.ex. 'blå+a' i 'blå+a stol+en').
+         * Används efter loopen för att bygga name='blå stol' och
+         * shortNameAdjDef='blåa'. Deklareras redan här (inte vid huvudloopen
+         * längre ner) eftersom artikelspecificerar-blocket nedan (t.ex.
+         * 'par') också behöver mata in ord i dessa. */
+        local adjStdParts = new Vector();
+        local adjDefParts = new Vector();
+
+        /* Noterar 'par'/'paret' (eller motsvarande med egen +ändelse) om
+         * ordet hittas nedan, så att filtreringen av vocabWords efter
+         * sektion 3 vet vilka ordformer som ska rensas från oavsiktliga
+         * substantiv-registreringar - se kommentar vid filtreringen. */
+        local parWords = nil;
+
         /* kontrollera om det finns en artikel i början av frasen */
         local i = 1;
-        if (wlen > 0 && wlst[1] is in('en', 'ett', 'några', 'lite', 'den', 'det', '()'))
+        while (i <= wlen && (rexMatch(parPat, wlst[i]) != nil || wlst[i] is in('en', 'ett', 'någon', 'något', 'lite', 'viss', 'den', 'det', '()')))
         {
             /* kontrollera vilket ord vi har */
-            switch (wlst[1])
+            switch (wlst[i])
             {
 
-            // OBS: vi försöker inte härleda ändelse utifrån artikel 
-            // i svenskan då det är krångligt och felbenäget. 
+            // OBS: vi försöker inte härleda ändelse utifrån artikel
+            // i svenskan då det är krångligt och felbenäget.
             // Bestämda ordets ändelse är dock perfekt till just detta.
 
             // Så istället för "ett äpple" skriver vi helt enkelt "äpple+t"
 
             // Det är smidigast att skriva ändelsen till ordet istället:
-            // Detta för att det är jättesvårt att göra en korrekt 
+            // Detta för att det är jättesvårt att göra en korrekt
             // härledning av ändelsen på svenska utifrån
-            
+
             // Dessa kan likväl finnas om man för tydlighets skull vill definiera
             // neutrum i text. Det kommer ha samma betydelse som att sätta isNeuter=true/nil
             // direkt i objektet.
 
-            // Detta kommer i så fall bypassa det neutrum/utrum som skulle härletts ur själva 
+            // Detta kommer i så fall bypassa det neutrum/utrum som skulle härletts ur själva
             // ändelsen vid plusnotation.
-
             case 'ett':
                 isNeuter = true;
                 break;
             case 'en':
                 isNeuter = nil;
-                /* 
+                /*
                  *   om detta inte matchar vad vi skulle syntetisera som standard
-                 *   från det andra ordet, lägg till ordet som ett specialfall 
+                 *   från det andra ordet, lägg till ordet som ett specialfall
                  */
                 /*
                 if (wlen > 1 && aNameFrom(wlst[2]) != '<<wlst[1]>> <<wlst[2]>>') {
                     specialAOrAn[wlst[2]] = (wlst[1] == 'ett' ? 1 : 2);
                     tadsSay('***SÄTTER <<wlst[2]>> till <<specialAOrAn[wlst[2]]>>');
                 }
+                */
                 break;
-            */
 
-            case 'lite':            
-            case 'några':
+            case 'något':
+                /* massubstantiv i neutrum, t.ex. 'något vatten' */
+                massNoun = true;
+                isNeuter = true;
+                break;
+            case 'någon':
+                /* massubstantiv i utrum, t.ex. 'någon olja' */
+                massNoun = true;
+                isNeuter = nil;
+                break;
+
+            case 'lite':
             case 'viss':
-                /* markera detta som ett mass substantiv */
+                /* markera detta som ett mass substantiv (könsneutralt - 'lite'
+                 * och 'viss' böjs inte efter substantivets genus här) */
                 massNoun = true;
                 break;
-                
-            case '()':            
+
+            case '()':
                 /* markera detta som ett kvalificerat namn */
                 qualified = true;
-                break;               
-            
+                break;
+
             case 'den':
             case 'det':
                 qualified = true;
-                wlst[1] = '!!!&&&';
+                wlst[i] = '!!!&&&';
                 break;
-            }
 
-            /* det är en specialflagga, inte ett vokabulärord - hoppa över det */
-            ++i;
+            default:
+                /* 'par' - kvantifierande förled (t.ex. 'ett par stövlar',
+                 * 'par+et stövlar+na'). Ordet registreras bara som adjektiv
+                 * (matchande förled) - aldrig som substantiv - och läggs
+                 * till i namnet som vilket annat förnamnsadjektiv som helst.
+                 * Ändelsen kan anges explicit ('par+et'); annars antas 'et'
+                 * ('paret'). */
+                local parEnding = (rexGroup(2) != nil) ? rexGroup(2)[3] : 'et';
+                local parDef = 'par' + parEnding;
+
+                isNeuter = true; // Ett par av något blir neutrum
+
+                addDictWord('par', &noun, MatchAdj);
+                addDictWord(parDef, &noun, MatchAdj);
+
+                /* 'par' läggs bara in i adjStdParts (för name='par
+                 * stövlar'), inte adjDefParts - shortNameAdjDef ska inte
+                 * kombinera 'par' med huvudordets bestämda form (det skulle
+                 * ge 'de paret stövlarna'). Den bestämda formen sätts
+                 * istället direkt som 'paret stövlar' nedan, efter att
+                 * huvudordet är känt. */
+                adjStdParts.append('par');
+
+                parWords = ['par', parDef];
+            }
 
             /* trimma detta ord från det preliminära namnet också */
             tentativeName = tentativeName.findReplace(
-                wlst[1], '', ReplaceOnce).trim();
+                wlst[i], '', ReplaceOnce).trim();
+
+            /* det är en specialflagga, inte ett vokabulärord - hoppa över det */
+            ++i;
 
         }
 
@@ -768,12 +823,10 @@ class LMentionable: object
          * ska användas ordagrant av theNameFrom. */
         local definiteFormWasPreset = propDefined(&definiteForm, PropDefDirectly);
 
-        /* Samlar standard- resp. definitiva former för adjektiv i sektion 1
-         * som förekommer FÖRE substantivet (t.ex. 'blå+a' i 'blå+a stol+en').
-         * Används efter loopen för att bygga name='blå stol' och
-         * shortNameAdjDef='blåa'. */
-        local adjStdParts = new Vector();
-        local adjDefParts = new Vector();
+        /* Huvudsubstantivets egen grundform (t.ex. 'stövlar'), oavsett om
+         * 'name' är förhandssatt av författaren eller ej - används av
+         * 'par'-hanteringen nedan för att bygga 'paret stövlar'. */
+        local nounStandardForm = nil;
 
         local firstPhrase = true;
         local pastNoun = nil;
@@ -809,7 +862,7 @@ class LMentionable: object
                  *   internt, vilket sparar objektets namn-matchare besväret
                  *   att hantera dem.)  
                  */
-                if (wnxt is in ('en', 'ett', 'den', 'det', 'några'))
+                if (wnxt is in ('en', 'ett', 'den', 'det', 'några', 'par'))
                     ++i;
             }
             else if (rexMatch(weakWordPat, w) != nil)
@@ -837,6 +890,9 @@ class LMentionable: object
             /* ange ordet under den ordklass vi bestämde oss för */
             local wordForms = initVocabWord(w, pos);
 
+            if(pos == MatchNoun && wordForms != nil && wordForms.standardForm != nil)
+                nounStandardForm = wordForms.standardForm;
+
             /* Samla adjektivets former — bara om adjektivet förekommer FÖRE
              * substantivet i sektion 1. Adjektiv i prepositionsfras (post-noun,
              * t.ex. 'nyckel till dörren') ska inte ingå i name. */
@@ -859,6 +915,14 @@ class LMentionable: object
          * användas som den är, utan ett auto-genererat adjektivprefix. */
         if(!definiteFormWasPreset && adjDefParts.length() > 0)
             shortNameAdjDef = adjDefParts.join(' ');
+
+        /* 'par'-kvantifierade objekt ('ett par stövlar') böjer inte
+         * huvudordet i bestämd form - 'par' bär redan bestämdheten självt:
+         * 'paret stövlar', inte 'paret stövlarna'. Sätt definiteForm direkt
+         * till denna form (om författaren inte redan satt den manuellt) så
+         * att theNameFrom returnerar den ordagrant, utan artikelprefix. */
+        if(parWords != nil && !definiteFormWasPreset && nounStandardForm != nil)
+            definiteForm = parWords[2] + ' ' + nounStandardForm;
 
         
         /* den andra sektionen är listan över adjektiv */
@@ -985,6 +1049,17 @@ class LMentionable: object
             
         /* gör om vocabWords till en lista */
         vocabWords = vocabWords.toList();
+
+        /* Ett sammansatt substantiv i sektion 3 (t.ex. 'stövel:n+par+et')
+         * kan råka generera en fristående 'par'/'paret'-variant som en
+         * bieffekt av sin egen sammansättningslogik (svansen av en
+         * sammansättning listas alltid individuellt också). Om 'par' redan
+         * hanterats som ett kvantifierande förled ovan ska det bara kunna
+         * matchas som adjektiv för det här objektet - ta därför bort alla
+         * rena substantiv-registreringar av just de exakta ordformerna. */
+        if (parWords != nil)
+            vocabWords = vocabWords.subset({vw: !(parWords.indexOf(vw.wordStr) != nil
+                && (vw.posFlags & MatchNoun) != 0 && (vw.posFlags & MatchAdj) == 0)});
 
 
         /* 
@@ -1652,6 +1727,11 @@ class LMentionable: object
 
     /* mönster för pluralannoteringar */
     pluralPat = R"<lbrace>(<alphanum|-|'|space|,|~|=>+)<rbrace>"
+
+    /* mönster för det kvantifierande förledet 'par' (t.ex. 'ett par
+     * stövlar', 'par+et stövlar+na', 'paret stövlar'). Ändelsen kan anges
+     * explicit med +notation; annars antas 'et' ('paret'). */
+    parPat = R'^par(<plus>(<alpha>+))?$'
 
     /* 
      *   mönster för egennamn: börjar med en versal, och minst en
