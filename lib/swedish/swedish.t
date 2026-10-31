@@ -4234,62 +4234,62 @@ stripArticle(txt)
  *   hyperlänken börjar se väldigt upptagen ut.  
  */
 modify finishOptionQuit
-    desc = '<<aHrefAlt('quit', 'QUIT', '<b>Q</b>UIT', 'Lämna berättelsen')>>'
-    responseKeyword = 'quit'
-    responseChar = 'q'
+    desc = '<<aHrefAlt('avsluta', 'AVSLUTA', '<b>A</b>VSLUTA', 'Lämna berättelsen')>>'
+    responseKeyword = 'avsluta'
+    responseChar = 'a'
 ;
 
 modify finishOptionRestore
-    desc = '''<<aHrefAlt('restore', 'RESTORE', '<b>R</b>ESTORE',
-            'Återställ en sparad position')>> en sparad position'''
-    responseKeyword = 'restore'
-    responseChar = 'r'
+    desc = '''<<aHrefAlt('ladda', 'LADDA', '<b>L</b>ADDA',
+            'Ladda in en sparad position')>> in en sparad position'''
+    responseKeyword = 'ladda'
+    responseChar = 'l'
 ;
 
 modify finishOptionRestart
-    desc = '''<<aHrefAlt('restart', 'RESTART', 'RE<b>S</b>TART',
+    desc = '''<<aHrefAlt('börja om', 'BÖRJA OM', '<b>B</b>ÖRJA',
             'Börja om berättelsen från början')>> berättelsen'''
-    responseKeyword = 'restart'
-    responseChar = 's'
+    responseKeyword = 'börja om'
+    responseChar = 'b'
 ;
 
 modify finishOptionUndo
-    desc = '''<<aHrefAlt('undo', 'UNDO', '<b>U</b>NDO',
+    desc = '''<<aHrefAlt('ångra', 'ÅNGRA', '<b>Å</b>NGRA',
             'Ångra det senaste draget')>> det senaste draget'''
-    responseKeyword = 'undo'
-    responseChar = 'u'
+    responseKeyword = 'ångra'
+    responseChar = 'å'
 ;
 
 modify finishOptionCredits
-    desc = '''se <<aHrefAlt('credits', 'CREDITS', '<b>C</b>REDITS',
-            'Visa krediter')>>'''
-    responseKeyword = 'credits'
-    responseChar = 'c'
+    desc = '''se <<aHrefAlt('visa', 'VISA', '<b>V</b>VISA',
+            'Visa omnämnanden')>> omnämnanden'''
+    responseKeyword = 'visa'
+    responseChar = 'v'
 ;
 
 modify finishOptionFullScore
-    desc = '''se din <<aHrefAlt('full score', 'FULL SCORE',
-            '<b>F</b>ULL SCORE', 'Visa fullständig poäng')>>'''
-    responseKeyword = 'full score'
+    desc = '''se din <<aHrefAlt('fullständiga poäng', 'FULLSTÄNDIGA POÄNG',
+            '<b>F</b>fullständiga poäng', 'Visa fullständig poäng')>>'''
+    responseKeyword = 'fullständig poäng'
     responseChar = 'f'
 ;
 
 modify finishOptionAmusing
-    desc = '''se några <<aHrefAlt('amusing', 'AMUSING', '<b>A</b>MUSING',
+    desc = '''se några <<aHrefAlt('roande', 'ROANDE', '<b>R</b>OANDE',
             'Visa några roliga saker att prova')>> saker att prova'''
-    responseKeyword = 'amusing'
-    responseChar = 'a'
+    responseKeyword = 'roande'
+    responseChar = 'r'
 ;
 
 modify restoreOptionStartOver
-    desc = '''<<aHrefAlt('start', 'START', '<b>S</b>TART',
-            'Börja från början')>> spelet från början'''
-    responseKeyword = 'start'
-    responseChar = 's'
+    desc = '''<<aHrefAlt('börja', 'BÖRJA', '<b>B</b>ÖRJA',
+            'Börja ')>> spelet från början'''
+    responseKeyword = 'börja'
+    responseChar = 'b'
 ;
 
 modify restoreOptionRestoreAnother
-    desc = '''<<aHrefAlt('restore', 'RESTORE', '<b>R</b>ESTORE',
+    desc = '''<<aHrefAlt('återställa', 'ÅTERSTÄLLA', '<b>Å</b>TERSTÄLLA',
             'Återställ en annan sparad position')>> en annan sparad position'''
 ;
 

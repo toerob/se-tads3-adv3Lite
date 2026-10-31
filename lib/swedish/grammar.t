@@ -1412,14 +1412,14 @@ grammar directionName(root): dirNames: Production \
    backToPrefix = backPre\
    departureName = depName 
 
-DefineLangDir(north, 'norr' | 'n', 'tillbaka till', 'till norr');
-DefineLangDir(south, 'söder' | 's', 'tillbaka till', 'till söder');
-DefineLangDir(east, 'öster' | 'ö', 'tillbaka till', 'till öster');
-DefineLangDir(west, 'väster' | 'v', 'tillbaka till', 'till väster');
-DefineLangDir(northeast, 'nordost' | 'no'| 'nö', 'tillbaka till', 'till nordost');
-DefineLangDir(northwest, 'nordväst' | 'nv', 'tillbaka till', 'till nordväst');
-DefineLangDir(southeast, 'sydost' | 'so'| 'sö', 'tillbaka till', 'till sydost');
-DefineLangDir(southwest, 'sydväst' | 'sv', 'tillbaka till', 'till sydväst');
+DefineLangDir(north, 'norr' | 'nord' | 'n', 'tillbaka till', 'till norr');
+DefineLangDir(south, 'söder' | 'syd' | 's', 'tillbaka till', 'till söder');
+DefineLangDir(east, 'öster' | 'öst' | 'ö', 'tillbaka till', 'till öster');
+DefineLangDir(west, 'väster' | 'väst' | 'v', 'tillbaka till', 'till väster');
+DefineLangDir(northeast, 'nordost' | 'nordo' | 'nordö' | 'no'| 'nö', 'tillbaka till', 'till nordost');
+DefineLangDir(northwest, 'nordväst' | 'nordv' | 'nv', 'tillbaka till', 'till nordväst');
+DefineLangDir(southeast, 'sydost' | 'sydo' | 'sydö' | 'so'| 'sö', 'tillbaka till', 'till sydost');
+DefineLangDir(southwest, 'sydväst' | 'sydv' | 'sv', 'tillbaka till', 'till sydväst');
 DefineLangDir(up, 'upp' | 'u', 'tillbaka', 'uppåt');
 DefineLangDir(down, 'ner' | 'n', 'tillbaka', 'neråt');
 DefineLangDir(in, 'in', 'tillbaka', 'inåt');
@@ -2350,8 +2350,10 @@ VerbRule(ThrowDirDown)
     priority = 100
 ;
 
+
 VerbRule(Follow)
-    'följ' singleDobj
+    ('följ' singleDobj)
+    |('följ'|'gå'|'spring') 'efter' singleDobj
     : VerbProduction
     action = Follow
     verbPhrase = 'följa/följer (vem)'
@@ -2503,7 +2505,7 @@ VerbRule(RestoreString)
 
 
 VerbRule(Restart)
-    (('börja'|'starta') 'om') | 'omstarta' | 'omstart'
+    (('börja'|'starta') 'om') // | 'omstarta' | 'omstart'
     : VerbProduction
     action = Restart
     verbPhrase = 'börja/börjar om'
@@ -3758,14 +3760,14 @@ VerbRule(Verbose)
 
     
 VerbRule(HyperlinkSuggestions)
-    ('hyper' | 'hyperlänk') ('ämne'|'förslag')
+    ('hyper' | 'hyperlänk') ('ämne'|'ämnen'|'förslag')
     : VerbProduction
     action = HyperlinkSuggestions
     verbPhrase = 'växla/växlar hyperlänkning av ämnesförslag'  
 ;
     
 VerbRule(EnumerateSuggestions)
-    ('enum' | 'enumerera') ('ämne'|'förslag')
+    ('enum' | 'enumerera') ('ämne'|'ämnen'|'förslag')
     : VerbProduction
     action = EnumerateSuggestions
     verbPhrase = 'växla/växlar enumeration av ämnesförslag'  

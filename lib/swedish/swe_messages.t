@@ -169,9 +169,9 @@ CustomMessages
         Msg(no shipboard directions, 'Skeppsriktningar {plural} {har} inte definierats. '),
         Msg(no compass directions, 'Kompassriktningar {plural} {har} inte definierats. '),
         Msg(explain exits on off, '<.p>Utgångslistning kan justeras med följande kommandon:\n UTGÅNGAR PÅ -- visa utgångar både i statusraden och i rumsbeskrivningar.\n UTGÅNGAR AV -- visa utgångar varken i statusraden eller i rumsbeskrivningar.\n UTGÅNGAR STATUS -- visa utgångar endast i statusraden.\n UTGÅNGAR TITT -- visa utgångar endast i rumsbeskrivningar.\n UTGÅNGAR FÄRG PÅ -- visa oöppnade utgångar i en annan färg.\n UTGÅNGAR FÄRG AV -- visa inte oöppnade utgångar i en annan färg.\n UTGÅNGAR FÄRG RÖD / BLÅ / GRÖN / GUL -- visa oöppnade utgångar i den angivna färgen. <.p>'), 
-        Msg(no exits from here, 'Det f{i|a}nns inga utgångar härifrån. '),
+        Msg(no exits from here, 'Det f{i|a}nns inga utgångar {här}ifrån. '),
         Msg(no exits, 'Utgångar: inga. '),
-        Msg(no clear exits, 'Det {är} inte tydligt var {jag} {kan} gå härifrån. '),
+        Msg(no clear exits, 'Det {är} inte tydligt var {jag} {kan} gå {här}ifrån. '),
         Msg(exits from here, '{Här}ifrån {kan} {jag} gå '),
         Msg(cmdhelp show options, 'Vad vill du göra?\b <<aHref('1','1')>>. Gå till en annan plats\n <<aHref('2','2')>>. Undersök dina omgivningar\n <<aHref('3','3')>>. Flytta något\n <<aHref('4','4')>>. Manipulera något\n'),
         Msg(cmdhelp talk to someone, '<<aHref('5','5')>>. Prata med någon\n'),
@@ -435,7 +435,7 @@ CustomMessages
         Msg(nothing on, '{Jag} hitta{r|de} inget av intresse på {ref dobj}. '),
         Msg(cannot take component, '{Jag} {kan} inte ta {detta cobj}, {he dobj} {är} en del av {1}. '),
         Msg(distant, '{Ref subj cobj} {är} för långt borta. '),
-        Msg(unthing absent, '{Ref subj cobj} {är} inte här. '),
+        Msg(unthing absent, '{Ref subj cobj} {är} inte {här}. '),
         Msg(too heavy, '{Ref subj cobj} {är} för tung{t/a} för att flytta. '),
         Msg(cannot take immovable, '{Jag} {kan} inte ta {ref cobj). '),
         Msg(traverse stairway up, 'upp {1}'),
@@ -758,7 +758,7 @@ CustomMessages
         Msg(nothing more to discuss on that topic, '{Jag} {har} ingenting mer att diskutera i ämnet. '),
         Msg(non conv response, 'Det är bäst att jag håller mig fokuserad på konversationen.'),
         Msg(explain enumerating and hyperlinking, 'Uppräkning och/eller hyperlänkning av ämnesförslag kan 
-                                                  slås på och av med kommandona ENUM SUGGS respektive HYPER SUGGS.'),
+                                                  slås på och av med kommandona ENUM ÄMNEN respektive HYPER ÄMNEN.'),
         Msg(no enumerations, 'Uppräknade förslag är inte tillgängliga just nu. '),
         Msg(enmeration out of range, 'För att välja ett uppräknat förslag, vänligen ange ett nummer mellan 1 och {1}.'),
         Msg(okay move from, '{Jag} flytta{r/de} bort {1} {dummy} från {ref iobj}. '),
@@ -1233,7 +1233,7 @@ modify FollowAgendaItem
             //DMsg(waiting for follow, '{The subj myactor} {is} waiting for {the
             //    pc} {dummy} to follow {him myactor} {1}. ', nd.departureName);
             dmsg('{Ref subj myactor} vänta{r/de} på {ref pc} {dummy} 
-                att följa {honom myactor} {1}. ',  nd.departureName);
+                att följa {honom myactor} {1}. ',  nd.departureName); // TODO: use { getActor() }
         else
             //DMsg(actor is here, '{The subj myactor} {is} {here}. '); 
             dmsg('{Ref subj myactor} {är} {här}. '); 
